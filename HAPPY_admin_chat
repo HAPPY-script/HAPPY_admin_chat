@@ -1,0 +1,53 @@
+local player = game.Players.LocalPlayer
+
+-- Chức năng thực hiện lệnh khi chat
+local function executeCommand(command)
+    if command == ";H_menu" then
+        print("Script for H_menu executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/menu/refs/heads/main/menu"))()
+    elseif command == ";H_tp" then
+        print("Script for H_tp executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP/refs/heads/main/TICKEN_TP"))()
+    elseif command == ";H_tp_g_pc" then
+        print("Script for H_tp_g_pc executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP_G_pc/refs/heads/main/TICKEN_TP_G_pc"))()
+    elseif command == ";H_view" then
+        print("Script for H_view executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_VIEW_/refs/heads/main/TICKEN_VIEW_"))()
+    elseif command == ";H_no_clip" then
+        print("Script for H_no_clip executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CO_CLIP/refs/heads/main/TICKEN_NO_CLIP"))()
+    elseif command == ";H_light" then
+        print("Script for H_light executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_LIGHT/refs/heads/main/TICKEN_LIGHT"))()
+    elseif command == ";H_ifn_zoom" then
+        print("Script for H_ifn_zoom executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_IFN_ZOOM/refs/heads/main/TICKEN_IFN_ZOOM"))()
+    elseif command == ";H_ifn_jump" then
+        print("Script for H_ifn_jump executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_IFN_JUMP/refs/heads/main/TICKEN_IFN_JUMP"))()
+    elseif command == ";H_hunt" then
+        print("Script for H_hunt executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_HUNT/refs/heads/main/TICKEN_HUNT"))()
+    elseif command == ";H_hit_box" then
+        print("Script for H_hit_box executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_HIT_BOX/refs/heads/main/TICKEN_HITBOX"))()
+    elseif command == ";H_haki_v10" then
+        print("Script for H_haki_v10 executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_HAKI_V10/refs/heads/main/TICKEN_HAKI_V10"))()
+    elseif command == ";H_aim_tp_g" then
+        print("Script for H_aim_tp_g executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_AIM_TP_G/refs/heads/main/TICKEN_AIM_TP_G"))()
+    elseif command == ";H_aim_bot" then
+        print("Script for H_aim_bot executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_AIM_BOT/refs/heads/main/TICKEN_AIM_BOT"))()
+    elseif command == ";H_fly" then
+        print("Script for H_fly executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_FLY/refs/heads/main/TICKEN_FLY"))()
+    end
+end
+
+-- Kiểm tra lệnh người dùng chat
+player.Chatted:Connect(function(message)
+    executeCommand(message)
+end)
