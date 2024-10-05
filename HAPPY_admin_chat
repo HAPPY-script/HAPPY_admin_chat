@@ -1,3 +1,9 @@
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Created by HAPPY script";
+    Text = "Chat " ;H_menu " to see the instruction menu";
+    Duration = 5;
+})
+
 local player = game.Players.LocalPlayer
 
 -- Chức năng thực hiện lệnh khi chat
