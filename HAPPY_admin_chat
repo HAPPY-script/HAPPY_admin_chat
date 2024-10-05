@@ -44,6 +44,9 @@ local function executeCommand(command)
     elseif command == ";H_fly" then
         print("Script for H_fly executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_FLY/refs/heads/main/TICKEN_FLY"))()
+    elseif command == ";H_auto_click" then
+        print("Script for H_auto_click executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_AUTO_CLICK/refs/heads/main/TICKEN_AUTO_CLICK"))()
     end
 end
 
