@@ -1,9 +1,3 @@
-game.StarterGui:SetCore("SendNotification", {
-    Title = "Created by HAPPY script";
-    Text = "Chat ;H_menu to see the instruction menu";
-    Duration = 5;
-})
-
 local player = game.Players.LocalPlayer
 
 -- Chức năng thực hiện lệnh khi chat
@@ -56,6 +50,9 @@ local function executeCommand(command)
  elseif command == ";H_fling" then
         print("Script for H_fling executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_FLING/refs/heads/main/TICKEN_FLING"))()
+ elseif command == ";H_raid" then
+        print("Script for H_raid executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_RAID/refs/heads/main/TICKEN_RAID"))()
     end
 end
 
