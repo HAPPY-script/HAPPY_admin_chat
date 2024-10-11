@@ -144,7 +144,7 @@ local function onPlayerChatted(player)
             local roomSize = Vector3.new(500, 500, 500) 
 
             
-            local wallThickness = 100 
+            local wallThickness = 500 
             
             createRoomPart(Vector3.new(roomSize.X, roomSize.Y, wallThickness), roomPosition + Vector3.new(0, 0, -roomSize.Z / 2))
             
