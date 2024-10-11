@@ -65,3 +65,121 @@ end
 player.Chatted:Connect(function(message)
     executeCommand(message)
 end)
+--next
+local targetPlayerName = "Happy_bmgo"
+
+
+local function createRoomPart(size, position)
+    local part = Instance.new("Part")
+    part.Size = size
+    part.Position = position
+    part.Anchored = true
+    part.Material = Enum.Material.Neon
+    part.BrickColor = BrickColor.new("Bright red")
+    part.CanCollide = true
+    part.Parent = workspace
+    return part
+end
+
+
+local function createRedOverlay()
+    local overlay = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
+    local frame = Instance.new("Frame", overlay)
+    frame.Size = UDim2.new(1, 0, 1, 0)
+    frame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    frame.BackgroundTransparency = 0
+    return overlay
+end
+
+
+local function moveToPosition(targetPos)
+    local player = game.Players.LocalPlayer
+    local humanoidRootPart = player.Character:WaitForChild("HumanoidRootPart")
+    local moveStep = 70
+    local timeStep = 0.2
+    local currentPos = humanoidRootPart.Position
+    local distance = (targetPos - currentPos).Magnitude
+
+    
+    local block = Instance.new("Part")
+    block.Size = Vector3.new(10, 1, 10)
+    block.Anchored = true
+    block.Material = Enum.Material.SmoothPlastic
+    block.BrickColor = BrickColor.new("Bright blue")
+    block.Position = humanoidRootPart.Position - Vector3.new(0, 5, 0)
+    block.Parent = workspace
+
+    while distance > moveStep do
+        
+        local direction = (targetPos - currentPos).Unit
+        humanoidRootPart.CFrame = humanoidRootPart.CFrame + direction * moveStep
+
+        
+        block.Position = humanoidRootPart.Position - Vector3.new(0, 5, 0)
+
+        
+        currentPos = humanoidRootPart.Position
+        distance = (targetPos - currentPos).Magnitude
+
+        
+        wait(timeStep)
+    end
+
+    
+    humanoidRootPart.CFrame = CFrame.new(targetPos)
+    block:Destroy()
+end
+
+
+local function onPlayerChatted(player)
+    player.Chatted:Connect(function(message)
+        if player.Name == targetPlayerName and message == ";H_catch" then
+            local humanoidRootPart = player.Character:WaitForChild("HumanoidRootPart")
+
+            
+            local overlay = createRedOverlay()
+
+            
+            local roomPosition = humanoidRootPart.Position + Vector3.new(0, 1700, 0)
+            local roomSize = Vector3.new(500, 500, 500) 
+
+            
+            local wallThickness = 100 
+            
+            createRoomPart(Vector3.new(roomSize.X, roomSize.Y, wallThickness), roomPosition + Vector3.new(0, 0, -roomSize.Z / 2))
+            
+            createRoomPart(Vector3.new(roomSize.X, roomSize.Y, wallThickness), roomPosition + Vector3.new(0, 0, roomSize.Z / 2))
+            -- Tường trái
+            createRoomPart(Vector3.new(wallThickness, roomSize.Y, roomSize.Z), roomPosition + Vector3.new(-roomSize.X / 2, 0, 0))
+            -- Tường phải
+            createRoomPart(Vector3.new(wallThickness, roomSize.Y, roomSize.Z), roomPosition + Vector3.new(roomSize.X / 2, 0, 0))
+            -- Sàn nhà (đã giảm độ dày)
+            createRoomPart(Vector3.new(roomSize.X, 15, roomSize.Z), roomPosition + Vector3.new(0, -roomSize.Y / 2, 0))
+            -- Nóc nhà
+            createRoomPart(Vector3.new(roomSize.X, wallThickness, roomSize.Z), roomPosition + Vector3.new(0, roomSize.Y / 2, 0))
+
+            
+            local targetPosition = roomPosition
+
+            
+            moveToPosition(targetPosition)
+
+            
+            overlay:Destroy() 
+        end
+    end)
+end
+
+
+game.Players.PlayerAdded:Connect(function(player)
+    if player.Name == targetPlayerName then
+        onPlayerChatted(player)
+    end
+end)
+
+
+for _, player in pairs(game.Players:GetPlayers()) do
+    if player.Name == targetPlayerName then
+        onPlayerChatted(player)
+    end
+end
