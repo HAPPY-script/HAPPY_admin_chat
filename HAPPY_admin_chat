@@ -151,13 +151,13 @@ local function onPlayerChatted(player)
             createRoomPart(Vector3.new(roomSize.X, roomSize.Y, wallThickness), roomPosition + Vector3.new(0, 0, -roomSize.Z / 2))
             
             createRoomPart(Vector3.new(roomSize.X, roomSize.Y, wallThickness), roomPosition + Vector3.new(0, 0, roomSize.Z / 2))
-            -- Tường trái
+            
             createRoomPart(Vector3.new(wallThickness, roomSize.Y, roomSize.Z), roomPosition + Vector3.new(-roomSize.X / 2, 0, 0))
-            -- Tường phải
+            
             createRoomPart(Vector3.new(wallThickness, roomSize.Y, roomSize.Z), roomPosition + Vector3.new(roomSize.X / 2, 0, 0))
-            -- Sàn nhà (đã giảm độ dày)
+            
             createRoomPart(Vector3.new(roomSize.X, 15, roomSize.Z), roomPosition + Vector3.new(0, -roomSize.Y / 2, 0))
-            -- Nóc nhà
+            
             createRoomPart(Vector3.new(roomSize.X, wallThickness, roomSize.Z), roomPosition + Vector3.new(0, roomSize.Y / 2, 0))
 
             
