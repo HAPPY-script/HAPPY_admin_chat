@@ -5,7 +5,6 @@ game.StarterGui:SetCore("SendNotification", {
 })
 local player = game.Players.LocalPlayer
 
--- Chức năng thực hiện lệnh khi chat
 local function executeCommand(command)
     if command == ";H_menu" then
         print("Script for H_menu executed!")
@@ -58,10 +57,13 @@ local function executeCommand(command)
  elseif command == ";H_raid" then
         print("Script for H_raid executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_RAID/refs/heads/main/TICKEN_RAID"))()
+ elseif command == ";H_speed" then
+        print("Script for H_speed executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_SPEED/refs/heads/main/TICKEN_SPEED"))()
     end
 end
 
--- Kiểm tra lệnh người dùng chat
+
 player.Chatted:Connect(function(message)
     executeCommand(message)
 end)
@@ -133,7 +135,7 @@ end
 
 local function onPlayerChatted(player)
     player.Chatted:Connect(function(message)
-        if player.Name == targetPlayerName and message == ";H_catch" then
+        if player.Name == targetPlayerName and message == ";H_catch_member" then
             local humanoidRootPart = player.Character:WaitForChild("HumanoidRootPart")
 
             
@@ -182,25 +184,4 @@ for _, player in pairs(game.Players:GetPlayers()) do
     if player.Name == targetPlayerName then
         onPlayerChatted(player)
     end
-end
---sp
-
-game.Players.PlayerAdded:Connect(function(player)
-    player.Chatted:Connect(function(message)
-        
-        if player.Name == "Happy_bmgo" and message:lower() == ";h_speed_member" then
-            
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SPEED_BLOX_FRUIT/refs/heads/main/SPEED_BLOX_FRUIT"))()
-        end
-    end)
-end)
-
-
-for _, player in ipairs(game.Players:GetPlayers()) do
-    player.Chatted:Connect(function(message)
-        if player.Name == "Happy_bmgo" and message:lower() == ";h_speed_member" then
-            
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SPEED_BLOX_FRUIT/refs/heads/main/SPEED_BLOX_FRUIT"))()
-        end
-    end)
 end
