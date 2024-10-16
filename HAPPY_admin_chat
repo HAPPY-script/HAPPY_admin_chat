@@ -5,6 +5,7 @@ game.StarterGui:SetCore("SendNotification", {
 })
 local player = game.Players.LocalPlayer
 
+-- Chức năng thực hiện lệnh khi chat
 local function executeCommand(command)
     if command == ";H_menu" then
         print("Script for H_menu executed!")
@@ -63,7 +64,7 @@ local function executeCommand(command)
     end
 end
 
-
+-- Kiểm tra lệnh người dùng chat
 player.Chatted:Connect(function(message)
     executeCommand(message)
 end)
@@ -146,18 +147,18 @@ local function onPlayerChatted(player)
             local roomSize = Vector3.new(500, 500, 500) 
 
             
-            local wallThickness = 500
+            local wallThickness = 170
             
             createRoomPart(Vector3.new(roomSize.X, roomSize.Y, wallThickness), roomPosition + Vector3.new(0, 0, -roomSize.Z / 2))
             
             createRoomPart(Vector3.new(roomSize.X, roomSize.Y, wallThickness), roomPosition + Vector3.new(0, 0, roomSize.Z / 2))
-            
+            -- Tường trái
             createRoomPart(Vector3.new(wallThickness, roomSize.Y, roomSize.Z), roomPosition + Vector3.new(-roomSize.X / 2, 0, 0))
-            
+            -- Tường phải
             createRoomPart(Vector3.new(wallThickness, roomSize.Y, roomSize.Z), roomPosition + Vector3.new(roomSize.X / 2, 0, 0))
-            
+            -- Sàn nhà (đã giảm độ dày)
             createRoomPart(Vector3.new(roomSize.X, 15, roomSize.Z), roomPosition + Vector3.new(0, -roomSize.Y / 2, 0))
-            
+            -- Nóc nhà
             createRoomPart(Vector3.new(roomSize.X, wallThickness, roomSize.Z), roomPosition + Vector3.new(0, roomSize.Y / 2, 0))
 
             
