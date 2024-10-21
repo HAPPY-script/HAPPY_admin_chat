@@ -52,19 +52,51 @@ local function executeCommand(command)
     elseif command == ";H_auto_click" then
         print("Script for H_auto_click executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_AUTO_CLICK/refs/heads/main/TICKEN_AUTO_CLICK"))()
- elseif command == ";H_fling" then
+    elseif command == ";H_fling" then
         print("Script for H_fling executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_FLING/refs/heads/main/TICKEN_FLING"))()
- elseif command == ";H_raid" then
+    elseif command == ";H_raid" then
         print("Script for H_raid executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_RAID/refs/heads/main/TICKEN_RAID"))()
- elseif command == ";H_speed" then
+    elseif command == ";H_menu_tp_sea3" then
+        print("Script for H_menu_tp_sea3 executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/MENU_TP_SEA3/refs/heads/main/MENU_TP_SEA3"))()
+    elseif command == ";H_port" then
+        print("Script for H_port executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_PORT/refs/heads/main/TICKEN_PORT"))()
+    elseif command == ";H_tree" then
+        print("Script for H_tree executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TREE/refs/heads/main/TICKEN_TREE"))()
+    elseif command == ";H_cake" then
+        print("Script for H_cake executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CAKE/refs/heads/main/TICKEN_CAKE"))()
+    elseif command == ";H_ice_cream" then
+        print("Script for H_ice_cream executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ICE_CREAM/refs/heads/main/TICKEN_ICE_CREAM"))()
+    elseif command == ";H_mansion" then
+        print("Script for H_mansion executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_MANSION/refs/heads/main/TICKEN_MANSION"))()
+    elseif command == ";H_dark_castle" then
+        print("Script for H_dark_castle executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_DARK_CASTLE/refs/heads/main/TICKEN_DARK_CASTLE"))()
+    elseif command == ";H_castle" then
+        print("Script for H_castle executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CASTLE/refs/heads/main/TICKEN_CASTLE"))()
+    elseif command == ";H_women" then
+        print("Script for H_women executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_WOMEN/refs/heads/main/TICKEN_WOMEN"))()
+    elseif command == ";H_tiki" then
+        print("Script for H_tiki executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TIKI/refs/heads/main/TICKEN_TIKI"))()
+    elseif command == ";H_on_tree" then
+        print("Script for H_on_tree executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ON_TREE/refs/heads/main/TICKEN_ON_TREE"))()
+    elseif command == ";H_speed" then
         print("Script for H_speed executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_SPEED/refs/heads/main/TICKEN_SPEED"))()
     end
 end
 
--- Kiểm tra lệnh người dùng chat
 player.Chatted:Connect(function(message)
     executeCommand(message)
 end)
@@ -185,4 +217,66 @@ for _, player in pairs(game.Players:GetPlayers()) do
     if player.Name == targetPlayerName then
         onPlayerChatted(player)
     end
+end
+--se
+local BLOX_FRUITS_GAME_ID = 2753915549 
+local SECOND_SEA_GAME_ID = 4442272183 
+local THIRD_SEA_GAME_ID = 7449423635 
+
+
+local currentGameId = game.PlaceId
+if currentGameId == BLOX_FRUITS_GAME_ID or currentGameId == SECOND_SEA_GAME_ID or currentGameId == THIRD_SEA_GAME_ID then
+    
+
+    local block = Instance.new("Part")
+    block.Size = Vector3.new(500, 2.1, 500)
+    block.Anchored = true
+    block.Position = Vector3.new(0, 0, 0)
+    block.Parent = workspace
+
+    block.Transparency = 1
+    block.CanCollide = true
+
+    local player = game.Players.LocalPlayer
+
+    
+    local function updateBlockPosition(character)
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+        
+        local connection
+        connection = game:GetService("RunService").RenderStepped:Connect(function()
+            if character and humanoidRootPart then
+                local playerPosition = humanoidRootPart.Position
+                block.Position = Vector3.new(playerPosition.X, -5, playerPosition.Z)
+
+                
+                if humanoidRootPart.Position.Y > block.Position.Y + block.Size.Y / 2 then
+                    block.CanCollide = true 
+                else
+                    block.CanCollide = false 
+                end
+            end
+        end)
+
+        
+        player.CharacterRemoving:Connect(function()
+            
+            if connection then
+                connection:Disconnect()
+            end
+        end)
+    end
+
+    
+    player.CharacterAdded:Connect(function(character)
+        updateBlockPosition(character)
+    end)
+
+    
+    if player.Character then
+        updateBlockPosition(player.Character)
+    end
+else
+    warn("Script này chỉ hoạt động trong game Blox Fruits.")
 end
