@@ -280,3 +280,71 @@ if currentGameId == BLOX_FRUITS_GAME_ID or currentGameId == SECOND_SEA_GAME_ID o
 else
     warn("Script này chỉ hoạt động trong game Blox Fruits.")
 end
+--sh
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player.PlayerGui)
+gui.Name = "HAPPY CLOTHING STORE !"
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 400, 0, 300)
+frame.Position = UDim2.new(0.5, -200, 0.5, -150)
+frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+frame.BackgroundTransparency = 0.3
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, 0, 0, 50)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.Text = "HAPPY CLOTHING STORE !"
+titleLabel.TextColor3 = Color3.new(1, 1, 1)
+titleLabel.Font = Enum.Font.SourceSansBold
+titleLabel.TextSize = 30
+titleLabel.BackgroundTransparency = 1
+titleLabel.Parent = frame
+
+local function copyToClipboard(link)
+    setclipboard(link)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Link copied!";
+        Text = "Paste it in your browser to purchase!";
+        Duration = 3;
+    })
+end
+
+local function createButton(text, link, positionY)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0.8, 0, 0, 50)
+    button.Position = UDim2.new(0.1, 0, positionY, 0)
+    button.Text = text
+    button.Font = Enum.Font.SourceSansBold
+    button.TextSize = 20
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.BackgroundColor3 = Color3.new(0.2, 0.6, 0.8)
+    button.BorderSizePixel = 0
+    button.Parent = frame
+
+    
+    button.MouseButton1Click:Connect(function()
+        copyToClipboard(link)
+    end)
+end
+
+createButton("Kitsune fruit T-shirt", "https://www.roblox.com/catalog/15898682172/Kitsune-fruit", 0.25)
+createButton("Ronaldo Siuu shirt", "https://www.roblox.com/catalog/17739200472/Siuu-H", 0.45)
+createButton("White-dark shirt", "https://www.roblox.com/catalog/17467705530/HAPPY-shirt", 0.65)
+
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -35, 0, 5)
+closeButton.Text = "X"
+closeButton.Font = Enum.Font.SourceSansBold
+closeButton.TextSize = 20
+closeButton.TextColor3 = Color3.new(1, 0, 0)
+closeButton.BackgroundTransparency = 1
+closeButton.Parent = frame
+
+closeButton.MouseButton1Click:Connect(function()
+    gui:Destroy()
+end)
