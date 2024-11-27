@@ -5,11 +5,11 @@ game.StarterGui:SetCore("SendNotification", {
 })
 local player = game.Players.LocalPlayer
 
--- Chức năng thực hiện lệnh khi chat
+
 local function executeCommand(command)
     if command == ";H_menu" then
         print("Script for H_menu executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/menu/refs/heads/main/menu"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/menu_BETA/refs/heads/main/menu_BETA"))()
     elseif command == ";H_tp" then
         print("Script for H_tp executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP/refs/heads/main/TICKEN_TP"))()
@@ -94,6 +94,12 @@ local function executeCommand(command)
     elseif command == ";H_speed" then
         print("Script for H_speed executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_SPEED/refs/heads/main/TICKEN_SPEED"))()
+    elseif command == ";H_auto_chest" then
+        print("Script for H_auto_chest executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEA_AUTO_CHEST/refs/heads/main/CHECK_SEA_AUTO_CHEST"))()
+    elseif command == ";H_toy" then
+        print("Script for H_toy executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TOY/refs/heads/main/TICKEN_TOY"))()
     end
 end
 
@@ -345,6 +351,72 @@ closeButton.Parent = frame
 
 closeButton.MouseButton1Click:Connect(function()
     gui:Destroy()
-    
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/menu/refs/heads/main/menu"))()
+    --menu
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ITEM_MENU/refs/heads/main/ITEM_MENU"))()
+    --escape
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESCAPE_up_normal/refs/heads/main/ESCAPE_up_normal"))()
+    --esp fruit
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESP_FRUIT/refs/heads/main/ESP_FRUIT"))()
 end)
+--[[hbox
+local bloxFruitsGameIds = {2753915549, 4442272183, 7449423635}
+
+local function isBloxFruitsGame()
+    for _, gameId in ipairs(bloxFruitsGameIds) do
+        if game.PlaceId == gameId then
+            return true
+        end
+    end
+    return false
+end
+
+if isBloxFruitsGame() then
+    _G.HeadSize = 2
+    _G.Disabled = true
+
+    local userInputService = game:GetService("UserInputService")
+    local isHoldingX = false
+    local sizeResetTimer = nil
+
+    game:GetService('RunService').RenderStepped:connect(function()
+        if _G.Disabled then
+            for i, v in next, game:GetService('Players'):GetPlayers() do
+                if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+                    pcall(function()
+                        v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize, _G.HeadSize, _G.HeadSize)
+                        v.Character.HumanoidRootPart.Transparency = 1
+                        v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really white")
+                        v.Character.HumanoidRootPart.Material = "Neon"
+                        v.Character.HumanoidRootPart.CanCollide = false
+                    end)
+                end
+            end
+        end
+    end)
+
+    userInputService.InputBegan:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.X then
+            isHoldingX = true
+            wait(0.5)
+            if isHoldingX then
+                _G.HeadSize = 77
+            end
+        end
+    end)
+
+    userInputService.InputEnded:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.X then
+            isHoldingX = false
+            if not sizeResetTimer then
+                sizeResetTimer = true
+                wait(1)
+                _G.HeadSize = 2
+                wait(1)
+                sizeResetTimer = nil
+            end
+        end
+    end)
+else
+    warn("Script chỉ hoạt động trong game Blox Fruits.")
+end
+]]
