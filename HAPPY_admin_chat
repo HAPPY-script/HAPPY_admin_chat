@@ -9,7 +9,7 @@ local player = game.Players.LocalPlayer
 local function executeCommand(command)
     if command == ";H_menu" then
         print("Script for H_menu executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/menu_BETA/refs/heads/main/menu_BETA"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/menu/refs/heads/main/menu"))()
     elseif command == ";H_tp" then
         print("Script for H_tp executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP/refs/heads/main/TICKEN_TP"))()
