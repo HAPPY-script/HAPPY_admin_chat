@@ -356,7 +356,7 @@ closeButton.MouseButton1Click:Connect(function()
     --escape
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESCAPE_up_normal/refs/heads/main/ESCAPE_up_normal"))()
     --esp fruit
-    --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESP_FRUIT/refs/heads/main/ESP_FRUIT"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESP_FRUIT/refs/heads/main/ESP_FRUIT"))()
 end)
 --[[hbox
 local bloxFruitsGameIds = {2753915549, 4442272183, 7449423635}
