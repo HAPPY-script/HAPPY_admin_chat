@@ -107,7 +107,7 @@ player.Chatted:Connect(function(message)
     executeCommand(message)
 end)
 --next
-local targetPlayerName = "Happy_bmgo"
+local targetPlayerName = "Happy_bmg"
 
 
 local function createRoomPart(size, position)
