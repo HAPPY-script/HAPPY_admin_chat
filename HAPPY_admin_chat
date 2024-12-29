@@ -9,7 +9,10 @@ local player = game.Players.LocalPlayer
 local function executeCommand(command)
     if command == ";H_menu" then
         print("Script for H_menu executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/menu/refs/heads/main/menu"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/menu_BETA/refs/heads/main/menu_BETA"))()
+    elseif command == ";H_menu_tad" then
+        print("Script for H_menu_tad executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_MENU_TAD/refs/heads/main/TICKEN_MENU_TAD"))()
     elseif command == ";H_tp" then
         print("Script for H_tp executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP/refs/heads/main/TICKEN_TP"))()
@@ -58,9 +61,9 @@ local function executeCommand(command)
     elseif command == ";H_raid" then
         print("Script for H_raid executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_RAID/refs/heads/main/TICKEN_RAID"))()
-    elseif command == ";H_menu_tp_sea3" then
-        print("Script for H_menu_tp_sea3 executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/MENU_TP_SEA3/refs/heads/main/MENU_TP_SEA3"))()
+    elseif command == ";H_menu_tp" then
+        print("Script for H_menu_tp executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEA_MENU_TP/refs/heads/main/CHECK_SEA_MENU_TP"))()
     elseif command == ";H_port" then
         print("Script for H_port executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_PORT/refs/heads/main/TICKEN_PORT"))()
@@ -91,6 +94,12 @@ local function executeCommand(command)
     elseif command == ";H_on_tree" then
         print("Script for H_on_tree executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ON_TREE/refs/heads/main/TICKEN_ON_TREE"))()
+    elseif command == ";H_candy" then
+        print("Script for H_candy executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CANDY/refs/heads/main/TICKEN_CANDY"))()
+    elseif command == ";H_dojo" then
+        print("Script for H_dojo executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_DOJO/refs/heads/main/TICKEN_DOJO"))()
     elseif command == ";H_speed" then
         print("Script for H_speed executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_SPEED/refs/heads/main/TICKEN_SPEED"))()
@@ -100,13 +109,19 @@ local function executeCommand(command)
     elseif command == ";H_toy" then
         print("Script for H_toy executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TOY/refs/heads/main/TICKEN_TOY"))()
+    elseif command == ";H_to_sea_lv6" then
+        print("Script for H_to_sea_lv6 executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TO_SEA_LV6/refs/heads/main/TICKEN_TO_SEA_LV6"))()
+    elseif command == ";H_auto_berry" then
+        print("Script for H_auto_berry executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_AUTO_BERRY_SEA1/refs/heads/main/TICKEN_AUTO_BERRY"))()
     end
 end
-
+-- Kiểm tra lệnh người dùng chat
 player.Chatted:Connect(function(message)
     executeCommand(message)
 end)
---next
+-- catch
 local targetPlayerName = "Happy_bmg"
 
 
@@ -352,14 +367,36 @@ closeButton.Parent = frame
 closeButton.MouseButton1Click:Connect(function()
     gui:Destroy()
     --menu
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ITEM_MENU/refs/heads/main/ITEM_MENU"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/MENU_TAD/refs/heads/main/MENU_TAD"))()
     --escape
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESCAPE_up_normal/refs/heads/main/ESCAPE_up_normal"))()
     --esp fruit
     --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESP_FRUIT/refs/heads/main/ESP_FRUIT"))()
+    --exit portal
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/EXIT_V_PORTAL/refs/heads/main/EXIT_V_PORTAL"))()
     --ADMIN WARN
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN_WARN/refs/heads/main/ADMIN_WARN"))()
 end)
+--title die
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local StarterGui = game:GetService("StarterGui")
+
+
+local function sendNotification()
+    StarterGui:SetCore("SendNotification", {
+        Title = "Chat ;H_menu_tad or", 
+        Text = "Chat ;H_menu for instructions",
+        Duration = 30
+    })
+end
+
+
+player.CharacterAdded:Connect(function()
+    wait(1)  
+    sendNotification()
+end)
+
 --[[hbox
 local bloxFruitsGameIds = {2753915549, 4442272183, 7449423635}
 
@@ -399,7 +436,7 @@ if isBloxFruitsGame() then
     userInputService.InputBegan:Connect(function(input)
         if input.KeyCode == Enum.KeyCode.X then
             isHoldingX = true
-            wait(0.5)
+            wait(1)
             if isHoldingX then
                 _G.HeadSize = 77
             end
