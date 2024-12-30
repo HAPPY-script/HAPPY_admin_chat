@@ -1,6 +1,6 @@
 game.StarterGui:SetCore("SendNotification", {
-    Title = "created by HAPPY script";
-    Text = "Chat ;H_menu for instructions";
+    Title = "⚜️HAPPY script⚜️";
+    Text = "🔔Chat ;H_menu for instructions📌";
     Duration = 5;
 })
 local player = game.Players.LocalPlayer
@@ -385,8 +385,8 @@ local StarterGui = game:GetService("StarterGui")
 
 local function sendNotification()
     StarterGui:SetCore("SendNotification", {
-        Title = "Chat ;H_menu_tad or", 
-        Text = "Chat ;H_menu for instructions",
+        Title = "🔔Chat ;H_menu_tad or", 
+        Text = "Chat ;H_menu for instructions📌",
         Duration = 30
     })
 end
