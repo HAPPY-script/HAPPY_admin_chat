@@ -115,6 +115,12 @@ local function executeCommand(command)
     elseif command == ";H_auto_berry" then
         print("Script for H_auto_berry executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_AUTO_BERRY_SEA1/refs/heads/main/TICKEN_AUTO_BERRY"))()
+    elseif command == ";H_next_sea" then
+        print("Script for H_next_sea executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_NEXT_SEA/refs/heads/main/TICKEN_NEXT_SEA"))()
+    elseif command == ";H_select_melee" then
+        print("Script for H_select_melee executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SELECT_MELEE/refs/heads/main/SELECT_MELEE"))()
     end
 end
 -- Kiểm tra lệnh người dùng chat
@@ -368,10 +374,10 @@ closeButton.MouseButton1Click:Connect(function()
     gui:Destroy()
     --menu
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/MENU_TAD/refs/heads/main/MENU_TAD"))()
+    --shader_escape
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEA_SELECT_SHADER_ESCAPE/refs/heads/main/CHECK_SEA_SELECT_SHADER_ESCAPE"))()
     --escape
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESCAPE_up_normal/refs/heads/main/ESCAPE_up_normal"))()
-    --esp fruit
-    --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESP_FRUIT/refs/heads/main/ESP_FRUIT"))()
     --exit portal
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/EXIT_V_PORTAL/refs/heads/main/EXIT_V_PORTAL"))()
     --ADMIN WARN
