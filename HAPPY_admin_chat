@@ -39,7 +39,7 @@ local function executeCommand(command)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_HUNT/refs/heads/main/TICKEN_HUNT"))()
     elseif command == ";H_hit_box" then
         print("Script for H_hit_box executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SELECT_HIT_BOX_NPC/refs/heads/main/SELECT_HIT_BOX_PLAYER_NPC"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_SELECT_HIT_BOX_PLAYER_NPC/refs/heads/main/TICKEN_SELECT_HIT_BOX_PLAYER_NPC"))()
     elseif command == ";H_haki_v10" then
         print("Script for H_haki_v10 executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_HAKI_V10/refs/heads/main/TICKEN_HAKI_V10"))()
