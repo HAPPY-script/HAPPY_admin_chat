@@ -383,6 +383,25 @@ closeButton.MouseButton1Click:Connect(function()
     --ADMIN WARN
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN_WARN/refs/heads/main/ADMIN_WARN"))()
 end)
+--kick
+local player = game.Players.LocalPlayer
+
+
+local restrictedPlayerName = "HAPPYBMGOVN"
+
+
+if player.Name == restrictedPlayerName then
+    
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Player is not authorized";
+        Text = 'Player is not authorized: "' .. restrictedPlayerName .. '". You are not allowed to use this script!';
+        Duration = 5;
+    })
+
+    
+    player:Kick("You are not authorized to use this script!")
+end
+
 --title die
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
@@ -402,66 +421,3 @@ player.CharacterAdded:Connect(function()
     wait(1)  
     sendNotification()
 end)
-
---[[hbox
-local bloxFruitsGameIds = {2753915549, 4442272183, 7449423635}
-
-local function isBloxFruitsGame()
-    for _, gameId in ipairs(bloxFruitsGameIds) do
-        if game.PlaceId == gameId then
-            return true
-        end
-    end
-    return false
-end
-
-if isBloxFruitsGame() then
-    _G.HeadSize = 2
-    _G.Disabled = true
-
-    local userInputService = game:GetService("UserInputService")
-    local isHoldingX = false
-    local sizeResetTimer = nil
-
-    game:GetService('RunService').RenderStepped:connect(function()
-        if _G.Disabled then
-            for i, v in next, game:GetService('Players'):GetPlayers() do
-                if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-                    pcall(function()
-                        v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize, _G.HeadSize, _G.HeadSize)
-                        v.Character.HumanoidRootPart.Transparency = 1
-                        v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really white")
-                        v.Character.HumanoidRootPart.Material = "Neon"
-                        v.Character.HumanoidRootPart.CanCollide = false
-                    end)
-                end
-            end
-        end
-    end)
-
-    userInputService.InputBegan:Connect(function(input)
-        if input.KeyCode == Enum.KeyCode.X then
-            isHoldingX = true
-            wait(1)
-            if isHoldingX then
-                _G.HeadSize = 77
-            end
-        end
-    end)
-
-    userInputService.InputEnded:Connect(function(input)
-        if input.KeyCode == Enum.KeyCode.X then
-            isHoldingX = false
-            if not sizeResetTimer then
-                sizeResetTimer = true
-                wait(1)
-                _G.HeadSize = 2
-                wait(1)
-                sizeResetTimer = nil
-            end
-        end
-    end)
-else
-    warn("Script chỉ hoạt động trong game Blox Fruits.")
-end
-]]
