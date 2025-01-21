@@ -356,9 +356,9 @@ local function createButton(text, link, positionY)
     end)
 end
 
-createButton("Kitsune fruit T-shirt", "https://www.roblox.com/catalog/15898682172/Kitsune-fruit", 0.25)
-createButton("Ronaldo Siuu shirt", "https://www.roblox.com/catalog/17739200472/Siuu-H", 0.45)
-createButton("White-dark shirt", "https://www.roblox.com/catalog/17467705530/HAPPY-shirt", 0.65)
+createButton("Sold Out", "https://sites.google.com/view/happy-script/home", 0.25)
+createButton("Sold Out", "https://sites.google.com/view/happy-script/home", 0.45)
+createButton("Sold Out", "https://sites.google.com/view/happy-script/home", 0.65)
 
 local closeButton = Instance.new("TextButton")
 closeButton.Size = UDim2.new(0, 30, 0, 30)
@@ -374,14 +374,14 @@ closeButton.MouseButton1Click:Connect(function()
     gui:Destroy()
     --menu
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/MENU_TAD/refs/heads/main/MENU_TAD"))()
-    --shader_escape
+    --select_shader_escape
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEA_SELECT_SHADER_ESCAPE/refs/heads/main/CHECK_SEA_SELECT_SHADER_ESCAPE"))()
     --escape
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESCAPE_up_normal/refs/heads/main/ESCAPE_up_normal"))()
     --exit portal
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/EXIT_V_PORTAL/refs/heads/main/EXIT_V_PORTAL"))()
     --ADMIN WARN
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN_WARN/refs/heads/main/ADMIN_WARN"))()
+    --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN_WARN/refs/heads/main/ADMIN_WARN"))()
 end)
 --kick
 local player = game.Players.LocalPlayer
