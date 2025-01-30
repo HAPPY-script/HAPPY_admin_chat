@@ -377,7 +377,7 @@ closeButton.MouseButton1Click:Connect(function()
     --select_shader_escape
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEA_SELECT_SHADER_ESCAPE/refs/heads/main/CHECK_SEA_SELECT_SHADER_ESCAPE"))()
     --escape
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESCAPE_up_normal/refs/heads/main/ESCAPE_up_normal"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_ESCAPE_up_normal/refs/heads/main/CHECK_SEVER_ESCAPE_up_normal"))()
     --exit portal
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/EXIT_V_PORTAL/refs/heads/main/EXIT_V_PORTAL"))()
     --ADMIN WARN
