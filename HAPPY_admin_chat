@@ -12,7 +12,7 @@ local function executeCommand(command)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/menu_BETA/refs/heads/main/menu_BETA"))()
     elseif command == ";H_menu_tad" then
         print("Script for H_menu_tad executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_MENU_TAD/refs/heads/main/TICKEN_MENU_TAD"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CHECK_SEVER_MENU_TAD/refs/heads/main/TICKEN_CHECK_SEVER_MENU_TAD"))()
     elseif command == ";H_tp" then
         print("Script for H_tp executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP/refs/heads/main/TICKEN_TP"))()
@@ -373,7 +373,7 @@ closeButton.Parent = frame
 closeButton.MouseButton1Click:Connect(function()
     gui:Destroy()
     --menu
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/MENU_TAD/refs/heads/main/MENU_TAD"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_MENU_TAD/refs/heads/main/CHECK_SEVER_MENU_TAD"))()
     --select_shader_escape
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEA_SELECT_SHADER_ESCAPE/refs/heads/main/CHECK_SEA_SELECT_SHADER_ESCAPE"))()
     --escape
