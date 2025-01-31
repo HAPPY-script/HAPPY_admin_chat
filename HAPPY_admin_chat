@@ -121,6 +121,9 @@ local function executeCommand(command)
     elseif command == ";H_select_melee" then
         print("Script for H_select_melee executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SELECT_MELEE/refs/heads/main/SELECT_MELEE"))()
+    elseif command == ";H_zombie_stories" then
+        print("Script for H_zombie_stories executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ZOMBIE_STORIES/refs/heads/main/TICKEN_ZOMBIE_STORIES"))()
     end
 end
 -- Kiểm tra lệnh người dùng chat
