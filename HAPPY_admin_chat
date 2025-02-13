@@ -359,9 +359,9 @@ local function createButton(text, link, positionY)
     end)
 end
 
-createButton("Anya Forger (5 robux)", "https://www.roblox.com/catalog/83677099159585", 0.25)
-createButton("Sold Out", "https://sites.google.com/view/happy-script/home", 0.45)
-createButton("Sold Out", "https://sites.google.com/view/happy-script/home", 0.65)
+createButton("Anya Forger top [5 robux]", "https://www.roblox.com/catalog/83677099159585", 0.25)
+createButton("Anya Forger bottoms [5 robux]", "https://www.roblox.com/catalog/129746430270405", 0.45)
+createButton("Dragon Fruit [2 robux]", "https://www.roblox.com/catalog/87782356867904", 0.65)
 
 local closeButton = Instance.new("TextButton")
 closeButton.Size = UDim2.new(0, 30, 0, 30)
