@@ -310,19 +310,56 @@ if currentGameId == BLOX_FRUITS_GAME_ID or currentGameId == SECOND_SEA_GAME_ID o
 else
     warn("Script này chỉ hoạt động trong game Blox Fruits.")
 end
---sh
+
+--SHOP
 local player = game.Players.LocalPlayer
 local gui = Instance.new("ScreenGui", player.PlayerGui)
 gui.Name = "HAPPY CLOTHING STORE !"
 
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 400, 0, 300)
-frame.Position = UDim2.new(0.5, -200, 0.5, -150)
+frame.Size = UDim2.new(0.6, 0, 0.6, 0) -- Kích thước linh hoạt với màn hình
+frame.Position = UDim2.new(0.2, 0, 0.2, 0) -- Căn giữa màn hình khi khởi động
 frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
 frame.BackgroundTransparency = 0.3
 frame.BorderSizePixel = 0
 frame.Parent = gui
 
+-- Kích hoạt kéo thả frame
+local dragging = false
+local dragInput, dragStart, startPos
+
+local function updateInput(input)
+    local delta = input.Position - dragStart
+    frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        updateInput(input)
+    end
+end)
+
+-- Tiêu đề
 local titleLabel = Instance.new("TextLabel")
 titleLabel.Size = UDim2.new(1, 0, 0, 50)
 titleLabel.Position = UDim2.new(0, 0, 0, 0)
@@ -333,6 +370,16 @@ titleLabel.TextSize = 30
 titleLabel.BackgroundTransparency = 1
 titleLabel.Parent = frame
 
+-- Khung cuộn danh sách sản phẩm
+local scrollFrame = Instance.new("ScrollingFrame")
+scrollFrame.Size = UDim2.new(1, -20, 1, -60)
+scrollFrame.Position = UDim2.new(0, 10, 0, 50)
+scrollFrame.BackgroundTransparency = 1
+scrollFrame.ScrollBarThickness = 8
+scrollFrame.CanvasSize = UDim2.new(0, 0, 2, 0) -- Cho phép cuộn thêm
+scrollFrame.Parent = frame
+
+-- Hàm copy link
 local function copyToClipboard(link)
     setclipboard(link)
     game.StarterGui:SetCore("SendNotification", {
@@ -342,27 +389,44 @@ local function copyToClipboard(link)
     })
 end
 
-local function createButton(text, link, positionY)
+-- Hàm tạo item
+local function createItem(text, link, assetId, positionY)
+    local itemFrame = Instance.new("Frame")
+    itemFrame.Size = UDim2.new(0.9, 0, 0, 120)
+    itemFrame.Position = UDim2.new(0.05, 0, positionY, 0)
+    itemFrame.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
+    itemFrame.BorderSizePixel = 0
+    itemFrame.Parent = scrollFrame
+
+    local image = Instance.new("ImageLabel")
+    image.Size = UDim2.new(0, 100, 0, 100)
+    image.Position = UDim2.new(0, 10, 0.5, -50)
+    image.BackgroundTransparency = 1
+    image.Image = "rbxthumb://type=Asset&id=" .. assetId .. "&w=150&h=150"
+    image.Parent = itemFrame
+
     local button = Instance.new("TextButton")
-    button.Size = UDim2.new(0.8, 0, 0, 50)
-    button.Position = UDim2.new(0.1, 0, positionY, 0)
+    button.Size = UDim2.new(0.6, 0, 0.5, 0)
+    button.Position = UDim2.new(0.35, 0, 0.25, 0)
     button.Text = text
     button.Font = Enum.Font.SourceSansBold
-    button.TextSize = 20
+    button.TextSize = 18
     button.TextColor3 = Color3.new(1, 1, 1)
     button.BackgroundColor3 = Color3.new(0.2, 0.6, 0.8)
     button.BorderSizePixel = 0
-    button.Parent = frame
+    button.Parent = itemFrame
 
     button.MouseButton1Click:Connect(function()
         copyToClipboard(link)
     end)
 end
 
-createButton("Anya Forger top [5 robux]", "https://www.roblox.com/catalog/83677099159585", 0.25)
-createButton("Anya Forger bottoms [5 robux]", "https://www.roblox.com/catalog/129746430270405", 0.45)
-createButton("Dragon Fruit [2 robux]", "https://www.roblox.com/catalog/87782356867904", 0.65)
+-- Thêm sản phẩm vào danh sách
+createItem("Anya Forger top [5 robux]", "https://www.roblox.com/catalog/83677099159585", "83677099159585", 0)
+createItem("Anya Forger bottoms [5 robux]", "https://www.roblox.com/catalog/129746430270405", "129746430270405", 0.15)
+createItem("Dragon Fruit [2 robux]", "https://www.roblox.com/catalog/87782356867904", "87782356867904", 0.3)
 
+-- Nút đóng
 local closeButton = Instance.new("TextButton")
 closeButton.Size = UDim2.new(0, 30, 0, 30)
 closeButton.Position = UDim2.new(1, -35, 0, 5)
@@ -386,6 +450,7 @@ closeButton.MouseButton1Click:Connect(function()
     --ADMIN WARN
     --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN_WARN/refs/heads/main/ADMIN_WARN"))()
 end)
+
 --kick
 local player = game.Players.LocalPlayer
 
