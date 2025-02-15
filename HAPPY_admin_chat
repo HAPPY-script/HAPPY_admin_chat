@@ -425,6 +425,8 @@ end
 createItem("Anya Forger top [5 robux]", "https://www.roblox.com/catalog/83677099159585", "83677099159585", 0)
 createItem("Anya Forger bottoms [5 robux]", "https://www.roblox.com/catalog/129746430270405", "129746430270405", 0.15)
 createItem("Dragon Fruit [2 robux]", "https://www.roblox.com/catalog/87782356867904", "87782356867904", 0.3)
+createItem("Butler top [5 robux]", "https://www.roblox.com/catalog/132603354542710", "132603354542710", 0.45)
+createItem("Butler bottoms [5 robux]", "https://www.roblox.com/catalog/121766834274163", "121766834274163", 0.60)
 
 -- Nút đóng
 local closeButton = Instance.new("TextButton")
@@ -448,7 +450,7 @@ closeButton.MouseButton1Click:Connect(function()
     --exit portal
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/EXIT_V_PORTAL/refs/heads/main/EXIT_V_PORTAL"))()
     --ADMIN WARN
-    --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN_WARN/refs/heads/main/ADMIN_WARN"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN_WARN/refs/heads/main/ADMIN_WARN"))()
 end)
 
 --kick
