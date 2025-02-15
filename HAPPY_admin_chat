@@ -382,11 +382,11 @@ scrollFrame.Parent = frame
 -- Hàm copy link
 local function copyToClipboard(link)
     setclipboard(link)
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "Link copied!";
-        Text = "Paste it in your browser to purchase!";
-        Duration = 3;
-    })
+    game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "LINK COPY";
+	Text = "Please paste the link into your browser";
+	Icon = "rbxthumb://type=Asset&id=13681516947&w=150&h=150"})
+    Duration = 5;
 end
 
 -- Hàm tạo item
