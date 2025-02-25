@@ -1,8 +1,8 @@
-if _G.AutoChestScriptRunning then
+if _G.HAPPY_script then
     warn("Script đã chạy! Không thể chạy lại.")
     return
 end
-_G.AutoChestScriptRunning = true
+_G.HAPPY_script = true
 
 game.StarterGui:SetCore("SendNotification", {
     Title = "⚜️HAPPY script V1.6⚜️";
