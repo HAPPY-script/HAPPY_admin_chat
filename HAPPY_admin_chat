@@ -133,6 +133,9 @@ local function executeCommand(command)
     elseif command == ";H_file" then
         print("Script for H_file executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/FILE_GAME/refs/heads/main/FILE_GAME"))()
+    elseif command == ";H_exploid" then
+        print("Script for H_exploid executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_EXPLOID/refs/heads/main/TICKEN_EXPLOID"))()
     end
 end
 -- Kiểm tra lệnh người dùng chat
