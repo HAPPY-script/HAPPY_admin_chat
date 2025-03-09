@@ -136,6 +136,9 @@ local function executeCommand(command)
     elseif command == ";H_exploid" then
         print("Script for H_exploid executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_EXPLOID/refs/heads/main/TICKEN_EXPLOID"))()
+    elseif command == ";H_skybox" then
+        print("Script for H_skybox executed!")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SKYBOX/refs/heads/main/SKYBOX"))()
     end
 end
 -- Kiểm tra lệnh người dùng chat
