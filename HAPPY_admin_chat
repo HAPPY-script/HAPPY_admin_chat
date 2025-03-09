@@ -5,7 +5,7 @@ end
 _G.HAPPY_script = true
 
 game.StarterGui:SetCore("SendNotification", {
-    Title = "⚜️HAPPY script V1.6⚜️";
+    Title = "⚜️HAPPY script V1.7⚜️";
     Text = "🔔Chat ;H_menu for instructions📌";
     Duration = 5;
 })
