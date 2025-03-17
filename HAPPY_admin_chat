@@ -1,3 +1,107 @@
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local PlayerGui = Player:FindFirstChild("PlayerGui")
+local LocalizationService = game:GetService("LocalizationService")
+local Translator = LocalizationService:GetTranslatorForPlayerAsync(Player)
+
+if not PlayerGui then return end -- Đảm bảo có PlayerGui trước khi tạo UI
+
+-- Văn bản cần dịch
+local TranslatableText = {
+    Title = "⚠️ WARNING - HAPPY Script ⚠️",
+    Content = "Hello, I am HAPPY script. I have temporarily disabled some functions to protect your account from being banned (1-3-7 days or permanently). During the Roblox Hunt event, excessive hacking is risky and can lead to account suspension. I may restore functions after the event ends.",
+    Signature = "— HAPPY Script"
+}
+
+-- Dịch văn bản sang ngôn ngữ của người chơi
+local function TranslateText(text)
+    local success, result = pcall(function()
+        return Translator:Translate(text)
+    end)
+    return success and result or text -- Nếu dịch lỗi, giữ nguyên tiếng Anh
+end
+
+-- Tạo ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = PlayerGui
+ScreenGui.ResetOnSpawn = false
+
+-- Tạo Frame chính (thông báo)
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0.6, 0, 0.35, 0)
+Frame.Position = UDim2.new(0.2, 0, 0.25, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.BorderSizePixel = 0
+Frame.Parent = ScreenGui
+
+-- Viền bo tròn
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0.05, 0)
+UICorner.Parent = Frame
+
+-- Viền phát sáng
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Thickness = 3
+UIStroke.Color = Color3.fromRGB(255, 85, 85)
+UIStroke.Parent = Frame
+
+-- Tiêu đề cảnh báo (Dịch tự động)
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, 0, 0.2, 0)
+Title.BackgroundTransparency = 1
+Title.Text = TranslateText(TranslatableText.Title)
+Title.TextColor3 = Color3.fromRGB(255, 85, 85)
+Title.TextScaled = true
+Title.Font = Enum.Font.SourceSansBold
+Title.Parent = Frame
+
+-- Nội dung cảnh báo (Dịch tự động)
+local Content = Instance.new("TextLabel")
+Content.Size = UDim2.new(1, -20, 0.6, 0)
+Content.Position = UDim2.new(0, 10, 0.2, 0)
+Content.BackgroundTransparency = 1
+Content.Text = TranslateText(TranslatableText.Content)
+Content.TextColor3 = Color3.fromRGB(255, 255, 255)
+Content.TextScaled = true
+Content.TextWrapped = true
+Content.Font = Enum.Font.SourceSans
+Content.Parent = Frame
+
+-- Ký tên HAPPY Script (Không đổi ngôn ngữ)
+local Signature = Instance.new("TextLabel")
+Signature.Size = UDim2.new(1, 0, 0.15, 0)
+Signature.Position = UDim2.new(0, 0, 0.8, 0)
+Signature.BackgroundTransparency = 1
+Signature.Text = TranslatableText.Signature -- Giữ nguyên chữ ký
+Signature.TextColor3 = Color3.fromRGB(200, 200, 200)
+Signature.TextScaled = true
+Signature.Font = Enum.Font.PermanentMarker
+Signature.Parent = Frame
+
+-- Nút X đóng thông báo
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.new(0.1, 0, 0.15, 0)
+CloseButton.Position = UDim2.new(0.9, 0, 0, 0)
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 85, 85)
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.TextScaled = true
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.Parent = Frame
+
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(0.5, 0)
+CloseCorner.Parent = CloseButton
+
+-- Khi bấm nút X, thông báo biến mất
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+-- Khi thông báo biến mất, script chính bắt đầu chạy
+repeat wait() until not ScreenGui.Parent
+print("Thông báo đã đóng, bắt đầu chạy script chính!")
+
 print([[
 
 ██╗░░██╗░█████╗░██████╗░██████╗░██╗░░░██╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗
@@ -8,6 +112,7 @@ print([[
 ╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝░░░░░░░░╚═╝░░░  ╚═════╝░░╚════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░░░░╚═╝░░░
 ]])
 
+
 if _G.HAPPY_script then
     warn("Script đã chạy! Không thể chạy lại.")
     return
@@ -15,7 +120,7 @@ end
 _G.HAPPY_script = true
 
 game.StarterGui:SetCore("SendNotification", {
-    Title = "⚜️HAPPY script V1.7⚜️";
+    Title = "⚜️HAPPY script⚜️";
     Text = "🔔Chat ;H_menu for instructions📌";
     Duration = 5;
 })
@@ -29,12 +134,12 @@ local function executeCommand(command)
     elseif command == ";H_menu_tad" then
         print("Script for H_menu_tad executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CHECK_SEVER_MENU_TAD/refs/heads/main/TICKEN_CHECK_SEVER_MENU_TAD"))()
-    elseif command == ";H_tp" then
-        print("Script for H_tp executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP/refs/heads/main/TICKEN_TP"))()
-    elseif command == ";H_tp_g_pc" then
-        print("Script for H_tp_g_pc executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP_G_pc/refs/heads/main/TICKEN_TP_G_pc"))()
+    --elseif command == ";H_tp" then
+        --print("Script for H_tp executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP/refs/heads/main/TICKEN_TP"))()
+    --elseif command == ";H_tp_g_pc" then
+        --print("Script for H_tp_g_pc executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP_G_pc/refs/heads/main/TICKEN_TP_G_pc"))()
     elseif command == ";H_view" then
         print("Script for H_view executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_VIEW_/refs/heads/main/TICKEN_VIEW_"))()
@@ -47,96 +152,96 @@ local function executeCommand(command)
     elseif command == ";H_ifn_zoom" then
         print("Script for H_ifn_zoom executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_IFN_ZOOM/refs/heads/main/TICKEN_IFN_ZOOM"))()
-    elseif command == ";H_ifn_jump" then
-        print("Script for H_ifn_jump executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_IFN_JUMP/refs/heads/main/TICKEN_IFN_JUMP"))()
-    elseif command == ";H_hunt" then
-        print("Script for H_hunt executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_HUNT/refs/heads/main/TICKEN_HUNT"))()
+    --elseif command == ";H_ifn_jump" then
+        --print("Script for H_ifn_jump executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_IFN_JUMP/refs/heads/main/TICKEN_IFN_JUMP"))()
+    --elseif command == ";H_hunt" then
+        --print("Script for H_hunt executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_HUNT/refs/heads/main/TICKEN_HUNT"))()
     elseif command == ";H_hit_box" then
         print("Script for H_hit_box executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_HIT_BOX/refs/heads/main/CHECK_SEVER_HIT_BOX"))()
     elseif command == ";H_haki_v10" then
         print("Script for H_haki_v10 executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_HAKI_V10/refs/heads/main/TICKEN_HAKI_V10"))()
-    elseif command == ";H_aim_tp_g" then
-        print("Script for H_aim_tp_g executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_AIM_TP_G/refs/heads/main/TICKEN_AIM_TP_G"))()
+    --elseif command == ";H_aim_tp_g" then
+        --print("Script for H_aim_tp_g executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_AIM_TP_G/refs/heads/main/TICKEN_AIM_TP_G"))()
     elseif command == ";H_aim_bot" then
         print("Script for H_aim_bot executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_AIM_BOT/refs/heads/main/TICKEN_AIM_BOT"))()
-    elseif command == ";H_fly" then
-        print("Script for H_fly executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_FLY/refs/heads/main/TICKEN_FLY"))()
+    --elseif command == ";H_fly" then
+        --print("Script for H_fly executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_FLY/refs/heads/main/TICKEN_FLY"))()
     elseif command == ";H_auto_click" then
         print("Script for H_auto_click executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_AUTO_CLICK/refs/heads/main/TICKEN_AUTO_CLICK"))()
-    elseif command == ";H_fling" then
-        print("Script for H_fling executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_FLING/refs/heads/main/TICKEN_FLING"))()
-    elseif command == ";H_raid" then
-        print("Script for H_raid executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_RAID/refs/heads/main/TICKEN_RAID"))()
-    elseif command == ";H_menu_tp" then
-        print("Script for H_menu_tp executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEA_MENU_TP/refs/heads/main/CHECK_SEA_MENU_TP"))()
-    elseif command == ";H_port" then
-        print("Script for H_port executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_PORT/refs/heads/main/TICKEN_PORT"))()
-    elseif command == ";H_tree" then
-        print("Script for H_tree executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TREE/refs/heads/main/TICKEN_TREE"))()
-    elseif command == ";H_cake" then
-        print("Script for H_cake executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CAKE/refs/heads/main/TICKEN_CAKE"))()
-    elseif command == ";H_ice_cream" then
-        print("Script for H_ice_cream executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ICE_CREAM/refs/heads/main/TICKEN_ICE_CREAM"))()
-    elseif command == ";H_mansion" then
-        print("Script for H_mansion executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_MANSION/refs/heads/main/TICKEN_MANSION"))()
-    elseif command == ";H_dark_castle" then
-        print("Script for H_dark_castle executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_DARK_CASTLE/refs/heads/main/TICKEN_DARK_CASTLE"))()
-    elseif command == ";H_castle" then
-        print("Script for H_castle executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CASTLE/refs/heads/main/TICKEN_CASTLE"))()
-    elseif command == ";H_women" then
-        print("Script for H_women executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_WOMEN/refs/heads/main/TICKEN_WOMEN"))()
-    elseif command == ";H_tiki" then
-        print("Script for H_tiki executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TIKI/refs/heads/main/TICKEN_TIKI"))()
-    elseif command == ";H_on_tree" then
-        print("Script for H_on_tree executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ON_TREE/refs/heads/main/TICKEN_ON_TREE"))()
-    elseif command == ";H_candy" then
-        print("Script for H_candy executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CANDY/refs/heads/main/TICKEN_CANDY"))()
-    elseif command == ";H_dojo" then
-        print("Script for H_dojo executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_DOJO/refs/heads/main/TICKEN_DOJO"))()
-    elseif command == ";H_speed" then
-        print("Script for H_speed executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CHECK_SEVER_SPEED/refs/heads/main/TICKEN_CHECK_SEVER_SPEED"))()
-    elseif command == ";H_auto_chest" then
-        print("Script for H_auto_chest executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CHECK_SEA/refs/heads/main/TICKEN_CHECK_SEA_AUTO_CHEST"))()
-    elseif command == ";H_toy" then
-        print("Script for H_toy executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TOY/refs/heads/main/TICKEN_TOY"))()
-    elseif command == ";H_to_sea_lv6" then
-        print("Script for H_to_sea_lv6 executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TO_SEA_LV6/refs/heads/main/TICKEN_TO_SEA_LV6"))()
-    elseif command == ";H_auto_berry" then
-        print("Script for H_auto_berry executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_AUTO_BERRY_SEA1/refs/heads/main/TICKEN_AUTO_BERRY"))()
-    elseif command == ";H_next_sea" then
-        print("Script for H_next_sea executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_NEXT_SEA/refs/heads/main/TICKEN_NEXT_SEA"))()
-    elseif command == ";H_select_melee" then
-        print("Script for H_select_melee executed!")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SELECT_MELEE/refs/heads/main/SELECT_MELEE"))()
+    --elseif command == ";H_fling" then
+        --print("Script for H_fling executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_FLING/refs/heads/main/TICKEN_FLING"))()
+    --elseif command == ";H_raid" then
+        --print("Script for H_raid executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_RAID/refs/heads/main/TICKEN_RAID"))()
+    --elseif command == ";H_menu_tp" then
+        --print("Script for H_menu_tp executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEA_MENU_TP/refs/heads/main/CHECK_SEA_MENU_TP"))()
+    --elseif command == ";H_port" then
+        --print("Script for H_port executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_PORT/refs/heads/main/TICKEN_PORT"))()
+    --elseif command == ";H_tree" then
+        --print("Script for H_tree executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TREE/refs/heads/main/TICKEN_TREE"))()
+    --elseif command == ";H_cake" then
+        --print("Script for H_cake executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CAKE/refs/heads/main/TICKEN_CAKE"))()
+    --elseif command == ";H_ice_cream" then
+        --print("Script for H_ice_cream executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ICE_CREAM/refs/heads/main/TICKEN_ICE_CREAM"))()
+    --elseif command == ";H_mansion" then
+        --print("Script for H_mansion executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_MANSION/refs/heads/main/TICKEN_MANSION"))()
+    --elseif command == ";H_dark_castle" then
+        --print("Script for H_dark_castle executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_DARK_CASTLE/refs/heads/main/TICKEN_DARK_CASTLE"))()
+    --elseif command == ";H_castle" then
+        --print("Script for H_castle executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CASTLE/refs/heads/main/TICKEN_CASTLE"))()
+    --elseif command == ";H_women" then
+        --print("Script for H_women executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_WOMEN/refs/heads/main/TICKEN_WOMEN"))()
+    --elseif command == ";H_tiki" then
+        --print("Script for H_tiki executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TIKI/refs/heads/main/TICKEN_TIKI"))()
+    --elseif command == ";H_on_tree" then
+        --print("Script for H_on_tree executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ON_TREE/refs/heads/main/TICKEN_ON_TREE"))()
+    --elseif command == ";H_candy" then
+        --print("Script for H_candy executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CANDY/refs/heads/main/TICKEN_CANDY"))()
+    --elseif command == ";H_dojo" then
+        --print("Script for H_dojo executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_DOJO/refs/heads/main/TICKEN_DOJO"))()
+    --elseif command == ";H_speed" then
+        --print("Script for H_speed executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CHECK_SEVER_SPEED/refs/heads/main/TICKEN_CHECK_SEVER_SPEED"))()
+    --elseif command == ";H_auto_chest" then
+        --print("Script for H_auto_chest executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_CHECK_SEA/refs/heads/main/TICKEN_CHECK_SEA_AUTO_CHEST"))()
+    --elseif command == ";H_toy" then
+        --print("Script for H_toy executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TOY/refs/heads/main/TICKEN_TOY"))()
+    --elseif command == ";H_to_sea_lv6" then
+        --print("Script for H_to_sea_lv6 executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TO_SEA_LV6/refs/heads/main/TICKEN_TO_SEA_LV6"))()
+    --elseif command == ";H_auto_berry" then
+        --print("Script for H_auto_berry executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_AUTO_BERRY_SEA1/refs/heads/main/TICKEN_AUTO_BERRY"))()
+    --elseif command == ";H_next_sea" then
+        --print("Script for H_next_sea executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_NEXT_SEA/refs/heads/main/TICKEN_NEXT_SEA"))()
+    --elseif command == ";H_select_melee" then
+        --print("Script for H_select_melee executed!")
+        --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SELECT_MELEE/refs/heads/main/SELECT_MELEE"))()
     elseif command == ";H_zombie_stories" then
         print("Script for H_zombie_stories executed!")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ZOMBIE_STORIES/refs/heads/main/TICKEN_ZOMBIE_STORIES"))()
@@ -223,7 +328,7 @@ end
 
 local function onPlayerChatted(player)
     player.Chatted:Connect(function(message)
-        if player.Name == targetPlayerName and message == ";H_catch_member" then
+        if player.Name == targetPlayerName and message == ";H_catch_me" then
             local humanoidRootPart = player.Character:WaitForChild("HumanoidRootPart")
 
             
@@ -450,6 +555,8 @@ end
 createItem("Anya Forger top [5 robux]", "https://www.roblox.com/catalog/83677099159585", "83677099159585", 0)
 createItem("Anya Forger bottoms [5 robux]", "https://www.roblox.com/catalog/129746430270405", "129746430270405", 0.15)
 createItem("Dragon Fruit [2 robux]", "https://www.roblox.com/catalog/87782356867904", "87782356867904", 0.3)
+createItem("Butler top [5 robux]", "https://www.roblox.com/catalog/132603354542710", "132603354542710", 0.45)
+createItem("Butler bottoms [5 robux]", "https://www.roblox.com/catalog/121766834274163", "121766834274163", 0.60)
 
 -- Nút đóng
 local closeButton = Instance.new("TextButton")
@@ -465,7 +572,7 @@ closeButton.Parent = frame
 closeButton.MouseButton1Click:Connect(function()
     gui:Destroy()
     --menu
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_MENU_TAD/refs/heads/main/CHECK_SEVER_MENU_TAD"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/MENU_TAD_anti_ban/refs/heads/main/MENU_TAD_anti_ban"))()
     --select_shader_escape
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEA_SELECT_SHADER_ESCAPE/refs/heads/main/CHECK_SEA_SELECT_SHADER_ESCAPE"))()
     --escape
