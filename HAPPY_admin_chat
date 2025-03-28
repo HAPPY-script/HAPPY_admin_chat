@@ -26,6 +26,7 @@ local http = game.HttpGet
 local commands = {
     [";H_menu"] = "https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_menu/refs/heads/main/CHECK_SEVER_menu",
     [";H_menu_tad"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_CHECK_SEVER_MENU_TAD/refs/heads/main/TICKEN_CHECK_SEVER_MENU_TAD",
+    [";H_menu_game"] = "https://raw.githubusercontent.com/HAPPY-script/menu_TAD_GAME/refs/heads/main/menu_TAD_GAME",
     [";H_tp"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP/refs/heads/main/TICKEN_TP",
     [";H_tp_g_pc"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP_G_pc/refs/heads/main/TICKEN_TP_G_pc",
     [";H_view"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_VIEW_/refs/heads/main/TICKEN_VIEW_",
