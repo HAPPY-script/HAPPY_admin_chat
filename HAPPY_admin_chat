@@ -67,7 +67,8 @@ local commands = {
     [";H_file"] = "https://raw.githubusercontent.com/HAPPY-script/FILE_GAME/refs/heads/main/FILE_GAME",
     [";H_exploid"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_EXPLOID/refs/heads/main/TICKEN_EXPLOID",
     [";H_skybox"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_SKYBOX/refs/heads/main/TICKEN_SKYBOX",
-    [";H_dead_rails"] = "https://raw.githubusercontent.com/HAPPY-script/DEAD_RAILS/refs/heads/main/DEAD_RAILS"
+    [";H_dead_rails"] = "https://raw.githubusercontent.com/HAPPY-script/DEAD_RAILS/refs/heads/main/DEAD_RAILS",
+    [";H_final_stand"] = "https://raw.githubusercontent.com/HAPPY-script/Final_Stand/refs/heads/main/Final_Stand"
 }
 
 local activeCommands = {} -- Ngăn spam lệnh gây lỗi
