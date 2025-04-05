@@ -437,7 +437,7 @@ closeButton.MouseButton1Click:Connect(function()
     ----AFK
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/AFK/refs/heads/main/AFK"))()
     --ADMIN WARN
-    --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN_WARN/refs/heads/main/ADMIN_WARN"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN_WARN/refs/heads/main/ADMIN_WARN"))()
 end)
 
 --kick
