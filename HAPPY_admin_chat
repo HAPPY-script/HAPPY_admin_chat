@@ -443,41 +443,97 @@ closeButton.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_FAST_ATTACK/refs/heads/main/CHECK_SEVER_FAST_ATTACK"))()
 end)
 
---kick
-local player = game.Players.LocalPlayer
-
-
-local restrictedPlayerName = "HAPPYBMGOVN"
-
-
-if player.Name == restrictedPlayerName then
-    
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "Player is not authorized";
-        Text = 'Player is not authorized: "' .. restrictedPlayerName .. '". You are not allowed to use this script!';
-        Duration = 5;
-    })
-
-    
-    player:Kick("You are not authorized to use this script!")
-end
-
 --title die
 local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
-local StarterGui = game:GetService("StarterGui")
 
+local function showCustomPrompt()
+    if player.PlayerGui:FindFirstChild("MenuPromptGui") then
+        player.PlayerGui:FindFirstChild("MenuPromptGui"):Destroy()
+    end
 
-local function sendNotification()
-    StarterGui:SetCore("SendNotification", {
-        Title = "🔔Chat ;H_menu_tad or", 
-        Text = "Chat ;H_menu for instructions📌",
-        Duration = 30
-    })
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "MenuPromptGui"
+    screenGui.ResetOnSpawn = false
+    screenGui.IgnoreGuiInset = true
+    screenGui.Parent = player:WaitForChild("PlayerGui")
+
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0.35, 0, 0.3, 0)
+    frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    frame.AnchorPoint = Vector2.new(0.5, 0.5)
+    frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    frame.BorderSizePixel = 0
+    frame.Parent = screenGui
+
+    local title = Instance.new("TextLabel")
+    title.Text = "📦 MENU REMOVED!"
+    title.Size = UDim2.new(1, 0, 0.2, 0)
+    title.BackgroundTransparency = 1
+    title.Font = Enum.Font.SourceSansBold
+    title.TextScaled = true
+    title.TextColor3 = Color3.new(1, 1, 1)
+    title.Parent = frame
+
+    local message = Instance.new("TextLabel")
+    message.Text = "Do you want to restore the MENU?\n[Press V => ✅, X => ❌]"
+    message.Size = UDim2.new(1, -20, 0.4, 0)
+    message.Position = UDim2.new(0, 10, 0.2, 0)
+    message.BackgroundTransparency = 1
+    message.Font = Enum.Font.SourceSans
+    message.TextScaled = true
+    message.TextWrapped = true
+    message.TextColor3 = Color3.new(1, 1, 1)
+    message.Parent = frame
+
+    local acceptBtn = Instance.new("TextButton")
+    acceptBtn.Text = "✅ Accept"
+    acceptBtn.Size = UDim2.new(0.4, 0, 0.2, 0)
+    acceptBtn.Position = UDim2.new(0.05, 0, 0.7, 0)
+    acceptBtn.BackgroundColor3 = Color3.fromRGB(60, 180, 75)
+    acceptBtn.Font = Enum.Font.SourceSansBold
+    acceptBtn.TextScaled = true
+    acceptBtn.TextColor3 = Color3.new(1, 1, 1)
+    acceptBtn.Parent = frame
+
+    local declineBtn = Instance.new("TextButton")
+    declineBtn.Text = "❌ Decline"
+    declineBtn.Size = UDim2.new(0.4, 0, 0.2, 0)
+    declineBtn.Position = UDim2.new(0.55, 0, 0.7, 0)
+    declineBtn.BackgroundColor3 = Color3.fromRGB(220, 20, 60)
+    declineBtn.Font = Enum.Font.SourceSansBold
+    declineBtn.TextScaled = true
+    declineBtn.TextColor3 = Color3.new(1, 1, 1)
+    declineBtn.Parent = frame
+
+    local function accept()
+        screenGui:Destroy()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_MENU_TAD/refs/heads/main/CHECK_SEVER_MENU_TAD"))()
+    end
+
+    local function decline()
+        screenGui:Destroy()
+    end
+
+    -- Kết nối nút
+    acceptBtn.MouseButton1Click:Connect(accept)
+    declineBtn.MouseButton1Click:Connect(decline)
+
+    -- Hỗ trợ phím tắt
+    UserInputService.InputBegan:Connect(function(input, gameProcessed)
+        if gameProcessed then return end
+        if screenGui.Parent == nil then return end
+
+        if input.KeyCode == Enum.KeyCode.V then
+            accept()
+        elseif input.KeyCode == Enum.KeyCode.X then
+            decline()
+        end
+    end)
 end
 
-
 player.CharacterAdded:Connect(function()
-    wait(1)  
-    sendNotification()
+    wait(1)
+    showCustomPrompt()
 end)
