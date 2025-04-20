@@ -69,7 +69,8 @@ local commands = {
     [";H_skybox"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_SKYBOX/refs/heads/main/TICKEN_SKYBOX",
     [";H_dead_rails"] = "https://raw.githubusercontent.com/HAPPY-script/DEAD_RAILS/refs/heads/main/DEAD_RAILS",
     [";H_final_stand"] = "https://raw.githubusercontent.com/HAPPY-script/Final_Stand/refs/heads/main/Final_Stand",
-    [";H_ifn_yield"] = "https://raw.githubusercontent.com/HAPPY-script/Ifninite_Yield/refs/heads/main/Ifninite_Yield"
+    [";H_ifn_yield"] = "https://raw.githubusercontent.com/HAPPY-script/Ifninite_Yield/refs/heads/main/Ifninite_Yield",
+    [";H_blox_fruit"] = "https://raw.githubusercontent.com/HAPPY-script/BLOX_FRUIT/refs/heads/main/BLOX_FRUIT.lua"
 }
 
 local activeCommands = {} -- Ngăn spam lệnh gây lỗi
