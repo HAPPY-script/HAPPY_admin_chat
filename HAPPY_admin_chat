@@ -432,11 +432,11 @@ closeButton.MouseButton1Click:Connect(function()
     gui:Destroy()
     --menu
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_MENU_TAD/refs/heads/main/CHECK_SEVER_MENU_TAD"))()
-    --select_shader_escape
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEA_SELECT_SHADER_ESCAPE/refs/heads/main/CHECK_SEA_SELECT_SHADER_ESCAPE"))()
+    --shader
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SHADER/refs/heads/main/select_shader"))()
     --escape
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESCAPE/refs/heads/main/select_escape.lua"))()
-    ----AFK
+    --AFK
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/AFK/refs/heads/main/AFK"))()
     --ADMIN WARN
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN_WARN/refs/heads/main/ADMIN_WARN"))()
