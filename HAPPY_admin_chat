@@ -109,7 +109,7 @@ local function executeCommand(command)
         end)
 
         if not success then
-            notifyError("Lỗi tải script:\n" .. tostring(err)) -- Thông báo lỗi
+            notifyError("Script error:\n" .. tostring(err)) -- Thông báo lỗi
         end
 
         task.wait(1) -- Delay tránh spam
