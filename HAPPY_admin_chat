@@ -71,7 +71,8 @@ local commands = {
     [";H_final_stand"] = "https://raw.githubusercontent.com/HAPPY-script/Final_Stand/refs/heads/main/Final_Stand",
     [";H_ifn_yield"] = "https://raw.githubusercontent.com/HAPPY-script/Ifninite_Yield/refs/heads/main/Ifninite_Yield",
     [";H_blox_fruit"] = "https://raw.githubusercontent.com/HAPPY-script/BLOX_FRUIT/refs/heads/main/BLOX_FRUIT.lua",
-    [";H_hacker_trap"] = "https://raw.githubusercontent.com/HAPPY-script/HACKER_TRAP/refs/heads/main/HACKER_TRAP"
+    [";H_hacker_trap"] = "https://raw.githubusercontent.com/HAPPY-script/HACKER_TRAP/refs/heads/main/HACKER_TRAP",
+    [";H_mm2"] = "https://raw.githubusercontent.com/HAPPY-script/Muder-Mystery-2/refs/heads/main/Muder%20Mystery%202"
 }
 
 local activeCommands = {} -- Ngăn spam lệnh gây lỗi
