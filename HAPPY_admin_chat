@@ -459,9 +459,6 @@ closeButton.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN_WARN/refs/heads/main/ADMIN_WARN"))()
     wait(0.2)
 	print("ADMIN WARN SUCCESS✅")
-    --FAST ATTACK
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_FAST_ATTACK/refs/heads/main/CHECK_SEVER_FAST_ATTACK"))()
-	print("FAST ATTACK SUCCESS✅")
 end)
 
 wait(0.2)
