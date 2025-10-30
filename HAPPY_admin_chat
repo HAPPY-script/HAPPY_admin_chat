@@ -246,68 +246,59 @@ end
 
 wait(0.2)
 
---se
-local BLOX_FRUITS_GAME_ID = 2753915549 
-local SECOND_SEA_GAME_ID = 4442272183 
-local THIRD_SEA_GAME_ID = 7449423635 
-
+-- Se
+local BLOX_FRUITS_GAME_ID = 2753915549
+local SECOND_SEA_GAME_ID = 4442272183
+local THIRD_SEA_GAME_ID = 100117331123089
 
 local currentGameId = game.PlaceId
 if currentGameId == BLOX_FRUITS_GAME_ID or currentGameId == SECOND_SEA_GAME_ID or currentGameId == THIRD_SEA_GAME_ID then
     
-
     local block = Instance.new("Part")
     block.Size = Vector3.new(500, 2.1, 500)
     block.Anchored = true
     block.Position = Vector3.new(0, 0, 0)
-    block.Parent = workspace
-
     block.Transparency = 1
     block.CanCollide = true
+    block.Parent = workspace
 
     local player = game.Players.LocalPlayer
+    local RunService = game:GetService("RunService")
 
-    
     local function updateBlockPosition(character)
-        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+        local hrp = character:WaitForChild("HumanoidRootPart")
+        local humanoid = character:WaitForChild("Humanoid")
 
-        
         local connection
-        connection = game:GetService("RunService").RenderStepped:Connect(function()
-            if character and humanoidRootPart then
-                local playerPosition = humanoidRootPart.Position
-                block.Position = Vector3.new(playerPosition.X, -5, playerPosition.Z)
+        connection = RunService.RenderStepped:Connect(function()
+            if not character or not hrp then return end
 
-                
-                if humanoidRootPart.Position.Y > block.Position.Y + block.Size.Y / 2 then
-                    block.CanCollide = true 
-                else
-                    block.CanCollide = false 
-                end
+            local playerPos = hrp.Position
+            block.Position = Vector3.new(playerPos.X, -5, playerPos.Z)
+
+            -- Kiểm tra lún xuống dưới mặt block
+            local minY = block.Position.Y + (block.Size.Y / 2)
+            if hrp.Position.Y < minY then
+                -- Teleport trục Y lên lại ngay khi bị lún
+                hrp.CFrame = CFrame.new(hrp.Position.X, minY + 5, hrp.Position.Z)
+                humanoid:ChangeState(Enum.HumanoidStateType.Jumping) -- ép ra khỏi trạng thái rớt
             end
         end)
 
-        
         player.CharacterRemoving:Connect(function()
-            
-            if connection then
-                connection:Disconnect()
-            end
+            if connection then connection:Disconnect() end
         end)
     end
 
-    
-    player.CharacterAdded:Connect(function(character)
-        updateBlockPosition(character)
-    end)
-
-    
+    player.CharacterAdded:Connect(updateBlockPosition)
     if player.Character then
         updateBlockPosition(player.Character)
     end
 else
     warn("Script này chỉ hoạt động trong game Blox Fruits.")
 end
+
+print("✅✅Sea✅✅")
 
 wait(0.2)
 
