@@ -15,480 +15,855 @@ end
 _G.HAPPY_script = true
 
 game.StarterGui:SetCore("SendNotification", {
-    Title = "⚜️HAPPY script V1.7⚜️";
-    Text = "🔔Chat ;H_menu for instructions📌";
+    Title = "⚜️HAPPY script v0.01⚜️";
+    Text = "🔔Updating UI Please Wait⏳";
     Duration = 5;
 })
 
---command
-local player = game.Players.LocalPlayer
-local http = game.HttpGet
-local commands = {
-    [";H_menu"] = "https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_menu/refs/heads/main/CHECK_SEVER_menu",
-    [";H_menu_tad"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_CHECK_SEVER_MENU_TAD/refs/heads/main/TICKEN_CHECK_SEVER_MENU_TAD",
-    [";H_menu_game"] = "https://raw.githubusercontent.com/HAPPY-script/menu_TAD_GAME/refs/heads/main/menu_TAD_GAME",
-    [";H_tp"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP/refs/heads/main/TICKEN_TP",
-    [";H_tp_g_pc"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_TP_G_pc/refs/heads/main/TICKEN_TP_G_pc",
-    [";H_view"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_VIEW_/refs/heads/main/TICKEN_VIEW_",
-    [";H_no_clip"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_CO_CLIP/refs/heads/main/TICKEN_NO_CLIP",
-    [";H_light"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_LIGHT/refs/heads/main/TICKEN_LIGHT",
-    [";H_ifn_zoom"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_IFN_ZOOM/refs/heads/main/TICKEN_IFN_ZOOM",
-    [";H_ifn_jump"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_IFN_JUMP/refs/heads/main/TICKEN_IFN_JUMP",
-    [";H_hunt"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_HUNT/refs/heads/main/TICKEN_HUNT",
-    [";H_hit_box"] = "https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_HIT_BOX/refs/heads/main/CHECK_SEVER_HIT_BOX",
-    [";H_haki_v10"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_HAKI_V10/refs/heads/main/TICKEN_HAKI_V10",
-    [";H_aim_tp_g"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_AIM_TP_G/refs/heads/main/TICKEN_AIM_TP_G",
-    [";H_aim_bot"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_AIM_BOT/refs/heads/main/TICKEN_AIM_BOT",
-    [";H_fly"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_FLY/refs/heads/main/TICKEN_FLY",
-    [";H_auto_click"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_AUTO_CLICK/refs/heads/main/TICKEN_AUTO_CLICK",
-    [";H_fling"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_FLING/refs/heads/main/TICKEN_FLING",
-    [";H_raid"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_RAID/refs/heads/main/TICKEN_RAID",
-    [";H_menu_tp"] = "https://raw.githubusercontent.com/HAPPY-script/CHECK_SEA_MENU_TP/refs/heads/main/CHECK_SEA_MENU_TP",
-    [";H_port"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_PORT/refs/heads/main/TICKEN_PORT",
-    [";H_tree"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_TREE/refs/heads/main/TICKEN_TREE",
-    [";H_cake"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_CAKE/refs/heads/main/TICKEN_CAKE",
-    [";H_ice_cream"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_ICE_CREAM/refs/heads/main/TICKEN_ICE_CREAM",
-    [";H_mansion"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_MANSION/refs/heads/main/TICKEN_MANSION",
-    [";H_dark_castle"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_DARK_CASTLE/refs/heads/main/TICKEN_DARK_CASTLE",
-    [";H_castle"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_CASTLE/refs/heads/main/TICKEN_CASTLE",
-    [";H_women"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_WOMEN/refs/heads/main/TICKEN_WOMEN",
-    [";H_tiki"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_TIKI/refs/heads/main/TICKEN_TIKI",
-    [";H_on_tree"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_ON_TREE/refs/heads/main/TICKEN_ON_TREE",
-    [";H_candy"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_CANDY/refs/heads/main/TICKEN_CANDY",
-    [";H_dojo"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_DOJO/refs/heads/main/TICKEN_DOJO",
-    [";H_speed"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_CHECK_SEVER_SPEED/refs/heads/main/TICKEN_CHECK_SEVER_SPEED",
-    [";H_auto_chest"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_CHECK_SEA/refs/heads/main/TICKEN_CHECK_SEA_AUTO_CHEST",
-    [";H_toy"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_TOY/refs/heads/main/TICKEN_TOY",
-    [";H_to_sea_lv6"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_TO_SEA_LV6/refs/heads/main/TICKEN_TO_SEA_LV6",
-    [";H_auto_berry"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_AUTO_BERRY_SEA1/refs/heads/main/TICKEN_AUTO_BERRY",
-    [";H_next_sea"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_NEXT_SEA/refs/heads/main/TICKEN_NEXT_SEA",
-    [";H_select_melee"] = "https://raw.githubusercontent.com/HAPPY-script/SELECT_MELEE/refs/heads/main/SELECT_MELEE",
-    [";H_zombie_stories"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_ZOMBIE_STORIES/refs/heads/main/TICKEN_ZOMBIE_STORIES",
-    [";H_file"] = "https://raw.githubusercontent.com/HAPPY-script/FILE_GAME/refs/heads/main/FILE_GAME",
-    [";H_exploid"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_EXPLOID/refs/heads/main/TICKEN_EXPLOID",
-    [";H_skybox"] = "https://raw.githubusercontent.com/HAPPY-script/TICKEN_SKYBOX/refs/heads/main/TICKEN_SKYBOX",
-    [";H_dead_rails"] = "https://raw.githubusercontent.com/HAPPY-script/DEAD_RAILS/refs/heads/main/DEAD_RAILS",
-    [";H_final_stand"] = "https://raw.githubusercontent.com/HAPPY-script/Final_Stand/refs/heads/main/Final_Stand",
-    [";H_ifn_yield"] = "https://raw.githubusercontent.com/HAPPY-script/Ifninite_Yield/refs/heads/main/Ifninite_Yield",
-    [";H_blox_fruit"] = "https://raw.githubusercontent.com/HAPPY-script/BLOX_FRUIT/refs/heads/main/BLOX_FRUIT.lua",
-    [";H_hacker_trap"] = "https://raw.githubusercontent.com/HAPPY-script/HACKER_TRAP/refs/heads/main/HACKER_TRAP",
-    [";H_mm2"] = "https://raw.githubusercontent.com/HAPPY-script/Muder-Mystery-2/refs/heads/main/Muder%20Mystery%202"
+local TestGui = Instance.new("ScreenGui")
+TestGui.Name = "TestGui"
+TestGui.ResetOnSpawn = false
+TestGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+TestGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local Main = Instance.new("Frame")
+Main.Name = "Main"
+Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+Main.Size = UDim2.new(0.75, 0, 0.75, 0)
+Main.BackgroundColor3 = Color3.new(0.117647, 0, 0.196078)
+Main.BackgroundTransparency = 0.05
+Main.BorderSizePixel = 0
+Main.BorderColor3 = Color3.new(0, 0, 0)
+Main.Visible = false
+Main.AnchorPoint = Vector2.new(0.5, 0.5)
+Main.Transparency = 0.025
+Main.Parent = TestGui
+
+local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint.Name = "UIAspectRatioConstraint"
+UIAspectRatioConstraint.AspectRatio = 1.75
+UIAspectRatioConstraint.Parent = Main
+
+local UIDragDetector = Instance.new("UIDragDetector")
+UIDragDetector.Name = "UIDragDetector"
+
+UIDragDetector.Parent = Main
+
+local ScrollingFrame = Instance.new("ScrollingFrame")
+ScrollingFrame.Name = "ScrollingFrame"
+ScrollingFrame.Position = UDim2.new(0.5, 0, 0.375, 0)
+ScrollingFrame.Size = UDim2.new(1, 0, 0.75, 0)
+ScrollingFrame.BackgroundColor3 = Color3.new(1, 1, 1)
+ScrollingFrame.BackgroundTransparency = 1
+ScrollingFrame.BorderSizePixel = 0
+ScrollingFrame.BorderColor3 = Color3.new(0, 0, 0)
+ScrollingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+ScrollingFrame.Transparency = 1
+ScrollingFrame.Active = true
+ScrollingFrame.CanvasSize = UDim2.new(0, 0, 1.25, 0)
+ScrollingFrame.ScrollBarImageColor3 = Color3.new(1, 0, 0.45098)
+ScrollingFrame.ScrollBarImageTransparency = 0.5
+ScrollingFrame.ScrollBarThickness = 7
+ScrollingFrame.Parent = Main
+
+local GameHub = Instance.new("Frame")
+GameHub.Name = "GameHub"
+GameHub.Size = UDim2.new(1, 0, 1, 0)
+GameHub.BackgroundColor3 = Color3.new(1, 1, 1)
+GameHub.BackgroundTransparency = 1
+GameHub.BorderSizePixel = 0
+GameHub.BorderColor3 = Color3.new(0, 0, 0)
+GameHub.Visible = false
+GameHub.Transparency = 1
+GameHub.Parent = ScrollingFrame
+
+local BloxFruit = Instance.new("ImageButton")
+BloxFruit.Name = "BloxFruit"
+BloxFruit.Position = UDim2.new(0.125, 0, 0.2, 0)
+BloxFruit.Size = UDim2.new(0.25, 0, 0.25, 0)
+BloxFruit.BackgroundColor3 = Color3.new(1, 1, 1)
+BloxFruit.BackgroundTransparency = 1
+BloxFruit.BorderSizePixel = 0
+BloxFruit.BorderColor3 = Color3.new(0, 0, 0)
+BloxFruit.AnchorPoint = Vector2.new(0.5, 0.5)
+BloxFruit.Transparency = 1
+BloxFruit.Image = "rbxassetid://135114933434081"
+BloxFruit.Parent = GameHub
+
+local UIAspectRatioConstraint2 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint2.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint2.Parent = BloxFruit
+
+local UICorner = Instance.new("UICorner")
+UICorner.Name = "UICorner"
+UICorner.CornerRadius = UDim.new(0.1, 0)
+UICorner.Parent = BloxFruit
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Name = "UIStroke"
+UIStroke.Color = Color3.new(1, 1, 1)
+UIStroke.Thickness = 1.5
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = BloxFruit
+
+local UIGradient = Instance.new("UIGradient")
+UIGradient.Name = "UIGradient"
+UIGradient.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient.Rotation = 90
+UIGradient.Offset = Vector2.new(0, 1)
+UIGradient.Parent = BloxFruit
+
+local Name = Instance.new("TextLabel")
+Name.Name = "Name"
+Name.Position = UDim2.new(0, 0, 0.7, 0)
+Name.Size = UDim2.new(1, 0, 0.3, 0)
+Name.BackgroundColor3 = Color3.new(1, 1, 1)
+Name.BackgroundTransparency = 1
+Name.BorderSizePixel = 0
+Name.BorderColor3 = Color3.new(0, 0, 0)
+Name.Transparency = 1
+Name.Text = "Blox Fruit"
+Name.TextColor3 = Color3.new(1, 0.784314, 0)
+Name.TextSize = 14
+Name.FontFace = Font.new("rbxasset://fonts/families/PermanentMarker.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Name.TextScaled = true
+Name.TextWrapped = true
+Name.Parent = BloxFruit
+
+local MM2 = Instance.new("ImageButton")
+MM2.Name = "MM2"
+MM2.Position = UDim2.new(0.375, 0, 0.2, 0)
+MM2.Size = UDim2.new(0.25, 0, 0.25, 0)
+MM2.BackgroundColor3 = Color3.new(1, 1, 1)
+MM2.BackgroundTransparency = 1
+MM2.BorderSizePixel = 0
+MM2.BorderColor3 = Color3.new(0, 0, 0)
+MM2.AnchorPoint = Vector2.new(0.5, 0.5)
+MM2.Transparency = 1
+MM2.Image = "rbxassetid://135054338652333"
+MM2.Parent = GameHub
+
+local UIAspectRatioConstraint3 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint3.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint3.Parent = MM2
+
+local UICorner2 = Instance.new("UICorner")
+UICorner2.Name = "UICorner"
+UICorner2.CornerRadius = UDim.new(0.1, 0)
+UICorner2.Parent = MM2
+
+local UIStroke2 = Instance.new("UIStroke")
+UIStroke2.Name = "UIStroke"
+UIStroke2.Color = Color3.new(1, 1, 1)
+UIStroke2.Thickness = 1.5
+UIStroke2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke2.Parent = MM2
+
+local UIGradient2 = Instance.new("UIGradient")
+UIGradient2.Name = "UIGradient"
+UIGradient2.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient2.Rotation = 90
+UIGradient2.Offset = Vector2.new(0, 1)
+UIGradient2.Parent = MM2
+
+local Name2 = Instance.new("TextLabel")
+Name2.Name = "Name"
+Name2.Position = UDim2.new(0, 0, 0.7, 0)
+Name2.Size = UDim2.new(1, 0, 0.3, 0)
+Name2.BackgroundColor3 = Color3.new(1, 1, 1)
+Name2.BackgroundTransparency = 1
+Name2.BorderSizePixel = 0
+Name2.BorderColor3 = Color3.new(0, 0, 0)
+Name2.Transparency = 1
+Name2.Text = "Murder Mystery 2"
+Name2.TextColor3 = Color3.new(0.235294, 1, 0)
+Name2.TextSize = 14
+Name2.FontFace = Font.new("rbxasset://fonts/families/Zekton.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name2.TextScaled = true
+Name2.TextWrapped = true
+Name2.Parent = MM2
+
+local DeadRails = Instance.new("ImageButton")
+DeadRails.Name = "DeadRails"
+DeadRails.Position = UDim2.new(0.625, 0, 0.2, 0)
+DeadRails.Size = UDim2.new(0.25, 0, 0.25, 0)
+DeadRails.BackgroundColor3 = Color3.new(1, 1, 1)
+DeadRails.BackgroundTransparency = 1
+DeadRails.BorderSizePixel = 0
+DeadRails.BorderColor3 = Color3.new(0, 0, 0)
+DeadRails.AnchorPoint = Vector2.new(0.5, 0.5)
+DeadRails.Transparency = 1
+DeadRails.Image = "rbxassetid://128584266579507"
+DeadRails.Parent = GameHub
+
+local UIAspectRatioConstraint4 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint4.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint4.Parent = DeadRails
+
+local UICorner3 = Instance.new("UICorner")
+UICorner3.Name = "UICorner"
+UICorner3.CornerRadius = UDim.new(0.1, 0)
+UICorner3.Parent = DeadRails
+
+local UIStroke3 = Instance.new("UIStroke")
+UIStroke3.Name = "UIStroke"
+UIStroke3.Color = Color3.new(1, 1, 1)
+UIStroke3.Thickness = 1.5
+UIStroke3.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke3.Parent = DeadRails
+
+local UIGradient3 = Instance.new("UIGradient")
+UIGradient3.Name = "UIGradient"
+UIGradient3.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient3.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient3.Rotation = 90
+UIGradient3.Offset = Vector2.new(0, 1)
+UIGradient3.Parent = DeadRails
+
+local Name3 = Instance.new("TextLabel")
+Name3.Name = "Name"
+Name3.Position = UDim2.new(0, 0, 0.7, 0)
+Name3.Size = UDim2.new(1, 0, 0.3, 0)
+Name3.BackgroundColor3 = Color3.new(1, 1, 1)
+Name3.BackgroundTransparency = 1
+Name3.BorderSizePixel = 0
+Name3.BorderColor3 = Color3.new(0, 0, 0)
+Name3.Transparency = 1
+Name3.Text = "Dead Rails"
+Name3.TextColor3 = Color3.new(1, 0.635294, 0)
+Name3.TextSize = 14
+Name3.FontFace = Font.new("rbxasset://fonts/families/Fondamento.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name3.TextScaled = true
+Name3.TextWrapped = true
+Name3.Parent = DeadRails
+
+local Character = Instance.new("Frame")
+Character.Name = "Character"
+Character.Size = UDim2.new(1, 0, 1, 0)
+Character.BackgroundColor3 = Color3.new(1, 1, 1)
+Character.BackgroundTransparency = 1
+Character.BorderSizePixel = 0
+Character.BorderColor3 = Color3.new(0, 0, 0)
+Character.Transparency = 1
+Character.Parent = ScrollingFrame
+
+local Fly = Instance.new("ImageButton")
+Fly.Name = "Fly"
+Fly.Position = UDim2.new(0.125, 0, 0.2, 0)
+Fly.Size = UDim2.new(0.25, 0, 0.25, 0)
+Fly.BackgroundColor3 = Color3.new(1, 1, 1)
+Fly.BackgroundTransparency = 1
+Fly.BorderSizePixel = 0
+Fly.BorderColor3 = Color3.new(0, 0, 0)
+Fly.AnchorPoint = Vector2.new(0.5, 0.5)
+Fly.Transparency = 1
+Fly.Image = "rbxassetid://99007734437565"
+Fly.Parent = Character
+
+local UIAspectRatioConstraint5 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint5.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint5.Parent = Fly
+
+local UICorner4 = Instance.new("UICorner")
+UICorner4.Name = "UICorner"
+UICorner4.CornerRadius = UDim.new(0.15, 0)
+UICorner4.Parent = Fly
+
+local UIGradient4 = Instance.new("UIGradient")
+UIGradient4.Name = "UIGradient"
+UIGradient4.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient4.Rotation = 90
+UIGradient4.Offset = Vector2.new(0, 1)
+UIGradient4.Parent = Fly
+
+local Name4 = Instance.new("TextLabel")
+Name4.Name = "Name"
+Name4.Position = UDim2.new(0, 0, 0.7, 0)
+Name4.Size = UDim2.new(1, 0, 0.3, 0)
+Name4.BackgroundColor3 = Color3.new(1, 1, 1)
+Name4.BackgroundTransparency = 1
+Name4.BorderSizePixel = 0
+Name4.BorderColor3 = Color3.new(0, 0, 0)
+Name4.Transparency = 1
+Name4.Text = "Fly Gui"
+Name4.TextColor3 = Color3.new(1, 1, 1)
+Name4.TextSize = 14
+Name4.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Name4.TextScaled = true
+Name4.TextWrapped = true
+Name4.Parent = Fly
+
+local IfnJump = Instance.new("ImageButton")
+IfnJump.Name = "IfnJump"
+IfnJump.Position = UDim2.new(0.625, 0, 0.2, 0)
+IfnJump.Size = UDim2.new(0.25, 0, 0.25, 0)
+IfnJump.BackgroundColor3 = Color3.new(1, 1, 1)
+IfnJump.BackgroundTransparency = 1
+IfnJump.BorderSizePixel = 0
+IfnJump.BorderColor3 = Color3.new(0, 0, 0)
+IfnJump.AnchorPoint = Vector2.new(0.5, 0.5)
+IfnJump.Transparency = 1
+IfnJump.Image = "rbxassetid://100147318798859"
+IfnJump.Parent = Character
+
+local UIAspectRatioConstraint6 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint6.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint6.Parent = IfnJump
+
+local UICorner5 = Instance.new("UICorner")
+UICorner5.Name = "UICorner"
+UICorner5.CornerRadius = UDim.new(0.15, 0)
+UICorner5.Parent = IfnJump
+
+local UIGradient5 = Instance.new("UIGradient")
+UIGradient5.Name = "UIGradient"
+UIGradient5.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient5.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient5.Rotation = 90
+UIGradient5.Offset = Vector2.new(0, 1)
+UIGradient5.Parent = IfnJump
+
+local Name5 = Instance.new("TextLabel")
+Name5.Name = "Name"
+Name5.Position = UDim2.new(0, 0, 0.7, 0)
+Name5.Size = UDim2.new(1, 0, 0.3, 0)
+Name5.BackgroundColor3 = Color3.new(1, 1, 1)
+Name5.BackgroundTransparency = 1
+Name5.BorderSizePixel = 0
+Name5.BorderColor3 = Color3.new(0, 0, 0)
+Name5.Transparency = 1
+Name5.Text = "Infinity Jump"
+Name5.TextColor3 = Color3.new(1, 1, 1)
+Name5.TextSize = 14
+Name5.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name5.TextScaled = true
+Name5.TextWrapped = true
+Name5.Parent = IfnJump
+
+local Speed = Instance.new("ImageButton")
+Speed.Name = "Speed"
+Speed.Position = UDim2.new(0.375, 0, 0.2, 0)
+Speed.Size = UDim2.new(0.25, 0, 0.25, 0)
+Speed.BackgroundColor3 = Color3.new(1, 1, 1)
+Speed.BackgroundTransparency = 1
+Speed.BorderSizePixel = 0
+Speed.BorderColor3 = Color3.new(0, 0, 0)
+Speed.AnchorPoint = Vector2.new(0.5, 0.5)
+Speed.Transparency = 1
+Speed.Image = "rbxassetid://73678941604961"
+Speed.Parent = Character
+
+local UIAspectRatioConstraint7 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint7.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint7.Parent = Speed
+
+local UICorner6 = Instance.new("UICorner")
+UICorner6.Name = "UICorner"
+UICorner6.CornerRadius = UDim.new(0.15, 0)
+UICorner6.Parent = Speed
+
+local UIGradient6 = Instance.new("UIGradient")
+UIGradient6.Name = "UIGradient"
+UIGradient6.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient6.Rotation = 90
+UIGradient6.Offset = Vector2.new(0, 1)
+UIGradient6.Parent = Speed
+
+local Name6 = Instance.new("TextLabel")
+Name6.Name = "Name"
+Name6.Position = UDim2.new(0, 0, 0.7, 0)
+Name6.Size = UDim2.new(1, 0, 0.3, 0)
+Name6.BackgroundColor3 = Color3.new(1, 1, 1)
+Name6.BackgroundTransparency = 1
+Name6.BorderSizePixel = 0
+Name6.BorderColor3 = Color3.new(0, 0, 0)
+Name6.Transparency = 1
+Name6.Text = "Speed"
+Name6.TextColor3 = Color3.new(1, 1, 1)
+Name6.TextSize = 14
+Name6.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name6.TextScaled = true
+Name6.TextWrapped = true
+Name6.Parent = Speed
+
+local Explorer = Instance.new("ImageButton")
+Explorer.Name = "Explorer"
+Explorer.Position = UDim2.new(0.125, 0, 0.5, 0)
+Explorer.Size = UDim2.new(0.25, 0, 0.25, 0)
+Explorer.BackgroundColor3 = Color3.new(1, 1, 1)
+Explorer.BackgroundTransparency = 1
+Explorer.BorderSizePixel = 0
+Explorer.BorderColor3 = Color3.new(0, 0, 0)
+Explorer.AnchorPoint = Vector2.new(0.5, 0.5)
+Explorer.Transparency = 1
+Explorer.Image = "rbxassetid://106001322662528"
+Explorer.Parent = Character
+
+local UIAspectRatioConstraint8 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint8.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint8.Parent = Explorer
+
+local UICorner7 = Instance.new("UICorner")
+UICorner7.Name = "UICorner"
+UICorner7.CornerRadius = UDim.new(0.15, 0)
+UICorner7.Parent = Explorer
+
+local UIGradient7 = Instance.new("UIGradient")
+UIGradient7.Name = "UIGradient"
+UIGradient7.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient7.Rotation = 90
+UIGradient7.Offset = Vector2.new(0, 1)
+UIGradient7.Parent = Explorer
+
+local Name7 = Instance.new("TextLabel")
+Name7.Name = "Name"
+Name7.Position = UDim2.new(0, 0, 0.7, 0)
+Name7.Size = UDim2.new(1, 0, 0.3, 0)
+Name7.BackgroundColor3 = Color3.new(1, 1, 1)
+Name7.BackgroundTransparency = 1
+Name7.BorderSizePixel = 0
+Name7.BorderColor3 = Color3.new(0, 0, 0)
+Name7.Transparency = 1
+Name7.Text = "Explorer"
+Name7.TextColor3 = Color3.new(1, 1, 1)
+Name7.TextSize = 14
+Name7.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Name7.TextScaled = true
+Name7.TextWrapped = true
+Name7.Parent = Explorer
+
+local HitBox = Instance.new("ImageButton")
+HitBox.Name = "HitBox"
+HitBox.Position = UDim2.new(0.875, 0, 0.2, 0)
+HitBox.Size = UDim2.new(0.25, 0, 0.25, 0)
+HitBox.BackgroundColor3 = Color3.new(1, 1, 1)
+HitBox.BackgroundTransparency = 1
+HitBox.BorderSizePixel = 0
+HitBox.BorderColor3 = Color3.new(0, 0, 0)
+HitBox.AnchorPoint = Vector2.new(0.5, 0.5)
+HitBox.Transparency = 1
+HitBox.Image = "rbxassetid://95975479545027"
+HitBox.Parent = Character
+
+local UIAspectRatioConstraint9 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint9.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint9.Parent = HitBox
+
+local UICorner8 = Instance.new("UICorner")
+UICorner8.Name = "UICorner"
+UICorner8.CornerRadius = UDim.new(0.15, 0)
+UICorner8.Parent = HitBox
+
+local UIGradient8 = Instance.new("UIGradient")
+UIGradient8.Name = "UIGradient"
+UIGradient8.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient8.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient8.Rotation = 90
+UIGradient8.Offset = Vector2.new(0, 1)
+UIGradient8.Parent = HitBox
+
+local Name8 = Instance.new("TextLabel")
+Name8.Name = "Name"
+Name8.Position = UDim2.new(0, 0, 0.7, 0)
+Name8.Size = UDim2.new(1, 0, 0.3, 0)
+Name8.BackgroundColor3 = Color3.new(1, 1, 1)
+Name8.BackgroundTransparency = 1
+Name8.BorderSizePixel = 0
+Name8.BorderColor3 = Color3.new(0, 0, 0)
+Name8.Transparency = 1
+Name8.Text = "Hit Box"
+Name8.TextColor3 = Color3.new(1, 1, 1)
+Name8.TextSize = 14
+Name8.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name8.TextScaled = true
+Name8.TextWrapped = true
+Name8.Parent = HitBox
+
+local Visuals = Instance.new("Frame")
+Visuals.Name = "Visuals"
+Visuals.Size = UDim2.new(1, 0, 1, 0)
+Visuals.BackgroundColor3 = Color3.new(1, 1, 1)
+Visuals.BackgroundTransparency = 1
+Visuals.BorderSizePixel = 0
+Visuals.BorderColor3 = Color3.new(0, 0, 0)
+Visuals.Visible = false
+Visuals.Transparency = 1
+Visuals.Parent = ScrollingFrame
+
+local UIStroke4 = Instance.new("UIStroke")
+UIStroke4.Name = "UIStroke"
+UIStroke4.Color = Color3.new(1, 0, 0.784314)
+UIStroke4.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke4.Parent = ScrollingFrame
+
+local UICorner9 = Instance.new("UICorner")
+UICorner9.Name = "UICorner"
+UICorner9.CornerRadius = UDim.new(0.025, 0)
+UICorner9.Parent = ScrollingFrame
+
+local UICorner10 = Instance.new("UICorner")
+UICorner10.Name = "UICorner"
+UICorner10.CornerRadius = UDim.new(0.025, 0)
+UICorner10.Parent = Main
+
+local GameHub2 = Instance.new("ImageButton")
+GameHub2.Name = "GameHub"
+GameHub2.Position = UDim2.new(0.151, 0, 0.75, 0)
+GameHub2.Size = UDim2.new(0.25, 0, 0.25, 0)
+GameHub2.BackgroundColor3 = Color3.new(1, 1, 1)
+GameHub2.BackgroundTransparency = 1
+GameHub2.BorderSizePixel = 0
+GameHub2.BorderColor3 = Color3.new(0, 0, 0)
+GameHub2.Transparency = 1
+GameHub2.Image = "rbxassetid://76634495910816"
+GameHub2.Parent = Main
+
+local UIAspectRatioConstraint10 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint10.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint10.Parent = GameHub2
+
+local Character2 = Instance.new("ImageButton")
+Character2.Name = "Character"
+Character2.Position = UDim2.new(0.428454, 0, 0.75, 0)
+Character2.Size = UDim2.new(0.25, 0, 0.25, 0)
+Character2.BackgroundColor3 = Color3.new(1, 1, 1)
+Character2.BackgroundTransparency = 1
+Character2.BorderSizePixel = 0
+Character2.BorderColor3 = Color3.new(0, 0, 0)
+Character2.Transparency = 1
+Character2.Image = "rbxassetid://131198702319529"
+Character2.Parent = Main
+
+local UIAspectRatioConstraint11 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint11.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint11.Parent = Character2
+
+local Visuals2 = Instance.new("ImageButton")
+Visuals2.Name = "Visuals"
+Visuals2.Position = UDim2.new(0.705, 0, 0.75, 0)
+Visuals2.Size = UDim2.new(0.25, 0, 0.25, 0)
+Visuals2.BackgroundColor3 = Color3.new(1, 1, 1)
+Visuals2.BackgroundTransparency = 1
+Visuals2.BorderSizePixel = 0
+Visuals2.BorderColor3 = Color3.new(0, 0, 0)
+Visuals2.Transparency = 1
+Visuals2.Image = "rbxassetid://83096530703299"
+Visuals2.Parent = Main
+
+local UIAspectRatioConstraint12 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint12.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint12.Parent = Visuals2
+
+local Button = Instance.new("ImageButton")
+Button.Name = "Button"
+Button.Position = UDim2.new(0.5, 0, 0.5, 0)
+Button.Size = UDim2.new(0.09, 0, 0.09, 0)
+Button.BackgroundColor3 = Color3.new(1, 1, 1)
+Button.BackgroundTransparency = 1
+Button.BorderSizePixel = 0
+Button.BorderColor3 = Color3.new(0, 0, 0)
+Button.ZIndex = 2
+Button.AnchorPoint = Vector2.new(0.5, 0.5)
+Button.Transparency = 1
+Button.Image = "rbxassetid://90219562764375"
+Button.Parent = TestGui
+
+local UIAspectRatioConstraint13 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint13.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint13.Parent = Button
+
+local UICorner11 = Instance.new("UICorner")
+UICorner11.Name = "UICorner"
+UICorner11.CornerRadius = UDim.new(0.1, 0)
+UICorner11.Parent = Button
+
+local Version = Instance.new("TextLabel")
+Version.Name = "Version"
+Version.Position = UDim2.new(0.8, 0, 0.95, 0)
+Version.Size = UDim2.new(1, 0, 0.5, 0)
+Version.BackgroundColor3 = Color3.new(1, 1, 1)
+Version.BackgroundTransparency = 1
+Version.BorderSizePixel = 0
+Version.BorderColor3 = Color3.new(0, 0, 0)
+Version.Rotation = -15
+Version.AnchorPoint = Vector2.new(0.5, 0.5)
+Version.Transparency = 1
+Version.Text = "v0.01"
+Version.TextTransparency = 0
+Version.TextColor3 = Color3.new(1, 0, 0.917647)
+Version.TextSize = 14
+Version.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Version.TextScaled = true
+Version.TextWrapped = true
+Version.Parent = Button
+
+local UIDragDetector2 = Instance.new("UIDragDetector")
+UIDragDetector2.Name = "UIDragDetector"
+
+UIDragDetector2.Parent = Button
+
+--============================================================================================================================
+
+local ScriptMapping = {
+	BloxFruit = function()
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/BLOX_FRUIT/main/BLOX_FRUIT.lua")
+		loadstring(code)()
+	end,
 }
 
-local activeCommands = {} -- Ngăn spam lệnh gây lỗi
-
-local function notifyError(errorMessage)
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "❌ERROR❌";
-        Text = errorMessage;
-        Icon = "rbxthumb://type=Asset&id=5107154093&w=150&h=150";
-        Duration = 5;
-    })
-end
-
-local function notifySuccess(command)
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "✔️SUCCESS✔️";
-        Text = "Command " .. command .. " running";
-        Icon = "rbxthumb://type=Asset&id=13693399274&w=150&h=150";
-        Duration = 3;
-    })
-end
-
-local function executeCommand(command)
-    if commands[command] and not activeCommands[command] then
-        activeCommands[command] = true -- Đánh dấu đang chạy
-        print("Executing: " .. command)
-        
-        local success, err = pcall(function()
-            local scriptContent = http(game, commands[command]) -- Gọi HttpGet đúng cách
-            if scriptContent then
-                loadstring(scriptContent)()
-                notifySuccess(command) -- Thông báo thành công
-            else
-                error("Không thể tải script từ URL!")
-            end
-        end)
-
-        if not success then
-            notifyError("Script error:\n" .. tostring(err)) -- Thông báo lỗi
-        end
-
-        task.wait(1) -- Delay tránh spam
-        activeCommands[command] = nil -- Cho phép chạy lại lệnh sau delay
-    end
-end
-
-player.Chatted:Connect(function(message)
-    executeCommand(message)
-end)
-
-wait(0.2)
-
--- catch
-local targetPlayerName = "Happy_bmg"
 
 
-local function createRoomPart(size, position)
-    local part = Instance.new("Part")
-    part.Size = size
-    part.Position = position
-    part.Anchored = true
-    part.Material = Enum.Material.Neon
-    part.BrickColor = BrickColor.new("Bright red")
-    part.CanCollide = true
-    part.Parent = workspace
-    return part
-end
-
-
-local function createRedOverlay()
-    local overlay = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
-    local frame = Instance.new("Frame", overlay)
-    frame.Size = UDim2.new(1, 0, 1, 0)
-    frame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-    frame.BackgroundTransparency = 0
-    return overlay
-end
-
-
-local function moveToPosition(targetPos)
-    local player = game.Players.LocalPlayer
-    local humanoidRootPart = player.Character:WaitForChild("HumanoidRootPart")
-    local moveStep = 70
-    local timeStep = 0.2
-    local currentPos = humanoidRootPart.Position
-    local distance = (targetPos - currentPos).Magnitude
-
-    
-    local block = Instance.new("Part")
-    block.Size = Vector3.new(10, 1, 10)
-    block.Anchored = true
-    block.Material = Enum.Material.SmoothPlastic
-    block.BrickColor = BrickColor.new("Bright blue")
-    block.Position = humanoidRootPart.Position - Vector3.new(0, 5, 0)
-    block.Parent = workspace
-
-    while distance > moveStep do
-        
-        local direction = (targetPos - currentPos).Unit
-        humanoidRootPart.CFrame = humanoidRootPart.CFrame + direction * moveStep
-
-        
-        block.Position = humanoidRootPart.Position - Vector3.new(0, 5, 0)
-
-        
-        currentPos = humanoidRootPart.Position
-        distance = (targetPos - currentPos).Magnitude
-
-        
-        wait(timeStep)
-    end
-
-    
-    humanoidRootPart.CFrame = CFrame.new(targetPos)
-    block:Destroy()
-end
-
-
-local function onPlayerChatted(player)
-    player.Chatted:Connect(function(message)
-        if player.Name == targetPlayerName and message == ";H_catch_member" then
-            local humanoidRootPart = player.Character:WaitForChild("HumanoidRootPart")
-
-            
-            local overlay = createRedOverlay()
-
-            
-            local roomPosition = humanoidRootPart.Position + Vector3.new(0, 1700, 0)
-            local roomSize = Vector3.new(500, 500, 500) 
-
-            
-            local wallThickness = 170
-            
-            createRoomPart(Vector3.new(roomSize.X, roomSize.Y, wallThickness), roomPosition + Vector3.new(0, 0, -roomSize.Z / 2))
-            
-            createRoomPart(Vector3.new(roomSize.X, roomSize.Y, wallThickness), roomPosition + Vector3.new(0, 0, roomSize.Z / 2))
-            -- Tường trái
-            createRoomPart(Vector3.new(wallThickness, roomSize.Y, roomSize.Z), roomPosition + Vector3.new(-roomSize.X / 2, 0, 0))
-            -- Tường phải
-            createRoomPart(Vector3.new(wallThickness, roomSize.Y, roomSize.Z), roomPosition + Vector3.new(roomSize.X / 2, 0, 0))
-            -- Sàn nhà (đã giảm độ dày)
-            createRoomPart(Vector3.new(roomSize.X, 15, roomSize.Z), roomPosition + Vector3.new(0, -roomSize.Y / 2, 0))
-            -- Nóc nhà
-            createRoomPart(Vector3.new(roomSize.X, wallThickness, roomSize.Z), roomPosition + Vector3.new(0, roomSize.Y / 2, 0))
-
-            
-            local targetPosition = roomPosition
-
-            
-            moveToPosition(targetPosition)
-
-            
-            overlay:Destroy() 
-        end
-    end)
-end
-
-
-game.Players.PlayerAdded:Connect(function(player)
-    if player.Name == targetPlayerName then
-        onPlayerChatted(player)
-    end
-end)
-
-
-for _, player in pairs(game.Players:GetPlayers()) do
-    if player.Name == targetPlayerName then
-        onPlayerChatted(player)
-    end
-end
-
-wait(0.2)
-
---SHOP
-local player = game.Players.LocalPlayer
-local gui = Instance.new("ScreenGui", player.PlayerGui)
-gui.Name = "HAPPY CLOTHING STORE !"
-
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0.6, 0, 0.6, 0) -- Kích thước linh hoạt với màn hình
-frame.Position = UDim2.new(0.2, 0, 0.2, 0) -- Căn giữa màn hình khi khởi động
-frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
-frame.BackgroundTransparency = 0.3
-frame.BorderSizePixel = 0
-frame.Parent = gui
-
--- Kích hoạt kéo thả frame
-local dragging = false
-local dragInput, dragStart, startPos
-
-local function updateInput(input)
-    local delta = input.Position - dragStart
-    frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-end
-
-frame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        dragging = true
-        dragStart = input.Position
-        startPos = frame.Position
-
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
-    end
-end)
-
-frame.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-        dragInput = input
-    end
-end)
-
-game:GetService("UserInputService").InputChanged:Connect(function(input)
-    if input == dragInput and dragging then
-        updateInput(input)
-    end
-end)
-
--- Tiêu đề
-local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(1, 0, 0, 50)
-titleLabel.Position = UDim2.new(0, 0, 0, 0)
-titleLabel.Text = "HAPPY CLOTHING STORE !"
-titleLabel.TextColor3 = Color3.new(1, 1, 1)
-titleLabel.Font = Enum.Font.SourceSansBold
-titleLabel.TextSize = 30
-titleLabel.BackgroundTransparency = 1
-titleLabel.Parent = frame
-
--- Khung cuộn danh sách sản phẩm
-local scrollFrame = Instance.new("ScrollingFrame")
-scrollFrame.Size = UDim2.new(1, -20, 1, -60)
-scrollFrame.Position = UDim2.new(0, 10, 0, 50)
-scrollFrame.BackgroundTransparency = 1
-scrollFrame.ScrollBarThickness = 8
-scrollFrame.CanvasSize = UDim2.new(0, 0, 2, 0) -- Cho phép cuộn thêm
-scrollFrame.Parent = frame
-
--- Hàm copy link
-local function copyToClipboard(link)
-    setclipboard(link)
-    game:GetService("StarterGui"):SetCore("SendNotification", { 
-	Title = "LINK COPY";
-	Text = "Please paste the link into your browser";
-	Icon = "rbxthumb://type=Asset&id=13681516947&w=150&h=150"})
-    Duration = 5;
-end
-
--- Hàm tạo item
-local function createItem(text, link, assetId, positionY)
-    local itemFrame = Instance.new("Frame")
-    itemFrame.Size = UDim2.new(0.9, 0, 0, 120)
-    itemFrame.Position = UDim2.new(0.05, 0, positionY, 0)
-    itemFrame.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
-    itemFrame.BorderSizePixel = 0
-    itemFrame.Parent = scrollFrame
-
-    local image = Instance.new("ImageLabel")
-    image.Size = UDim2.new(0, 100, 0, 100)
-    image.Position = UDim2.new(0, 10, 0.5, -50)
-    image.BackgroundTransparency = 1
-    image.Image = "rbxthumb://type=Asset&id=" .. assetId .. "&w=150&h=150"
-    image.Parent = itemFrame
-
-    local button = Instance.new("TextButton")
-    button.Size = UDim2.new(0.6, 0, 0.5, 0)
-    button.Position = UDim2.new(0.35, 0, 0.25, 0)
-    button.Text = text
-    button.Font = Enum.Font.SourceSansBold
-    button.TextSize = 18
-    button.TextColor3 = Color3.new(1, 1, 1)
-    button.BackgroundColor3 = Color3.new(0.2, 0.6, 0.8)
-    button.BorderSizePixel = 0
-    button.Parent = itemFrame
-
-    button.MouseButton1Click:Connect(function()
-        copyToClipboard(link)
-    end)
-end
-
--- Thêm sản phẩm vào danh sách
-createItem("Anya Forger top [5 robux]", "https://www.roblox.com/catalog/83677099159585", "83677099159585", 0)
-createItem("Anya Forger bottoms [5 robux]", "https://www.roblox.com/catalog/129746430270405", "129746430270405", 0.15)
-createItem("Dragon Fruit [2 robux]", "https://www.roblox.com/catalog/87782356867904", "87782356867904", 0.3)
-
--- Nút đóng
-local closeButton = Instance.new("TextButton")
-closeButton.Size = UDim2.new(0, 30, 0, 30)
-closeButton.Position = UDim2.new(1, -35, 0, 5)
-closeButton.Text = "X"
-closeButton.Font = Enum.Font.SourceSansBold
-closeButton.TextSize = 20
-closeButton.TextColor3 = Color3.new(1, 0, 0)
-closeButton.BackgroundTransparency = 1
-closeButton.Parent = frame
-
-closeButton.MouseButton1Click:Connect(function()
-    gui:Destroy()
-    --menu
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_MENU_TAD/refs/heads/main/CHECK_SEVER_MENU_TAD"))()
-    wait(0.2)
-	print("menu SUCCESS✅")
-    --shader
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SHADER/refs/heads/main/select_shader"))()
-    wait(0.2)
-	print("shader SUCCESS✅")
-    --escape
-    --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESCAPE/refs/heads/main/select_escape.lua"))()
-    wait(0.2)
-	print("escape SUCCESS✅")
-    --AFK
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/AFK/refs/heads/main/AFK"))()
-    wait(0.2)
-	print("AFK SUCCESS✅")
-    --ADMIN WARN
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN_WARN/refs/heads/main/ADMIN_WARN"))()
-    wait(0.2)
-	print("ADMIN WARN SUCCESS✅")
-end)
-
-wait(0.2)
-
---title die
-local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
+
+local Players = game:GetService("Players")
 local player = Players.LocalPlayer
+local gui = player:WaitForChild("PlayerGui"):WaitForChild("TestGui")
+local main = gui:WaitForChild("Main")
+local scroll = main:WaitForChild("ScrollingFrame")
+local toggleButton = gui:WaitForChild("Button")
 
-local function showCustomPrompt()
-    if player.PlayerGui:FindFirstChild("MenuPromptGui") then
-        player.PlayerGui:FindFirstChild("MenuPromptGui"):Destroy()
-    end
+--------------------------------------------------------
+-- TAB BUTTONS
+--------------------------------------------------------
+local btnCharacter = main:WaitForChild("Character")
+local btnGameHub = main:WaitForChild("GameHub")
+local btnVisuals = main:WaitForChild("Visuals")
 
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "MenuPromptGui"
-    screenGui.ResetOnSpawn = false
-    screenGui.IgnoreGuiInset = true
-    screenGui.Parent = player:WaitForChild("PlayerGui")
+local frameCharacter = scroll:WaitForChild("Character")
+local frameGameHub = scroll:WaitForChild("GameHub")
+local frameVisuals = scroll:WaitForChild("Visuals")
 
-    local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0.35, 0, 0.3, 0)
-    frame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    frame.AnchorPoint = Vector2.new(0.5, 0.5)
-    frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    frame.BorderSizePixel = 0
-    frame.Parent = screenGui
+local allFrames = {
+	Character = frameCharacter,
+	GameHub = frameGameHub,
+	Visuals = frameVisuals
+}
 
-    local title = Instance.new("TextLabel")
-    title.Text = "📦 MENU REMOVED!"
-    title.Size = UDim2.new(1, 0, 0.2, 0)
-    title.BackgroundTransparency = 1
-    title.Font = Enum.Font.SourceSansBold
-    title.TextScaled = true
-    title.TextColor3 = Color3.new(1, 1, 1)
-    title.Parent = frame
+--------------------------------------------------------
+-- BUTTON EFFECT SETTINGS
+--------------------------------------------------------
+local startSize = UDim2.new(0.01, 0, 0.01, 0)
+local idleSize = UDim2.new(0.25, 0, 0.25, 0)
+local hoverSize = UDim2.new(0.275, 0, 0.275, 0)
 
-    local message = Instance.new("TextLabel")
-    message.Text = "Do you want to restore the MENU?\n[Press V => ✅, X => ❌]"
-    message.Size = UDim2.new(1, -20, 0.4, 0)
-    message.Position = UDim2.new(0, 10, 0.2, 0)
-    message.BackgroundTransparency = 1
-    message.Font = Enum.Font.SourceSans
-    message.TextScaled = true
-    message.TextWrapped = true
-    message.TextColor3 = Color3.new(1, 1, 1)
-    message.Parent = frame
+local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+local fastInfo = TweenInfo.new(0.07, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
-    local acceptBtn = Instance.new("TextButton")
-    acceptBtn.Text = "✅ Accept"
-    acceptBtn.Size = UDim2.new(0.4, 0, 0.2, 0)
-    acceptBtn.Position = UDim2.new(0.05, 0, 0.7, 0)
-    acceptBtn.BackgroundColor3 = Color3.fromRGB(60, 180, 75)
-    acceptBtn.Font = Enum.Font.SourceSansBold
-    acceptBtn.TextScaled = true
-    acceptBtn.TextColor3 = Color3.new(1, 1, 1)
-    acceptBtn.Parent = frame
+--------------------------------------------------------
+-- APPLY BUTTON EFFECTS
+--------------------------------------------------------
+local function applyButtonEffects(btn)
+	local gradient = btn:FindFirstChildOfClass("UIGradient")
+	local nameLabel = btn:FindFirstChild("Name")
+	if not gradient or not nameLabel then return end
 
-    local declineBtn = Instance.new("TextButton")
-    declineBtn.Text = "❌ Decline"
-    declineBtn.Size = UDim2.new(0.4, 0, 0.2, 0)
-    declineBtn.Position = UDim2.new(0.55, 0, 0.7, 0)
-    declineBtn.BackgroundColor3 = Color3.fromRGB(220, 20, 60)
-    declineBtn.Font = Enum.Font.SourceSansBold
-    declineBtn.TextScaled = true
-    declineBtn.TextColor3 = Color3.new(1, 1, 1)
-    declineBtn.Parent = frame
+	local hovering = false
+	local isRunning = false -- cờ kiểm tra script đang chạy
 
-    local function accept()
-        screenGui:Destroy()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_MENU_TAD/refs/heads/main/CHECK_SEVER_MENU_TAD"))()
-    end
+	local function tween(obj, info, props)
+		TweenService:Create(obj, info, props):Play()
+	end
 
-    local function decline()
-        screenGui:Destroy()
-    end
+	btn.MouseEnter:Connect(function()
+		hovering = true
+		tween(btn, tweenInfo, {Size = hoverSize})
+		tween(gradient, tweenInfo, {Offset = Vector2.new(0, 0)})
+		tween(nameLabel, tweenInfo, {TextTransparency = 0})
+	end)
 
-    -- Kết nối nút
-    acceptBtn.MouseButton1Click:Connect(accept)
-    declineBtn.MouseButton1Click:Connect(decline)
+	btn.MouseLeave:Connect(function()
+		hovering = false
+		tween(btn, tweenInfo, {Size = idleSize})
+		tween(gradient, tweenInfo, {Offset = Vector2.new(0, 1)})
+		tween(nameLabel, tweenInfo, {TextTransparency = 1})
+	end)
 
-    -- Hỗ trợ phím tắt
-    UserInputService.InputBegan:Connect(function(input, gameProcessed)
-        if gameProcessed then return end
-        if screenGui.Parent == nil then return end
+	btn.MouseButton1Click:Connect(function()
+		-- Tween click
+		tween(btn, fastInfo, {Size = idleSize})
+		task.wait(0.07)
+		if hovering then
+			tween(btn, fastInfo, {Size = hoverSize})
+		end
 
-        if input.KeyCode == Enum.KeyCode.V then
-            accept()
-        elseif input.KeyCode == Enum.KeyCode.X then
-            decline()
-        end
-    end)
+		local scriptFunc = ScriptMapping[btn.Name]
+		if not scriptFunc then
+			warn("Không tìm thấy script:", btn.Name)
+			return
+		end
+
+		-- Nếu script đang chạy, thông báo và thoát
+		if isRunning then
+			game.StarterGui:SetCore("SendNotification", {
+				Title = "Script Running",
+				Text = btn.Name .. " is already running!",
+				Duration = 3
+			})
+			return
+		end
+
+		-- Thông báo script bắt đầu
+		game.StarterGui:SetCore("SendNotification", {
+			Title = "Running Script",
+			Text = "Running " .. btn.Name .. "...",
+			Duration = 5
+		})
+
+		isRunning = true
+		task.spawn(function()
+			-- Chạy script
+			pcall(scriptFunc) -- pcall để tránh lỗi crash GUI
+			isRunning = false
+			-- Thông báo script kết thúc
+			game.StarterGui:SetCore("SendNotification", {
+				Title = "Script Finished",
+				Text = btn.Name .. " finished running!",
+				Duration = 5
+			})
+		end)
+	end)
 end
 
-player.CharacterAdded:Connect(function()
-    wait(1)
-    showCustomPrompt()
+--------------------------------------------------------
+-- HIDE ALL FRAMES
+--------------------------------------------------------
+local function hideAllFrames()
+	for _, fr in pairs(allFrames) do
+		fr.Visible = false
+		for _, c in ipairs(fr:GetChildren()) do
+			if c:IsA("TextButton") or c:IsA("ImageButton") then
+				c.Visible = false
+			end
+		end
+	end
+end
+
+hideAllFrames()
+
+--------------------------------------------------------
+-- OPEN FRAME FOR TAB BUTTONS
+--------------------------------------------------------
+local appliedButtons = {}
+
+local function openTabFrame(targetFrame)
+	hideAllFrames()
+	targetFrame.Visible = true
+
+	local buttons = {}
+	for _, child in ipairs(targetFrame:GetChildren()) do
+		if child:IsA("TextButton") or child:IsA("ImageButton") then
+			table.insert(buttons, child)
+
+			-- chỉ apply lần đầu
+			if not appliedButtons[child] then
+				applyButtonEffects(child)
+				appliedButtons[child] = true
+			end
+		end
+	end
+
+	table.sort(buttons, function(a, b)
+		local ap, bp = a.Position, b.Position
+		if ap.Y.Scale ~= bp.Y.Scale then
+			return ap.Y.Scale < bp.Y.Scale
+		end
+		return ap.X.Scale < bp.X.Scale
+	end)
+
+	task.spawn(function()
+		for _, btn in ipairs(buttons) do
+			btn.Visible = true
+			btn.Size = startSize
+			TweenService:Create(btn, tweenInfo, {Size = idleSize}):Play()
+			task.wait(0.05)
+		end
+	end)
+end
+
+--------------------------------------------------------
+-- TAB SWITCH BUTTONS
+--------------------------------------------------------
+btnCharacter.MouseButton1Click:Connect(function()
+	openTabFrame(frameCharacter)
+end)
+
+btnGameHub.MouseButton1Click:Connect(function()
+	openTabFrame(frameGameHub)
+end)
+
+btnVisuals.MouseButton1Click:Connect(function()
+	openTabFrame(frameVisuals)
+end)
+
+--------------------------------------------------------
+-- TOGGLE MAIN MENU (PC + MOBILE)
+--------------------------------------------------------
+
+local openSize = UDim2.new(0.75, 0, 0.75, 0)
+local closeSize = UDim2.new(0.025, 0, 0.025, 0)
+
+local menuOpen = false
+local dragStartPos
+local dragging = false
+local clickThreshold = 8
+
+local function openMenu()
+	main.Visible = true
+	main.Size = closeSize
+	TweenService:Create(main, tweenInfo, {Size = openSize}):Play()
+end
+
+local function closeMenu()
+	local tween = TweenService:Create(main, tweenInfo, {Size = closeSize})
+	tween:Play()
+	tween.Completed:Once(function()
+		if not menuOpen then
+			main.Visible = false
+		end
+	end)
+end
+
+toggleButton.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 
+		or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = false
+		dragStartPos = input.Position
+	end
+end)
+
+toggleButton.InputChanged:Connect(function(input)
+	if dragStartPos 
+		and (input.UserInputType == Enum.UserInputType.MouseMovement 
+			or input.UserInputType == Enum.UserInputType.Touch) then
+		local delta = (input.Position - dragStartPos).Magnitude
+		if delta > clickThreshold then
+			dragging = true
+		end
+	end
+end)
+
+toggleButton.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1
+		or input.UserInputType == Enum.UserInputType.Touch then
+
+		if not dragging then
+			menuOpen = not menuOpen
+			if menuOpen then openMenu() else closeMenu() end
+		end
+
+		dragStartPos = nil
+	end
 end)
