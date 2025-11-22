@@ -24,8 +24,8 @@ local TestGui = Instance.new("ScreenGui")
 TestGui.Name = "TestGui"
 TestGui.ResetOnSpawn = false
 TestGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-TestGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 TestGui.DisplayOrder = 9999
+TestGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 local Main = Instance.new("Frame")
 Main.Name = "Main"
@@ -36,10 +36,10 @@ Main.BackgroundTransparency = 0.02500000037252903
 Main.BorderSizePixel = 0
 Main.BorderColor3 = Color3.new(0, 0, 0)
 Main.Visible = false
+Main.ZIndex = 9999
 Main.AnchorPoint = Vector2.new(0.5, 0.5)
 Main.Transparency = 0.02500000037252903
 Main.Parent = TestGui
-Main.ZIndex = 9999
 
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 UIAspectRatioConstraint.Name = "UIAspectRatioConstraint"
@@ -296,6 +296,61 @@ Name4.TextScaled = true
 Name4.TextWrapped = true
 Name4.Parent = ZombieStories
 
+local GunfightArena = Instance.new("ImageButton")
+GunfightArena.Name = "GunfightArena"
+GunfightArena.Position = UDim2.new(0.125, 0, 0.5, 0)
+GunfightArena.Size = UDim2.new(0.25, 0, 0.25, 0)
+GunfightArena.BackgroundColor3 = Color3.new(1, 1, 1)
+GunfightArena.BackgroundTransparency = 1
+GunfightArena.BorderSizePixel = 0
+GunfightArena.BorderColor3 = Color3.new(0, 0, 0)
+GunfightArena.AnchorPoint = Vector2.new(0.5, 0.5)
+GunfightArena.Transparency = 1
+GunfightArena.Image = "rbxassetid://125737670706867"
+GunfightArena.Parent = GameHub
+
+local UIAspectRatioConstraint6 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint6.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint6.Parent = GunfightArena
+
+local UICorner5 = Instance.new("UICorner")
+UICorner5.Name = "UICorner"
+UICorner5.CornerRadius = UDim.new(0.1, 0)
+UICorner5.Parent = GunfightArena
+
+local UIStroke5 = Instance.new("UIStroke")
+UIStroke5.Name = "UIStroke"
+UIStroke5.Color = Color3.new(1, 1, 1)
+UIStroke5.Thickness = 1.5
+UIStroke5.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke5.Parent = GunfightArena
+
+local UIGradient5 = Instance.new("UIGradient")
+UIGradient5.Name = "UIGradient"
+UIGradient5.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient5.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient5.Rotation = 90
+UIGradient5.Offset = Vector2.new(0, 1)
+UIGradient5.Parent = GunfightArena
+
+local Name5 = Instance.new("TextLabel")
+Name5.Name = "Name"
+Name5.Position = UDim2.new(0, 0, 0.7, 0)
+Name5.Size = UDim2.new(1, 0, 0.3, 0)
+Name5.BackgroundColor3 = Color3.new(1, 1, 1)
+Name5.BackgroundTransparency = 1
+Name5.BorderSizePixel = 0
+Name5.BorderColor3 = Color3.new(0, 0, 0)
+Name5.Transparency = 1
+Name5.Text = "Gunfight Arena"
+Name5.TextColor3 = Color3.new(0.364706, 0.8, 1)
+Name5.TextSize = 14
+Name5.FontFace = Font.new("rbxasset://fonts/families/Zekton.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name5.TextScaled = true
+Name5.TextWrapped = true
+Name5.Parent = GunfightArena
+
 local Character = Instance.new("Frame")
 Character.Name = "Character"
 Character.Size = UDim2.new(1, 0, 1, 0)
@@ -320,39 +375,39 @@ Fly.Transparency = 1
 Fly.Image = "rbxassetid://99007734437565"
 Fly.Parent = Character
 
-local UIAspectRatioConstraint6 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint6.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint7 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint7.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint6.Parent = Fly
+UIAspectRatioConstraint7.Parent = Fly
 
-local UICorner5 = Instance.new("UICorner")
-UICorner5.Name = "UICorner"
-UICorner5.CornerRadius = UDim.new(0.15, 0)
-UICorner5.Parent = Fly
+local UICorner6 = Instance.new("UICorner")
+UICorner6.Name = "UICorner"
+UICorner6.CornerRadius = UDim.new(0.15, 0)
+UICorner6.Parent = Fly
 
-local UIGradient5 = Instance.new("UIGradient")
-UIGradient5.Name = "UIGradient"
-UIGradient5.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient5.Rotation = 90
-UIGradient5.Offset = Vector2.new(0, 1)
-UIGradient5.Parent = Fly
+local UIGradient6 = Instance.new("UIGradient")
+UIGradient6.Name = "UIGradient"
+UIGradient6.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient6.Rotation = 90
+UIGradient6.Offset = Vector2.new(0, 1)
+UIGradient6.Parent = Fly
 
-local Name5 = Instance.new("TextLabel")
-Name5.Name = "Name"
-Name5.Position = UDim2.new(0, 0, 0.7, 0)
-Name5.Size = UDim2.new(1, 0, 0.3, 0)
-Name5.BackgroundColor3 = Color3.new(1, 1, 1)
-Name5.BackgroundTransparency = 1
-Name5.BorderSizePixel = 0
-Name5.BorderColor3 = Color3.new(0, 0, 0)
-Name5.Transparency = 1
-Name5.Text = "Fly Gui"
-Name5.TextColor3 = Color3.new(1, 1, 1)
-Name5.TextSize = 14
-Name5.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-Name5.TextScaled = true
-Name5.TextWrapped = true
-Name5.Parent = Fly
+local Name6 = Instance.new("TextLabel")
+Name6.Name = "Name"
+Name6.Position = UDim2.new(0, 0, 0.7, 0)
+Name6.Size = UDim2.new(1, 0, 0.3, 0)
+Name6.BackgroundColor3 = Color3.new(1, 1, 1)
+Name6.BackgroundTransparency = 1
+Name6.BorderSizePixel = 0
+Name6.BorderColor3 = Color3.new(0, 0, 0)
+Name6.Transparency = 1
+Name6.Text = "Fly Gui"
+Name6.TextColor3 = Color3.new(1, 1, 1)
+Name6.TextSize = 14
+Name6.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Name6.TextScaled = true
+Name6.TextWrapped = true
+Name6.Parent = Fly
 
 local IfnJump = Instance.new("ImageButton")
 IfnJump.Name = "IfnJump"
@@ -367,40 +422,40 @@ IfnJump.Transparency = 1
 IfnJump.Image = "rbxassetid://100147318798859"
 IfnJump.Parent = Character
 
-local UIAspectRatioConstraint7 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint7.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint8 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint8.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint7.Parent = IfnJump
+UIAspectRatioConstraint8.Parent = IfnJump
 
-local UICorner6 = Instance.new("UICorner")
-UICorner6.Name = "UICorner"
-UICorner6.CornerRadius = UDim.new(0.15, 0)
-UICorner6.Parent = IfnJump
+local UICorner7 = Instance.new("UICorner")
+UICorner7.Name = "UICorner"
+UICorner7.CornerRadius = UDim.new(0.15, 0)
+UICorner7.Parent = IfnJump
 
-local UIGradient6 = Instance.new("UIGradient")
-UIGradient6.Name = "UIGradient"
-UIGradient6.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
-UIGradient6.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient6.Rotation = 90
-UIGradient6.Offset = Vector2.new(0, 1)
-UIGradient6.Parent = IfnJump
+local UIGradient7 = Instance.new("UIGradient")
+UIGradient7.Name = "UIGradient"
+UIGradient7.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient7.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient7.Rotation = 90
+UIGradient7.Offset = Vector2.new(0, 1)
+UIGradient7.Parent = IfnJump
 
-local Name6 = Instance.new("TextLabel")
-Name6.Name = "Name"
-Name6.Position = UDim2.new(0, 0, 0.7, 0)
-Name6.Size = UDim2.new(1, 0, 0.3, 0)
-Name6.BackgroundColor3 = Color3.new(1, 1, 1)
-Name6.BackgroundTransparency = 1
-Name6.BorderSizePixel = 0
-Name6.BorderColor3 = Color3.new(0, 0, 0)
-Name6.Transparency = 1
-Name6.Text = "Infinity Jump"
-Name6.TextColor3 = Color3.new(1, 1, 1)
-Name6.TextSize = 14
-Name6.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-Name6.TextScaled = true
-Name6.TextWrapped = true
-Name6.Parent = IfnJump
+local Name7 = Instance.new("TextLabel")
+Name7.Name = "Name"
+Name7.Position = UDim2.new(0, 0, 0.7, 0)
+Name7.Size = UDim2.new(1, 0, 0.3, 0)
+Name7.BackgroundColor3 = Color3.new(1, 1, 1)
+Name7.BackgroundTransparency = 1
+Name7.BorderSizePixel = 0
+Name7.BorderColor3 = Color3.new(0, 0, 0)
+Name7.Transparency = 1
+Name7.Text = "Infinity Jump"
+Name7.TextColor3 = Color3.new(1, 1, 1)
+Name7.TextSize = 14
+Name7.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name7.TextScaled = true
+Name7.TextWrapped = true
+Name7.Parent = IfnJump
 
 local Speed = Instance.new("ImageButton")
 Speed.Name = "Speed"
@@ -415,39 +470,39 @@ Speed.Transparency = 1
 Speed.Image = "rbxassetid://73678941604961"
 Speed.Parent = Character
 
-local UIAspectRatioConstraint8 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint8.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint9 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint9.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint8.Parent = Speed
+UIAspectRatioConstraint9.Parent = Speed
 
-local UICorner7 = Instance.new("UICorner")
-UICorner7.Name = "UICorner"
-UICorner7.CornerRadius = UDim.new(0.15, 0)
-UICorner7.Parent = Speed
+local UICorner8 = Instance.new("UICorner")
+UICorner8.Name = "UICorner"
+UICorner8.CornerRadius = UDim.new(0.15, 0)
+UICorner8.Parent = Speed
 
-local UIGradient7 = Instance.new("UIGradient")
-UIGradient7.Name = "UIGradient"
-UIGradient7.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient7.Rotation = 90
-UIGradient7.Offset = Vector2.new(0, 1)
-UIGradient7.Parent = Speed
+local UIGradient8 = Instance.new("UIGradient")
+UIGradient8.Name = "UIGradient"
+UIGradient8.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient8.Rotation = 90
+UIGradient8.Offset = Vector2.new(0, 1)
+UIGradient8.Parent = Speed
 
-local Name7 = Instance.new("TextLabel")
-Name7.Name = "Name"
-Name7.Position = UDim2.new(0, 0, 0.7, 0)
-Name7.Size = UDim2.new(1, 0, 0.3, 0)
-Name7.BackgroundColor3 = Color3.new(1, 1, 1)
-Name7.BackgroundTransparency = 1
-Name7.BorderSizePixel = 0
-Name7.BorderColor3 = Color3.new(0, 0, 0)
-Name7.Transparency = 1
-Name7.Text = "Speed"
-Name7.TextColor3 = Color3.new(1, 1, 1)
-Name7.TextSize = 14
-Name7.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-Name7.TextScaled = true
-Name7.TextWrapped = true
-Name7.Parent = Speed
+local Name8 = Instance.new("TextLabel")
+Name8.Name = "Name"
+Name8.Position = UDim2.new(0, 0, 0.7, 0)
+Name8.Size = UDim2.new(1, 0, 0.3, 0)
+Name8.BackgroundColor3 = Color3.new(1, 1, 1)
+Name8.BackgroundTransparency = 1
+Name8.BorderSizePixel = 0
+Name8.BorderColor3 = Color3.new(0, 0, 0)
+Name8.Transparency = 1
+Name8.Text = "Speed"
+Name8.TextColor3 = Color3.new(1, 1, 1)
+Name8.TextSize = 14
+Name8.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name8.TextScaled = true
+Name8.TextWrapped = true
+Name8.Parent = Speed
 
 local Explorer = Instance.new("ImageButton")
 Explorer.Name = "Explorer"
@@ -462,39 +517,39 @@ Explorer.Transparency = 1
 Explorer.Image = "rbxassetid://106001322662528"
 Explorer.Parent = Character
 
-local UIAspectRatioConstraint9 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint9.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint10 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint10.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint9.Parent = Explorer
+UIAspectRatioConstraint10.Parent = Explorer
 
-local UICorner8 = Instance.new("UICorner")
-UICorner8.Name = "UICorner"
-UICorner8.CornerRadius = UDim.new(0.15, 0)
-UICorner8.Parent = Explorer
+local UICorner9 = Instance.new("UICorner")
+UICorner9.Name = "UICorner"
+UICorner9.CornerRadius = UDim.new(0.15, 0)
+UICorner9.Parent = Explorer
 
-local UIGradient8 = Instance.new("UIGradient")
-UIGradient8.Name = "UIGradient"
-UIGradient8.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient8.Rotation = 90
-UIGradient8.Offset = Vector2.new(0, 1)
-UIGradient8.Parent = Explorer
+local UIGradient9 = Instance.new("UIGradient")
+UIGradient9.Name = "UIGradient"
+UIGradient9.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient9.Rotation = 90
+UIGradient9.Offset = Vector2.new(0, 1)
+UIGradient9.Parent = Explorer
 
-local Name8 = Instance.new("TextLabel")
-Name8.Name = "Name"
-Name8.Position = UDim2.new(0, 0, 0.7, 0)
-Name8.Size = UDim2.new(1, 0, 0.3, 0)
-Name8.BackgroundColor3 = Color3.new(1, 1, 1)
-Name8.BackgroundTransparency = 1
-Name8.BorderSizePixel = 0
-Name8.BorderColor3 = Color3.new(0, 0, 0)
-Name8.Transparency = 1
-Name8.Text = "Explorer"
-Name8.TextColor3 = Color3.new(1, 1, 1)
-Name8.TextSize = 14
-Name8.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-Name8.TextScaled = true
-Name8.TextWrapped = true
-Name8.Parent = Explorer
+local Name9 = Instance.new("TextLabel")
+Name9.Name = "Name"
+Name9.Position = UDim2.new(0, 0, 0.7, 0)
+Name9.Size = UDim2.new(1, 0, 0.3, 0)
+Name9.BackgroundColor3 = Color3.new(1, 1, 1)
+Name9.BackgroundTransparency = 1
+Name9.BorderSizePixel = 0
+Name9.BorderColor3 = Color3.new(0, 0, 0)
+Name9.Transparency = 1
+Name9.Text = "Explorer"
+Name9.TextColor3 = Color3.new(1, 1, 1)
+Name9.TextSize = 14
+Name9.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Name9.TextScaled = true
+Name9.TextWrapped = true
+Name9.Parent = Explorer
 
 local HitBox = Instance.new("ImageButton")
 HitBox.Name = "HitBox"
@@ -509,40 +564,40 @@ HitBox.Transparency = 1
 HitBox.Image = "rbxassetid://95975479545027"
 HitBox.Parent = Character
 
-local UIAspectRatioConstraint10 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint10.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint11 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint11.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint10.Parent = HitBox
+UIAspectRatioConstraint11.Parent = HitBox
 
-local UICorner9 = Instance.new("UICorner")
-UICorner9.Name = "UICorner"
-UICorner9.CornerRadius = UDim.new(0.15, 0)
-UICorner9.Parent = HitBox
+local UICorner10 = Instance.new("UICorner")
+UICorner10.Name = "UICorner"
+UICorner10.CornerRadius = UDim.new(0.15, 0)
+UICorner10.Parent = HitBox
 
-local UIGradient9 = Instance.new("UIGradient")
-UIGradient9.Name = "UIGradient"
-UIGradient9.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
-UIGradient9.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient9.Rotation = 90
-UIGradient9.Offset = Vector2.new(0, 1)
-UIGradient9.Parent = HitBox
+local UIGradient10 = Instance.new("UIGradient")
+UIGradient10.Name = "UIGradient"
+UIGradient10.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient10.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient10.Rotation = 90
+UIGradient10.Offset = Vector2.new(0, 1)
+UIGradient10.Parent = HitBox
 
-local Name9 = Instance.new("TextLabel")
-Name9.Name = "Name"
-Name9.Position = UDim2.new(0, 0, 0.7, 0)
-Name9.Size = UDim2.new(1, 0, 0.3, 0)
-Name9.BackgroundColor3 = Color3.new(1, 1, 1)
-Name9.BackgroundTransparency = 1
-Name9.BorderSizePixel = 0
-Name9.BorderColor3 = Color3.new(0, 0, 0)
-Name9.Transparency = 1
-Name9.Text = "Hit Box"
-Name9.TextColor3 = Color3.new(1, 1, 1)
-Name9.TextSize = 14
-Name9.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-Name9.TextScaled = true
-Name9.TextWrapped = true
-Name9.Parent = HitBox
+local Name10 = Instance.new("TextLabel")
+Name10.Name = "Name"
+Name10.Position = UDim2.new(0, 0, 0.7, 0)
+Name10.Size = UDim2.new(1, 0, 0.3, 0)
+Name10.BackgroundColor3 = Color3.new(1, 1, 1)
+Name10.BackgroundTransparency = 1
+Name10.BorderSizePixel = 0
+Name10.BorderColor3 = Color3.new(0, 0, 0)
+Name10.Transparency = 1
+Name10.Text = "Hit Box"
+Name10.TextColor3 = Color3.new(1, 1, 1)
+Name10.TextSize = 14
+Name10.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name10.TextScaled = true
+Name10.TextWrapped = true
+Name10.Parent = HitBox
 
 local Visuals = Instance.new("Frame")
 Visuals.Name = "Visuals"
@@ -555,21 +610,21 @@ Visuals.Visible = false
 Visuals.Transparency = 1
 Visuals.Parent = ScrollingFrame
 
-local UIStroke5 = Instance.new("UIStroke")
-UIStroke5.Name = "UIStroke"
-UIStroke5.Color = Color3.new(1, 0, 0.784314)
-UIStroke5.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UIStroke5.Parent = ScrollingFrame
-
-local UICorner10 = Instance.new("UICorner")
-UICorner10.Name = "UICorner"
-UICorner10.CornerRadius = UDim.new(0.025, 0)
-UICorner10.Parent = ScrollingFrame
+local UIStroke6 = Instance.new("UIStroke")
+UIStroke6.Name = "UIStroke"
+UIStroke6.Color = Color3.new(1, 0, 0.784314)
+UIStroke6.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke6.Parent = ScrollingFrame
 
 local UICorner11 = Instance.new("UICorner")
 UICorner11.Name = "UICorner"
 UICorner11.CornerRadius = UDim.new(0.025, 0)
-UICorner11.Parent = Main
+UICorner11.Parent = ScrollingFrame
+
+local UICorner12 = Instance.new("UICorner")
+UICorner12.Name = "UICorner"
+UICorner12.CornerRadius = UDim.new(0.025, 0)
+UICorner12.Parent = Main
 
 local GameHub2 = Instance.new("ImageButton")
 GameHub2.Name = "GameHub"
@@ -583,10 +638,10 @@ GameHub2.Transparency = 1
 GameHub2.Image = "rbxassetid://76634495910816"
 GameHub2.Parent = Main
 
-local UIAspectRatioConstraint11 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint11.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint12 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint12.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint11.Parent = GameHub2
+UIAspectRatioConstraint12.Parent = GameHub2
 
 local Character2 = Instance.new("ImageButton")
 Character2.Name = "Character"
@@ -600,10 +655,10 @@ Character2.Transparency = 1
 Character2.Image = "rbxassetid://131198702319529"
 Character2.Parent = Main
 
-local UIAspectRatioConstraint12 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint12.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint13 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint13.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint12.Parent = Character2
+UIAspectRatioConstraint13.Parent = Character2
 
 local Visuals2 = Instance.new("ImageButton")
 Visuals2.Name = "Visuals"
@@ -617,10 +672,10 @@ Visuals2.Transparency = 1
 Visuals2.Image = "rbxassetid://83096530703299"
 Visuals2.Parent = Main
 
-local UIAspectRatioConstraint13 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint13.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint14 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint14.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint13.Parent = Visuals2
+UIAspectRatioConstraint14.Parent = Visuals2
 
 local Button = Instance.new("ImageButton")
 Button.Name = "Button"
@@ -636,15 +691,15 @@ Button.Transparency = 1
 Button.Image = "rbxassetid://90219562764375"
 Button.Parent = TestGui
 
-local UIAspectRatioConstraint14 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint14.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint15 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint15.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint14.Parent = Button
+UIAspectRatioConstraint15.Parent = Button
 
-local UICorner12 = Instance.new("UICorner")
-UICorner12.Name = "UICorner"
-UICorner12.CornerRadius = UDim.new(0.1, 0)
-UICorner12.Parent = Button
+local UICorner13 = Instance.new("UICorner")
+UICorner13.Name = "UICorner"
+UICorner13.CornerRadius = UDim.new(0.1, 0)
+UICorner13.Parent = Button
 
 local Version = Instance.new("TextLabel")
 Version.Name = "Version"
@@ -657,8 +712,8 @@ Version.BorderColor3 = Color3.new(0, 0, 0)
 Version.Rotation = -15
 Version.AnchorPoint = Vector2.new(0.5, 0.5)
 Version.TextTransparency = 0
-Version.Text = "v0.01"
-Version.TextColor3 = Color3.new(1, 0, 0.917647)
+Version.Text = "v0.02"
+Version.TextColor3 = Color3.new(0.831373, 0, 1)
 Version.TextSize = 14
 Version.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 Version.TextScaled = true
@@ -670,10 +725,10 @@ UIDragDetector2.Name = "UIDragDetector"
 
 UIDragDetector2.Parent = Button
 
---===================================================================================================
+--========================================================================================================
 
 local ScriptMapping = {
-	
+
 	-- GameHud --
 	BloxFruit = function()
 		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/BLOX_FRUIT/main/BLOX_FRUIT.lua")
@@ -691,7 +746,11 @@ local ScriptMapping = {
 		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/DEAD_RAILS/refs/heads/main/DEAD_RAILS")
 		loadstring(code)()
 	end,
-	
+	GunfightArena = function()
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Gunfight_Arena/refs/heads/main/Gunfight_Arena.lua")
+		loadstring(code)()
+	end,
+
 	-- Character --
 	Fly = function()
 		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/FLY/refs/heads/main/FLY")
@@ -798,7 +857,7 @@ local function applyButtonEffects(btn)
 		-- Nếu script đang chạy, thông báo và thoát
 		if isRunning then
 			game.StarterGui:SetCore("SendNotification", {
-				Title = "Script Running",
+				Title = "Script Running⏳",
 				Text = btn.Name .. " is already running!",
 				Duration = 3
 			})
@@ -807,7 +866,7 @@ local function applyButtonEffects(btn)
 
 		-- Thông báo script bắt đầu
 		game.StarterGui:SetCore("SendNotification", {
-			Title = "Running Script",
+			Title = "Running Script⌛",
 			Text = "Running " .. btn.Name .. "...",
 			Duration = 5
 		})
@@ -819,7 +878,7 @@ local function applyButtonEffects(btn)
 			isRunning = false
 			-- Thông báo script kết thúc
 			game.StarterGui:SetCore("SendNotification", {
-				Title = "Script Finished",
+				Title = "Script Finished✅",
 				Text = btn.Name .. " finished running!",
 				Duration = 5
 			})
