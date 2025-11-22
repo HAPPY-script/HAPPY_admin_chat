@@ -25,6 +25,7 @@ TestGui.Name = "TestGui"
 TestGui.ResetOnSpawn = false
 TestGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 TestGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+TestGui.DisplayOrder = 9999
 
 local Main = Instance.new("Frame")
 Main.Name = "Main"
@@ -38,6 +39,7 @@ Main.Visible = false
 Main.AnchorPoint = Vector2.new(0.5, 0.5)
 Main.Transparency = 0.02500000037252903
 Main.Parent = TestGui
+Main.ZIndex = 9999
 
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 UIAspectRatioConstraint.Name = "UIAspectRatioConstraint"
