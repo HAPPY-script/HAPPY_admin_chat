@@ -32,13 +32,13 @@ Main.Name = "Main"
 Main.Position = UDim2.new(0.5, 0, 0.5, 0)
 Main.Size = UDim2.new(0.75, 0, 0.75, 0)
 Main.BackgroundColor3 = Color3.new(0.117647, 0, 0.196078)
-Main.BackgroundTransparency = 0.02500000037252903
+Main.BackgroundTransparency = 0.05000000074505806
 Main.BorderSizePixel = 0
 Main.BorderColor3 = Color3.new(0, 0, 0)
 Main.Visible = false
-Main.ZIndex = 9999
+Main.ZIndex = 9998
 Main.AnchorPoint = Vector2.new(0.5, 0.5)
-Main.Transparency = 0.02500000037252903
+Main.Transparency = 0.05000000074505806
 Main.Parent = TestGui
 
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -53,8 +53,8 @@ UIDragDetector.Parent = Main
 
 local ScrollingFrame = Instance.new("ScrollingFrame")
 ScrollingFrame.Name = "ScrollingFrame"
-ScrollingFrame.Position = UDim2.new(0.5, 0, 0.375, 0)
-ScrollingFrame.Size = UDim2.new(1, 0, 0.75, 0)
+ScrollingFrame.Position = UDim2.new(0.675, 0, 0.5, 0)
+ScrollingFrame.Size = UDim2.new(0.65, 0, 1, 0)
 ScrollingFrame.BackgroundColor3 = Color3.new(1, 1, 1)
 ScrollingFrame.BackgroundTransparency = 1
 ScrollingFrame.BorderSizePixel = 0
@@ -80,7 +80,7 @@ GameHub.Parent = ScrollingFrame
 
 local BloxFruit = Instance.new("ImageButton")
 BloxFruit.Name = "BloxFruit"
-BloxFruit.Position = UDim2.new(0.125, 0, 0.2, 0)
+BloxFruit.Position = UDim2.new(0.2, 0, 0.2, 0)
 BloxFruit.Size = UDim2.new(0.25, 0, 0.25, 0)
 BloxFruit.BackgroundColor3 = Color3.new(1, 1, 1)
 BloxFruit.BackgroundTransparency = 1
@@ -123,6 +123,7 @@ Name.BackgroundColor3 = Color3.new(1, 1, 1)
 Name.BackgroundTransparency = 1
 Name.BorderSizePixel = 0
 Name.BorderColor3 = Color3.new(0, 0, 0)
+Name.ZIndex = 2
 Name.Transparency = 1
 Name.Text = "Blox Fruit"
 Name.TextColor3 = Color3.new(1, 0.784314, 0)
@@ -132,9 +133,29 @@ Name.TextScaled = true
 Name.TextWrapped = true
 Name.Parent = BloxFruit
 
+local Effect = Instance.new("Frame")
+Effect.Name = "Effect"
+Effect.Size = UDim2.new(1, 0, 1, 0)
+Effect.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect.BorderSizePixel = 0
+Effect.BorderColor3 = Color3.new(0, 0, 0)
+Effect.Parent = BloxFruit
+
+local UICorner2 = Instance.new("UICorner")
+UICorner2.Name = "UICorner"
+UICorner2.CornerRadius = UDim.new(0.1, 0)
+UICorner2.Parent = Effect
+
+local UIGradient2 = Instance.new("UIGradient")
+UIGradient2.Name = "UIGradient"
+UIGradient2.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient2.Rotation = -45
+UIGradient2.Offset = Vector2.new(0, -1.5)
+UIGradient2.Parent = Effect
+
 local MM2 = Instance.new("ImageButton")
 MM2.Name = "MM2"
-MM2.Position = UDim2.new(0.375, 0, 0.2, 0)
+MM2.Position = UDim2.new(0.5, 0, 0.2, 0)
 MM2.Size = UDim2.new(0.25, 0, 0.25, 0)
 MM2.BackgroundColor3 = Color3.new(1, 1, 1)
 MM2.BackgroundTransparency = 1
@@ -150,10 +171,10 @@ UIAspectRatioConstraint3.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint3.Parent = MM2
 
-local UICorner2 = Instance.new("UICorner")
-UICorner2.Name = "UICorner"
-UICorner2.CornerRadius = UDim.new(0.1, 0)
-UICorner2.Parent = MM2
+local UICorner3 = Instance.new("UICorner")
+UICorner3.Name = "UICorner"
+UICorner3.CornerRadius = UDim.new(0.1, 0)
+UICorner3.Parent = MM2
 
 local UIStroke2 = Instance.new("UIStroke")
 UIStroke2.Name = "UIStroke"
@@ -162,12 +183,12 @@ UIStroke2.Thickness = 1.5
 UIStroke2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UIStroke2.Parent = MM2
 
-local UIGradient2 = Instance.new("UIGradient")
-UIGradient2.Name = "UIGradient"
-UIGradient2.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient2.Rotation = 90
-UIGradient2.Offset = Vector2.new(0, 1)
-UIGradient2.Parent = MM2
+local UIGradient3 = Instance.new("UIGradient")
+UIGradient3.Name = "UIGradient"
+UIGradient3.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient3.Rotation = 90
+UIGradient3.Offset = Vector2.new(0, 1)
+UIGradient3.Parent = MM2
 
 local Name2 = Instance.new("TextLabel")
 Name2.Name = "Name"
@@ -177,6 +198,7 @@ Name2.BackgroundColor3 = Color3.new(1, 1, 1)
 Name2.BackgroundTransparency = 1
 Name2.BorderSizePixel = 0
 Name2.BorderColor3 = Color3.new(0, 0, 0)
+Name2.ZIndex = 2
 Name2.Transparency = 1
 Name2.Text = "Murder Mystery 2"
 Name2.TextColor3 = Color3.new(0.235294, 1, 0)
@@ -186,9 +208,29 @@ Name2.TextScaled = true
 Name2.TextWrapped = true
 Name2.Parent = MM2
 
+local Effect2 = Instance.new("Frame")
+Effect2.Name = "Effect"
+Effect2.Size = UDim2.new(1, 0, 1, 0)
+Effect2.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect2.BorderSizePixel = 0
+Effect2.BorderColor3 = Color3.new(0, 0, 0)
+Effect2.Parent = MM2
+
+local UICorner4 = Instance.new("UICorner")
+UICorner4.Name = "UICorner"
+UICorner4.CornerRadius = UDim.new(0.1, 0)
+UICorner4.Parent = Effect2
+
+local UIGradient4 = Instance.new("UIGradient")
+UIGradient4.Name = "UIGradient"
+UIGradient4.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient4.Rotation = -45
+UIGradient4.Offset = Vector2.new(0, -1.5)
+UIGradient4.Parent = Effect2
+
 local DeadRails = Instance.new("ImageButton")
 DeadRails.Name = "DeadRails"
-DeadRails.Position = UDim2.new(0.625, 0, 0.2, 0)
+DeadRails.Position = UDim2.new(0.8, 0, 0.2, 0)
 DeadRails.Size = UDim2.new(0.25, 0, 0.25, 0)
 DeadRails.BackgroundColor3 = Color3.new(1, 1, 1)
 DeadRails.BackgroundTransparency = 1
@@ -204,10 +246,10 @@ UIAspectRatioConstraint4.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint4.Parent = DeadRails
 
-local UICorner3 = Instance.new("UICorner")
-UICorner3.Name = "UICorner"
-UICorner3.CornerRadius = UDim.new(0.1, 0)
-UICorner3.Parent = DeadRails
+local UICorner5 = Instance.new("UICorner")
+UICorner5.Name = "UICorner"
+UICorner5.CornerRadius = UDim.new(0.1, 0)
+UICorner5.Parent = DeadRails
 
 local UIStroke3 = Instance.new("UIStroke")
 UIStroke3.Name = "UIStroke"
@@ -216,13 +258,13 @@ UIStroke3.Thickness = 1.5
 UIStroke3.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UIStroke3.Parent = DeadRails
 
-local UIGradient3 = Instance.new("UIGradient")
-UIGradient3.Name = "UIGradient"
-UIGradient3.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
-UIGradient3.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient3.Rotation = 90
-UIGradient3.Offset = Vector2.new(0, 1)
-UIGradient3.Parent = DeadRails
+local UIGradient5 = Instance.new("UIGradient")
+UIGradient5.Name = "UIGradient"
+UIGradient5.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient5.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient5.Rotation = 90
+UIGradient5.Offset = Vector2.new(0, 1)
+UIGradient5.Parent = DeadRails
 
 local Name3 = Instance.new("TextLabel")
 Name3.Name = "Name"
@@ -232,6 +274,7 @@ Name3.BackgroundColor3 = Color3.new(1, 1, 1)
 Name3.BackgroundTransparency = 1
 Name3.BorderSizePixel = 0
 Name3.BorderColor3 = Color3.new(0, 0, 0)
+Name3.ZIndex = 2
 Name3.Transparency = 1
 Name3.Text = "Dead Rails"
 Name3.TextColor3 = Color3.new(1, 0.635294, 0)
@@ -241,9 +284,29 @@ Name3.TextScaled = true
 Name3.TextWrapped = true
 Name3.Parent = DeadRails
 
+local Effect3 = Instance.new("Frame")
+Effect3.Name = "Effect"
+Effect3.Size = UDim2.new(1, 0, 1, 0)
+Effect3.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect3.BorderSizePixel = 0
+Effect3.BorderColor3 = Color3.new(0, 0, 0)
+Effect3.Parent = DeadRails
+
+local UICorner6 = Instance.new("UICorner")
+UICorner6.Name = "UICorner"
+UICorner6.CornerRadius = UDim.new(0.1, 0)
+UICorner6.Parent = Effect3
+
+local UIGradient6 = Instance.new("UIGradient")
+UIGradient6.Name = "UIGradient"
+UIGradient6.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient6.Rotation = -45
+UIGradient6.Offset = Vector2.new(0, -1.5)
+UIGradient6.Parent = Effect3
+
 local ZombieStories = Instance.new("ImageButton")
 ZombieStories.Name = "ZombieStories"
-ZombieStories.Position = UDim2.new(0.875, 0, 0.2, 0)
+ZombieStories.Position = UDim2.new(0.5, 0, 0.5, 0)
 ZombieStories.Size = UDim2.new(0.25, 0, 0.25, 0)
 ZombieStories.BackgroundColor3 = Color3.new(1, 1, 1)
 ZombieStories.BackgroundTransparency = 1
@@ -259,10 +322,10 @@ UIAspectRatioConstraint5.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint5.Parent = ZombieStories
 
-local UICorner4 = Instance.new("UICorner")
-UICorner4.Name = "UICorner"
-UICorner4.CornerRadius = UDim.new(0.1, 0)
-UICorner4.Parent = ZombieStories
+local UICorner7 = Instance.new("UICorner")
+UICorner7.Name = "UICorner"
+UICorner7.CornerRadius = UDim.new(0.1, 0)
+UICorner7.Parent = ZombieStories
 
 local UIStroke4 = Instance.new("UIStroke")
 UIStroke4.Name = "UIStroke"
@@ -271,13 +334,13 @@ UIStroke4.Thickness = 1.5
 UIStroke4.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UIStroke4.Parent = ZombieStories
 
-local UIGradient4 = Instance.new("UIGradient")
-UIGradient4.Name = "UIGradient"
-UIGradient4.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
-UIGradient4.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient4.Rotation = 90
-UIGradient4.Offset = Vector2.new(0, 1)
-UIGradient4.Parent = ZombieStories
+local UIGradient7 = Instance.new("UIGradient")
+UIGradient7.Name = "UIGradient"
+UIGradient7.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient7.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient7.Rotation = 90
+UIGradient7.Offset = Vector2.new(0, 1)
+UIGradient7.Parent = ZombieStories
 
 local Name4 = Instance.new("TextLabel")
 Name4.Name = "Name"
@@ -287,6 +350,7 @@ Name4.BackgroundColor3 = Color3.new(1, 1, 1)
 Name4.BackgroundTransparency = 1
 Name4.BorderSizePixel = 0
 Name4.BorderColor3 = Color3.new(0, 0, 0)
+Name4.ZIndex = 2
 Name4.Transparency = 1
 Name4.Text = "Zombie Stories"
 Name4.TextColor3 = Color3.new(0.686275, 1, 0)
@@ -296,9 +360,29 @@ Name4.TextScaled = true
 Name4.TextWrapped = true
 Name4.Parent = ZombieStories
 
+local Effect4 = Instance.new("Frame")
+Effect4.Name = "Effect"
+Effect4.Size = UDim2.new(1, 0, 1, 0)
+Effect4.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect4.BorderSizePixel = 0
+Effect4.BorderColor3 = Color3.new(0, 0, 0)
+Effect4.Parent = ZombieStories
+
+local UICorner8 = Instance.new("UICorner")
+UICorner8.Name = "UICorner"
+UICorner8.CornerRadius = UDim.new(0.1, 0)
+UICorner8.Parent = Effect4
+
+local UIGradient8 = Instance.new("UIGradient")
+UIGradient8.Name = "UIGradient"
+UIGradient8.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient8.Rotation = -45
+UIGradient8.Offset = Vector2.new(0, -1.5)
+UIGradient8.Parent = Effect4
+
 local GunfightArena = Instance.new("ImageButton")
 GunfightArena.Name = "GunfightArena"
-GunfightArena.Position = UDim2.new(0.125, 0, 0.5, 0)
+GunfightArena.Position = UDim2.new(0.2, 0, 0.5, 0)
 GunfightArena.Size = UDim2.new(0.25, 0, 0.25, 0)
 GunfightArena.BackgroundColor3 = Color3.new(1, 1, 1)
 GunfightArena.BackgroundTransparency = 1
@@ -314,10 +398,10 @@ UIAspectRatioConstraint6.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint6.Parent = GunfightArena
 
-local UICorner5 = Instance.new("UICorner")
-UICorner5.Name = "UICorner"
-UICorner5.CornerRadius = UDim.new(0.1, 0)
-UICorner5.Parent = GunfightArena
+local UICorner9 = Instance.new("UICorner")
+UICorner9.Name = "UICorner"
+UICorner9.CornerRadius = UDim.new(0.1, 0)
+UICorner9.Parent = GunfightArena
 
 local UIStroke5 = Instance.new("UIStroke")
 UIStroke5.Name = "UIStroke"
@@ -326,13 +410,13 @@ UIStroke5.Thickness = 1.5
 UIStroke5.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UIStroke5.Parent = GunfightArena
 
-local UIGradient5 = Instance.new("UIGradient")
-UIGradient5.Name = "UIGradient"
-UIGradient5.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
-UIGradient5.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient5.Rotation = 90
-UIGradient5.Offset = Vector2.new(0, 1)
-UIGradient5.Parent = GunfightArena
+local UIGradient9 = Instance.new("UIGradient")
+UIGradient9.Name = "UIGradient"
+UIGradient9.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient9.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient9.Rotation = 90
+UIGradient9.Offset = Vector2.new(0, 1)
+UIGradient9.Parent = GunfightArena
 
 local Name5 = Instance.new("TextLabel")
 Name5.Name = "Name"
@@ -342,6 +426,7 @@ Name5.BackgroundColor3 = Color3.new(1, 1, 1)
 Name5.BackgroundTransparency = 1
 Name5.BorderSizePixel = 0
 Name5.BorderColor3 = Color3.new(0, 0, 0)
+Name5.ZIndex = 2
 Name5.Transparency = 1
 Name5.Text = "Gunfight Arena"
 Name5.TextColor3 = Color3.new(0.364706, 0.8, 1)
@@ -350,6 +435,26 @@ Name5.FontFace = Font.new("rbxasset://fonts/families/Zekton.json", Enum.FontWeig
 Name5.TextScaled = true
 Name5.TextWrapped = true
 Name5.Parent = GunfightArena
+
+local Effect5 = Instance.new("Frame")
+Effect5.Name = "Effect"
+Effect5.Size = UDim2.new(1, 0, 1, 0)
+Effect5.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect5.BorderSizePixel = 0
+Effect5.BorderColor3 = Color3.new(0, 0, 0)
+Effect5.Parent = GunfightArena
+
+local UICorner10 = Instance.new("UICorner")
+UICorner10.Name = "UICorner"
+UICorner10.CornerRadius = UDim.new(0.1, 0)
+UICorner10.Parent = Effect5
+
+local UIGradient10 = Instance.new("UIGradient")
+UIGradient10.Name = "UIGradient"
+UIGradient10.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient10.Rotation = -45
+UIGradient10.Offset = Vector2.new(0, -1.5)
+UIGradient10.Parent = Effect5
 
 local Character = Instance.new("Frame")
 Character.Name = "Character"
@@ -364,7 +469,7 @@ Character.Parent = ScrollingFrame
 
 local Fly = Instance.new("ImageButton")
 Fly.Name = "Fly"
-Fly.Position = UDim2.new(0.125, 0, 0.2, 0)
+Fly.Position = UDim2.new(0.2, 0, 0.2, 0)
 Fly.Size = UDim2.new(0.25, 0, 0.25, 0)
 Fly.BackgroundColor3 = Color3.new(1, 1, 1)
 Fly.BackgroundTransparency = 1
@@ -380,17 +485,17 @@ UIAspectRatioConstraint7.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint7.Parent = Fly
 
-local UICorner6 = Instance.new("UICorner")
-UICorner6.Name = "UICorner"
-UICorner6.CornerRadius = UDim.new(0.15, 0)
-UICorner6.Parent = Fly
+local UICorner11 = Instance.new("UICorner")
+UICorner11.Name = "UICorner"
+UICorner11.CornerRadius = UDim.new(0.15, 0)
+UICorner11.Parent = Fly
 
-local UIGradient6 = Instance.new("UIGradient")
-UIGradient6.Name = "UIGradient"
-UIGradient6.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient6.Rotation = 90
-UIGradient6.Offset = Vector2.new(0, 1)
-UIGradient6.Parent = Fly
+local UIGradient11 = Instance.new("UIGradient")
+UIGradient11.Name = "UIGradient"
+UIGradient11.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient11.Rotation = 90
+UIGradient11.Offset = Vector2.new(0, 1)
+UIGradient11.Parent = Fly
 
 local Name6 = Instance.new("TextLabel")
 Name6.Name = "Name"
@@ -400,6 +505,7 @@ Name6.BackgroundColor3 = Color3.new(1, 1, 1)
 Name6.BackgroundTransparency = 1
 Name6.BorderSizePixel = 0
 Name6.BorderColor3 = Color3.new(0, 0, 0)
+Name6.ZIndex = 2
 Name6.Transparency = 1
 Name6.Text = "Fly Gui"
 Name6.TextColor3 = Color3.new(1, 1, 1)
@@ -409,9 +515,29 @@ Name6.TextScaled = true
 Name6.TextWrapped = true
 Name6.Parent = Fly
 
+local Effect6 = Instance.new("Frame")
+Effect6.Name = "Effect"
+Effect6.Size = UDim2.new(1, 0, 1, 0)
+Effect6.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect6.BorderSizePixel = 0
+Effect6.BorderColor3 = Color3.new(0, 0, 0)
+Effect6.Parent = Fly
+
+local UICorner12 = Instance.new("UICorner")
+UICorner12.Name = "UICorner"
+UICorner12.CornerRadius = UDim.new(0.1, 0)
+UICorner12.Parent = Effect6
+
+local UIGradient12 = Instance.new("UIGradient")
+UIGradient12.Name = "UIGradient"
+UIGradient12.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient12.Rotation = -45
+UIGradient12.Offset = Vector2.new(0, -1.5)
+UIGradient12.Parent = Effect6
+
 local IfnJump = Instance.new("ImageButton")
 IfnJump.Name = "IfnJump"
-IfnJump.Position = UDim2.new(0.625, 0, 0.2, 0)
+IfnJump.Position = UDim2.new(0.8, 0, 0.2, 0)
 IfnJump.Size = UDim2.new(0.25, 0, 0.25, 0)
 IfnJump.BackgroundColor3 = Color3.new(1, 1, 1)
 IfnJump.BackgroundTransparency = 1
@@ -427,18 +553,18 @@ UIAspectRatioConstraint8.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint8.Parent = IfnJump
 
-local UICorner7 = Instance.new("UICorner")
-UICorner7.Name = "UICorner"
-UICorner7.CornerRadius = UDim.new(0.15, 0)
-UICorner7.Parent = IfnJump
+local UICorner13 = Instance.new("UICorner")
+UICorner13.Name = "UICorner"
+UICorner13.CornerRadius = UDim.new(0.15, 0)
+UICorner13.Parent = IfnJump
 
-local UIGradient7 = Instance.new("UIGradient")
-UIGradient7.Name = "UIGradient"
-UIGradient7.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
-UIGradient7.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient7.Rotation = 90
-UIGradient7.Offset = Vector2.new(0, 1)
-UIGradient7.Parent = IfnJump
+local UIGradient13 = Instance.new("UIGradient")
+UIGradient13.Name = "UIGradient"
+UIGradient13.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient13.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient13.Rotation = 90
+UIGradient13.Offset = Vector2.new(0, 1)
+UIGradient13.Parent = IfnJump
 
 local Name7 = Instance.new("TextLabel")
 Name7.Name = "Name"
@@ -448,6 +574,7 @@ Name7.BackgroundColor3 = Color3.new(1, 1, 1)
 Name7.BackgroundTransparency = 1
 Name7.BorderSizePixel = 0
 Name7.BorderColor3 = Color3.new(0, 0, 0)
+Name7.ZIndex = 2
 Name7.Transparency = 1
 Name7.Text = "Infinity Jump"
 Name7.TextColor3 = Color3.new(1, 1, 1)
@@ -457,9 +584,29 @@ Name7.TextScaled = true
 Name7.TextWrapped = true
 Name7.Parent = IfnJump
 
+local Effect7 = Instance.new("Frame")
+Effect7.Name = "Effect"
+Effect7.Size = UDim2.new(1, 0, 1, 0)
+Effect7.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect7.BorderSizePixel = 0
+Effect7.BorderColor3 = Color3.new(0, 0, 0)
+Effect7.Parent = IfnJump
+
+local UICorner14 = Instance.new("UICorner")
+UICorner14.Name = "UICorner"
+UICorner14.CornerRadius = UDim.new(0.1, 0)
+UICorner14.Parent = Effect7
+
+local UIGradient14 = Instance.new("UIGradient")
+UIGradient14.Name = "UIGradient"
+UIGradient14.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient14.Rotation = -45
+UIGradient14.Offset = Vector2.new(0, -1.5)
+UIGradient14.Parent = Effect7
+
 local Speed = Instance.new("ImageButton")
 Speed.Name = "Speed"
-Speed.Position = UDim2.new(0.375, 0, 0.2, 0)
+Speed.Position = UDim2.new(0.5, 0, 0.2, 0)
 Speed.Size = UDim2.new(0.25, 0, 0.25, 0)
 Speed.BackgroundColor3 = Color3.new(1, 1, 1)
 Speed.BackgroundTransparency = 1
@@ -475,17 +622,17 @@ UIAspectRatioConstraint9.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint9.Parent = Speed
 
-local UICorner8 = Instance.new("UICorner")
-UICorner8.Name = "UICorner"
-UICorner8.CornerRadius = UDim.new(0.15, 0)
-UICorner8.Parent = Speed
+local UICorner15 = Instance.new("UICorner")
+UICorner15.Name = "UICorner"
+UICorner15.CornerRadius = UDim.new(0.15, 0)
+UICorner15.Parent = Speed
 
-local UIGradient8 = Instance.new("UIGradient")
-UIGradient8.Name = "UIGradient"
-UIGradient8.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient8.Rotation = 90
-UIGradient8.Offset = Vector2.new(0, 1)
-UIGradient8.Parent = Speed
+local UIGradient15 = Instance.new("UIGradient")
+UIGradient15.Name = "UIGradient"
+UIGradient15.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient15.Rotation = 90
+UIGradient15.Offset = Vector2.new(0, 1)
+UIGradient15.Parent = Speed
 
 local Name8 = Instance.new("TextLabel")
 Name8.Name = "Name"
@@ -495,6 +642,7 @@ Name8.BackgroundColor3 = Color3.new(1, 1, 1)
 Name8.BackgroundTransparency = 1
 Name8.BorderSizePixel = 0
 Name8.BorderColor3 = Color3.new(0, 0, 0)
+Name8.ZIndex = 2
 Name8.Transparency = 1
 Name8.Text = "Speed"
 Name8.TextColor3 = Color3.new(1, 1, 1)
@@ -504,9 +652,29 @@ Name8.TextScaled = true
 Name8.TextWrapped = true
 Name8.Parent = Speed
 
+local Effect8 = Instance.new("Frame")
+Effect8.Name = "Effect"
+Effect8.Size = UDim2.new(1, 0, 1, 0)
+Effect8.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect8.BorderSizePixel = 0
+Effect8.BorderColor3 = Color3.new(0, 0, 0)
+Effect8.Parent = Speed
+
+local UICorner16 = Instance.new("UICorner")
+UICorner16.Name = "UICorner"
+UICorner16.CornerRadius = UDim.new(0.1, 0)
+UICorner16.Parent = Effect8
+
+local UIGradient16 = Instance.new("UIGradient")
+UIGradient16.Name = "UIGradient"
+UIGradient16.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient16.Rotation = -45
+UIGradient16.Offset = Vector2.new(0, -1.5)
+UIGradient16.Parent = Effect8
+
 local Explorer = Instance.new("ImageButton")
 Explorer.Name = "Explorer"
-Explorer.Position = UDim2.new(0.125, 0, 0.5, 0)
+Explorer.Position = UDim2.new(0.2, 0, 0.5, 0)
 Explorer.Size = UDim2.new(0.25, 0, 0.25, 0)
 Explorer.BackgroundColor3 = Color3.new(1, 1, 1)
 Explorer.BackgroundTransparency = 1
@@ -522,17 +690,17 @@ UIAspectRatioConstraint10.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint10.Parent = Explorer
 
-local UICorner9 = Instance.new("UICorner")
-UICorner9.Name = "UICorner"
-UICorner9.CornerRadius = UDim.new(0.15, 0)
-UICorner9.Parent = Explorer
+local UICorner17 = Instance.new("UICorner")
+UICorner17.Name = "UICorner"
+UICorner17.CornerRadius = UDim.new(0.15, 0)
+UICorner17.Parent = Explorer
 
-local UIGradient9 = Instance.new("UIGradient")
-UIGradient9.Name = "UIGradient"
-UIGradient9.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient9.Rotation = 90
-UIGradient9.Offset = Vector2.new(0, 1)
-UIGradient9.Parent = Explorer
+local UIGradient17 = Instance.new("UIGradient")
+UIGradient17.Name = "UIGradient"
+UIGradient17.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient17.Rotation = 90
+UIGradient17.Offset = Vector2.new(0, 1)
+UIGradient17.Parent = Explorer
 
 local Name9 = Instance.new("TextLabel")
 Name9.Name = "Name"
@@ -542,6 +710,7 @@ Name9.BackgroundColor3 = Color3.new(1, 1, 1)
 Name9.BackgroundTransparency = 1
 Name9.BorderSizePixel = 0
 Name9.BorderColor3 = Color3.new(0, 0, 0)
+Name9.ZIndex = 2
 Name9.Transparency = 1
 Name9.Text = "Explorer"
 Name9.TextColor3 = Color3.new(1, 1, 1)
@@ -551,9 +720,29 @@ Name9.TextScaled = true
 Name9.TextWrapped = true
 Name9.Parent = Explorer
 
+local Effect9 = Instance.new("Frame")
+Effect9.Name = "Effect"
+Effect9.Size = UDim2.new(1, 0, 1, 0)
+Effect9.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect9.BorderSizePixel = 0
+Effect9.BorderColor3 = Color3.new(0, 0, 0)
+Effect9.Parent = Explorer
+
+local UICorner18 = Instance.new("UICorner")
+UICorner18.Name = "UICorner"
+UICorner18.CornerRadius = UDim.new(0.1, 0)
+UICorner18.Parent = Effect9
+
+local UIGradient18 = Instance.new("UIGradient")
+UIGradient18.Name = "UIGradient"
+UIGradient18.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient18.Rotation = -45
+UIGradient18.Offset = Vector2.new(0, -1.5)
+UIGradient18.Parent = Effect9
+
 local HitBox = Instance.new("ImageButton")
 HitBox.Name = "HitBox"
-HitBox.Position = UDim2.new(0.875, 0, 0.2, 0)
+HitBox.Position = UDim2.new(0.5, 0, 0.5, 0)
 HitBox.Size = UDim2.new(0.25, 0, 0.25, 0)
 HitBox.BackgroundColor3 = Color3.new(1, 1, 1)
 HitBox.BackgroundTransparency = 1
@@ -569,18 +758,18 @@ UIAspectRatioConstraint11.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint11.Parent = HitBox
 
-local UICorner10 = Instance.new("UICorner")
-UICorner10.Name = "UICorner"
-UICorner10.CornerRadius = UDim.new(0.15, 0)
-UICorner10.Parent = HitBox
+local UICorner19 = Instance.new("UICorner")
+UICorner19.Name = "UICorner"
+UICorner19.CornerRadius = UDim.new(0.15, 0)
+UICorner19.Parent = HitBox
 
-local UIGradient10 = Instance.new("UIGradient")
-UIGradient10.Name = "UIGradient"
-UIGradient10.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
-UIGradient10.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient10.Rotation = 90
-UIGradient10.Offset = Vector2.new(0, 1)
-UIGradient10.Parent = HitBox
+local UIGradient19 = Instance.new("UIGradient")
+UIGradient19.Name = "UIGradient"
+UIGradient19.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient19.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient19.Rotation = 90
+UIGradient19.Offset = Vector2.new(0, 1)
+UIGradient19.Parent = HitBox
 
 local Name10 = Instance.new("TextLabel")
 Name10.Name = "Name"
@@ -590,6 +779,7 @@ Name10.BackgroundColor3 = Color3.new(1, 1, 1)
 Name10.BackgroundTransparency = 1
 Name10.BorderSizePixel = 0
 Name10.BorderColor3 = Color3.new(0, 0, 0)
+Name10.ZIndex = 2
 Name10.Transparency = 1
 Name10.Text = "Hit Box"
 Name10.TextColor3 = Color3.new(1, 1, 1)
@@ -598,6 +788,26 @@ Name10.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeig
 Name10.TextScaled = true
 Name10.TextWrapped = true
 Name10.Parent = HitBox
+
+local Effect10 = Instance.new("Frame")
+Effect10.Name = "Effect"
+Effect10.Size = UDim2.new(1, 0, 1, 0)
+Effect10.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect10.BorderSizePixel = 0
+Effect10.BorderColor3 = Color3.new(0, 0, 0)
+Effect10.Parent = HitBox
+
+local UICorner20 = Instance.new("UICorner")
+UICorner20.Name = "UICorner"
+UICorner20.CornerRadius = UDim.new(0.1, 0)
+UICorner20.Parent = Effect10
+
+local UIGradient20 = Instance.new("UIGradient")
+UIGradient20.Name = "UIGradient"
+UIGradient20.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient20.Rotation = -45
+UIGradient20.Offset = Vector2.new(0, -1.5)
+UIGradient20.Parent = Effect10
 
 local Visuals = Instance.new("Frame")
 Visuals.Name = "Visuals"
@@ -616,90 +826,123 @@ UIStroke6.Color = Color3.new(1, 0, 0.784314)
 UIStroke6.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UIStroke6.Parent = ScrollingFrame
 
-local UICorner11 = Instance.new("UICorner")
-UICorner11.Name = "UICorner"
-UICorner11.CornerRadius = UDim.new(0.025, 0)
-UICorner11.Parent = ScrollingFrame
+local UICorner21 = Instance.new("UICorner")
+UICorner21.Name = "UICorner"
+UICorner21.CornerRadius = UDim.new(0.025, 0)
+UICorner21.Parent = ScrollingFrame
 
-local UICorner12 = Instance.new("UICorner")
-UICorner12.Name = "UICorner"
-UICorner12.CornerRadius = UDim.new(0.025, 0)
-UICorner12.Parent = Main
+local UICorner22 = Instance.new("UICorner")
+UICorner22.Name = "UICorner"
+UICorner22.CornerRadius = UDim.new(0.025, 0)
+UICorner22.Parent = Main
 
-local GameHub2 = Instance.new("ImageButton")
-GameHub2.Name = "GameHub"
-GameHub2.Position = UDim2.new(0.151, 0, 0.75, 0)
-GameHub2.Size = UDim2.new(0.25, 0, 0.25, 0)
-GameHub2.BackgroundColor3 = Color3.new(1, 1, 1)
-GameHub2.BackgroundTransparency = 1
-GameHub2.BorderSizePixel = 0
-GameHub2.BorderColor3 = Color3.new(0, 0, 0)
-GameHub2.Transparency = 1
-GameHub2.Image = "rbxassetid://76634495910816"
-GameHub2.Parent = Main
+local UIGradient21 = Instance.new("UIGradient")
+UIGradient21.Name = "UIGradient"
+UIGradient21.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(0.5, Color3.new(0.968627, 0, 1)), ColorSequenceKeypoint.new(1, Color3.new(1, 0, 0.392157))})
+UIGradient21.Rotation = 90
+UIGradient21.Parent = Main
 
-local UIAspectRatioConstraint12 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint12.Name = "UIAspectRatioConstraint"
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Position = UDim2.new(0.175, 0, 0.075, 0)
+Title.Size = UDim2.new(0.3, 0, 0.125, 0)
+Title.BackgroundColor3 = Color3.new(1, 1, 1)
+Title.BackgroundTransparency = 1
+Title.BorderSizePixel = 0
+Title.BorderColor3 = Color3.new(0, 0, 0)
+Title.AnchorPoint = Vector2.new(0.5, 0.5)
+Title.TextTransparency = 0
+Title.Text = "HAPPY script"
+Title.TextColor3 = Color3.new(1, 0, 0.901961)
+Title.TextSize = 14
+Title.FontFace = Font.new("rbxassetid://12187368843", Enum.FontWeight.Regular, Enum.FontStyle.Italic)
+Title.TextScaled = true
+Title.TextWrapped = true
+Title.Parent = Main
 
-UIAspectRatioConstraint12.Parent = GameHub2
+local UIGradient22 = Instance.new("UIGradient")
+UIGradient22.Name = "UIGradient"
+UIGradient22.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 0, 0.615686)), ColorSequenceKeypoint.new(1, Color3.new(0.8, 0, 1))})
+UIGradient22.Rotation = -45
+UIGradient22.Parent = Title
 
-local Character2 = Instance.new("ImageButton")
+local Character2 = Instance.new("TextButton")
 Character2.Name = "Character"
-Character2.Position = UDim2.new(0.428454, 0, 0.75, 0)
-Character2.Size = UDim2.new(0.25, 0, 0.25, 0)
+Character2.Position = UDim2.new(0.025, 0, 0.275, 0)
+Character2.Size = UDim2.new(0.3, 0, 0.15, 0)
 Character2.BackgroundColor3 = Color3.new(1, 1, 1)
 Character2.BackgroundTransparency = 1
 Character2.BorderSizePixel = 0
 Character2.BorderColor3 = Color3.new(0, 0, 0)
-Character2.Transparency = 1
-Character2.Image = "rbxassetid://131198702319529"
+Character2.TextTransparency = 0
+Character2.Text = "Character"
+Character2.TextColor3 = Color3.new(0.392157, 0.392157, 1)
+Character2.TextSize = 14
+Character2.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Character2.TextScaled = true
+Character2.TextWrapped = true
+Character2.TextXAlignment = Enum.TextXAlignment.Left
 Character2.Parent = Main
 
-local UIAspectRatioConstraint13 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint13.Name = "UIAspectRatioConstraint"
+local GameHub2 = Instance.new("TextButton")
+GameHub2.Name = "GameHub"
+GameHub2.Position = UDim2.new(0.025, 0, 0.475, 0)
+GameHub2.Size = UDim2.new(0.3, 0, 0.15, 0)
+GameHub2.BackgroundColor3 = Color3.new(1, 1, 1)
+GameHub2.BackgroundTransparency = 1
+GameHub2.BorderSizePixel = 0
+GameHub2.BorderColor3 = Color3.new(0, 0, 0)
+GameHub2.TextTransparency = 0
+GameHub2.Text = "GameHub"
+GameHub2.TextColor3 = Color3.new(0.392157, 0.392157, 1)
+GameHub2.TextSize = 14
+GameHub2.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+GameHub2.TextScaled = true
+GameHub2.TextWrapped = true
+GameHub2.TextXAlignment = Enum.TextXAlignment.Left
+GameHub2.Parent = Main
 
-UIAspectRatioConstraint13.Parent = Character2
-
-local Visuals2 = Instance.new("ImageButton")
+local Visuals2 = Instance.new("TextButton")
 Visuals2.Name = "Visuals"
-Visuals2.Position = UDim2.new(0.705, 0, 0.75, 0)
-Visuals2.Size = UDim2.new(0.25, 0, 0.25, 0)
+Visuals2.Position = UDim2.new(0.025, 0, 0.675, 0)
+Visuals2.Size = UDim2.new(0.3, 0, 0.15, 0)
 Visuals2.BackgroundColor3 = Color3.new(1, 1, 1)
 Visuals2.BackgroundTransparency = 1
 Visuals2.BorderSizePixel = 0
 Visuals2.BorderColor3 = Color3.new(0, 0, 0)
-Visuals2.Transparency = 1
-Visuals2.Image = "rbxassetid://83096530703299"
+Visuals2.TextTransparency = 0
+Visuals2.Text = "Visuals"
+Visuals2.TextColor3 = Color3.new(0.392157, 0.392157, 1)
+Visuals2.TextSize = 14
+Visuals2.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Visuals2.TextScaled = true
+Visuals2.TextWrapped = true
+Visuals2.TextXAlignment = Enum.TextXAlignment.Left
 Visuals2.Parent = Main
-
-local UIAspectRatioConstraint14 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint14.Name = "UIAspectRatioConstraint"
-
-UIAspectRatioConstraint14.Parent = Visuals2
 
 local Button = Instance.new("ImageButton")
 Button.Name = "Button"
 Button.Position = UDim2.new(0.5, 0, 0.5, 0)
-Button.Size = UDim2.new(0.095, 0, 0.095, 0)
+Button.Size = UDim2.new(0.09, 0, 0.09, 0)
 Button.BackgroundColor3 = Color3.new(1, 1, 1)
 Button.BackgroundTransparency = 1
 Button.BorderSizePixel = 0
 Button.BorderColor3 = Color3.new(0, 0, 0)
-Button.ZIndex = 2
+Button.ZIndex = 9999
 Button.AnchorPoint = Vector2.new(0.5, 0.5)
 Button.Transparency = 1
 Button.Image = "rbxassetid://90219562764375"
 Button.Parent = TestGui
 
-local UIAspectRatioConstraint15 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint15.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint12 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint12.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint15.Parent = Button
+UIAspectRatioConstraint12.Parent = Button
 
-local UICorner13 = Instance.new("UICorner")
-UICorner13.Name = "UICorner"
-UICorner13.CornerRadius = UDim.new(0.1, 0)
-UICorner13.Parent = Button
+local UICorner23 = Instance.new("UICorner")
+UICorner23.Name = "UICorner"
+UICorner23.CornerRadius = UDim.new(0.1, 0)
+UICorner23.Parent = Button
 
 local Version = Instance.new("TextLabel")
 Version.Name = "Version"
@@ -712,7 +955,8 @@ Version.BorderColor3 = Color3.new(0, 0, 0)
 Version.Rotation = -15
 Version.AnchorPoint = Vector2.new(0.5, 0.5)
 Version.TextTransparency = 0
-Version.Text = "v0.02"
+Version.TextStrokeTransparency = 0
+Version.Text = "v0.03"
 Version.TextColor3 = Color3.new(0.831373, 0, 1)
 Version.TextSize = 14
 Version.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
@@ -725,7 +969,27 @@ UIDragDetector2.Name = "UIDragDetector"
 
 UIDragDetector2.Parent = Button
 
---========================================================================================================
+local Effect11 = Instance.new("Frame")
+Effect11.Name = "Effect"
+Effect11.Size = UDim2.new(1, 0, 1, 0)
+Effect11.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect11.BorderSizePixel = 0
+Effect11.BorderColor3 = Color3.new(0, 0, 0)
+Effect11.Parent = Button
+
+local UICorner24 = Instance.new("UICorner")
+UICorner24.Name = "UICorner"
+UICorner24.CornerRadius = UDim.new(0.1, 0)
+UICorner24.Parent = Effect11
+
+local UIGradient23 = Instance.new("UIGradient")
+UIGradient23.Name = "UIGradient"
+UIGradient23.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.5, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient23.Rotation = -45
+UIGradient23.Offset = Vector2.new(0, 1.5)
+UIGradient23.Parent = Effect11
+
+--=======================================================================================================
 
 local ScriptMapping = {
 
@@ -925,12 +1189,14 @@ local function openTabFrame(targetFrame)
 	end
 
 	table.sort(buttons, function(a, b)
-		local ap, bp = a.Position, b.Position
-		if ap.Y.Scale ~= bp.Y.Scale then
-			return ap.Y.Scale < bp.Y.Scale
+		local ax, ay = a.Position.X.Scale, a.Position.Y.Scale
+		local bx, by = b.Position.X.Scale, b.Position.Y.Scale
+		if ay ~= by then
+			return ay < by
 		end
-		return ap.X.Scale < bp.X.Scale
+		return ax < bx
 	end)
+
 
 	task.spawn(function()
 		for _, btn in ipairs(buttons) do
@@ -1016,3 +1282,120 @@ toggleButton.InputEnded:Connect(function(input)
 		dragStartPos = nil
 	end
 end)
+
+--------------------------------------------------------
+-- HOVER COLOR EFFECT FOR 3 TAB BUTTONS
+--------------------------------------------------------
+
+local tabButtons = {btnCharacter, btnGameHub, btnVisuals}
+
+local normalColor = Color3.fromRGB(100, 100, 255)
+local hoverColor = Color3.fromRGB(255, 0, 100)
+
+local tabTweenInfo = TweenInfo.new(
+	0.3,
+	Enum.EasingStyle.Quad,
+	Enum.EasingDirection.Out
+)
+
+local function applyTabHover(btn)
+	btn.TextColor3 = normalColor
+
+	local function tweenColor(targetColor)
+		TweenService:Create(btn, tabTweenInfo, {TextColor3 = targetColor}):Play()
+	end
+
+	-- PC RÊ CHUỘT
+	btn.MouseEnter:Connect(function()
+		tweenColor(hoverColor)
+	end)
+
+	btn.MouseLeave:Connect(function()
+		tweenColor(normalColor)
+	end)
+
+	-- MOBILE RÊ NGÓN TAY
+	btn.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.Touch then
+			tweenColor(hoverColor)
+		end
+	end)
+
+	btn.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.Touch then
+			tweenColor(normalColor)
+		end
+	end)
+end
+
+for _, tab in ipairs(tabButtons) do
+	applyTabHover(tab)
+end
+
+--------------------------------------------------------
+-- UIGradient HOVER EFFECT FOR ALL BUTTONS
+--------------------------------------------------------
+
+local function applyGradientEffect(btn)
+	-- tìm Frame Effect > UIGradient
+	local effectFrame = btn:FindFirstChild("Effect")
+	if not effectFrame then return end
+
+	local gradient = effectFrame:FindFirstChildOfClass("UIGradient")
+	if not gradient then return end
+
+	-- giá trị offset mặc định
+	gradient.Offset = Vector2.new(0, 1.5)
+
+	local hoverInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+	local function tweenGradient(offset)
+		TweenService:Create(gradient, hoverInfo, {Offset = offset}):Play()
+	end
+
+	-- PC hover
+	btn.MouseEnter:Connect(function()
+		tweenGradient(Vector2.new(0, -1.5))
+	end)
+
+	btn.MouseLeave:Connect(function()
+		-- KHÔNG tween, đặt trực tiếp
+		gradient.Offset = Vector2.new(0, 1.5)
+	end)
+
+	-- MOBILE hover
+	btn.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.Touch then
+			tweenGradient(Vector2.new(0, -1.5))
+		end
+	end)
+
+	btn.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.Touch then
+			-- KHÔNG tween, đặt trực tiếp
+			gradient.Offset = Vector2.new(0, 1.5)
+		end
+	end)
+end
+
+--------------------------------------------------------
+-- APPLY GRADIENT EFFECT TO ALL BUTTON IN FRAMES
+--------------------------------------------------------
+
+local function applyGradientToFrameButtons(frame)
+	for _, obj in ipairs(frame:GetChildren()) do
+		if obj:IsA("TextButton") or obj:IsA("ImageButton") then
+			applyGradientEffect(obj)
+		end
+	end
+end
+
+-- apply cho toàn bộ các frame
+applyGradientToFrameButtons(frameCharacter)
+applyGradientToFrameButtons(frameGameHub)
+applyGradientToFrameButtons(frameVisuals)
+
+--------------------------------------------------------
+-- APPLY GRADIENT FOR MAIN MENU BUTTON
+--------------------------------------------------------
+applyGradientEffect(toggleButton)
