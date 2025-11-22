@@ -673,6 +673,8 @@ UIDragDetector2.Parent = Button
 --===================================================================================================
 
 local ScriptMapping = {
+	
+	-- GameHud --
 	BloxFruit = function()
 		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/BLOX_FRUIT/main/BLOX_FRUIT.lua")
 		loadstring(code)()
@@ -681,9 +683,37 @@ local ScriptMapping = {
 		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ZOMBIE_STORIES/refs/heads/main/ZOMBIE_STORIES")
 		loadstring(code)()
 	end,
+	MM2 = function()
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Muder-Mystery-2/refs/heads/main/Muder%20Mystery%202")
+		loadstring(code)()
+	end,
+	DeadRails = function()
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/DEAD_RAILS/refs/heads/main/DEAD_RAILS")
+		loadstring(code)()
+	end,
+	
+	-- Character --
+	Fly = function()
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/FLY/refs/heads/main/FLY")
+		loadstring(code)()
+	end,
+	IfnJump = function()
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/IFN_JUMP/refs/heads/main/IFN_JUMP")
+		loadstring(code)()
+	end,
+	Explorer = function()
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/FILE_GAME/refs/heads/main/FILE_GAME")
+		loadstring(code)()
+	end,
+	HitBox = function()
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/NONE/refs/heads/main/NONE")
+		loadstring(code)()
+	end,
+	Speed = function()
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_SPEED/refs/heads/main/CHECK_SEVER_SPEED")
+		loadstring(code)()
+	end,
 }
-
-
 
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
