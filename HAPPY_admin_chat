@@ -1238,6 +1238,31 @@ local hoverSize = UDim2.new(0.275, 0, 0.275, 0)
 local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 local fastInfo = TweenInfo.new(0.07, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
+--BUTTON
+local openSize = UDim2.new(0.75, 0, 0.75, 0)
+local closeSize = UDim2.new(0.025, 0, 0.025, 0)
+
+local menuOpen = false
+local dragStartPos
+local dragging = false
+local clickThreshold = 8
+
+local function openMenu()
+	main.Visible = true
+	main.Size = closeSize
+	TweenService:Create(main, tweenInfo, {Size = openSize}):Play()
+end
+
+local function closeMenu()
+	local tween = TweenService:Create(main, tweenInfo, {Size = closeSize})
+	tween:Play()
+	tween.Completed:Once(function()
+		if not menuOpen then
+			main.Visible = false
+		end
+	end)
+end
+
 --------------------------------------------------------
 -- APPLY FIREBASE SYTEM
 --------------------------------------------------------
@@ -1273,6 +1298,9 @@ local Noti_Return1 = Noti:WaitForChild("Return1")
 local Noti_ReturnIfn = Noti:WaitForChild("ReturnIfn")
 local Noti_Back = Noti:WaitForChild("Back")
 local Noti_Done = Noti:WaitForChild("Done")
+local Lighting = game:GetService("Lighting")
+local blur -- object
+local menuWasOpen = false
 local Noti_Name = Noti:FindFirstChild("Name") or (Noti_Logo:FindFirstChild("Name") and Noti_Logo:FindFirstChild("Name"))
 if not Noti_Name then
 	Noti_Name = Instance.new("TextLabel")
@@ -1283,15 +1311,46 @@ if not Noti_Name then
 end
 
 local function openNoti()
+	-- Lưu trạng thái menu
+	menuWasOpen = menuOpen
+
+	-- Nếu menu đang mở thì đóng lại
+	if menuOpen then
+		menuOpen = false
+		closeMenu()
+	end
+
+	-- Tạo Blur
+	if not blur then
+		blur = Instance.new("BlurEffect")
+		blur.Size = 50
+		blur.Name = "HappyBlur"
+		blur.Parent = Lighting
+	end
+
+	-- Hiện Noti
 	Noti.Visible = true
 	Noti.Size = UDim2.new(0.025,0,0.025,0)
 	TweenService:Create(Noti, tweenInfo, {Size = UDim2.new(0.4,0,0.4,0)}):Play()
 end
+
 local function closeNoti()
 	local tw = TweenService:Create(Noti, tweenInfo, {Size = UDim2.new(0.025,0,0.025,0)})
 	tw:Play()
 	tw.Completed:Once(function()
 		Noti.Visible = false
+
+		-- Xóa Blur
+		if blur then
+			blur:Destroy()
+			blur = nil
+		end
+
+		-- Mở lại Menu nếu trước đó nó đang mở
+		if menuWasOpen then
+			menuOpen = true
+			openMenu()
+		end
 	end)
 end
 
@@ -1722,30 +1781,6 @@ end)
 --------------------------------------------------------
 -- TOGGLE MAIN MENU (PC + MOBILE)
 --------------------------------------------------------
-
-local openSize = UDim2.new(0.75, 0, 0.75, 0)
-local closeSize = UDim2.new(0.025, 0, 0.025, 0)
-
-local menuOpen = false
-local dragStartPos
-local dragging = false
-local clickThreshold = 8
-
-local function openMenu()
-	main.Visible = true
-	main.Size = closeSize
-	TweenService:Create(main, tweenInfo, {Size = openSize}):Play()
-end
-
-local function closeMenu()
-	local tween = TweenService:Create(main, tweenInfo, {Size = closeSize})
-	tween:Play()
-	tween.Completed:Once(function()
-		if not menuOpen then
-			main.Visible = false
-		end
-	end)
-end
 
 toggleButton.InputBegan:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1 
