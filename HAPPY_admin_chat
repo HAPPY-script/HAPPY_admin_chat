@@ -15,7 +15,7 @@ end
 _G.HAPPY_script = true
 
 game.StarterGui:SetCore("SendNotification", {
-    Title = "⚜️HAPPY script v0.03⚜️";
+    Title = "⚜️HAPPY script v0.04⚜️";
     Text = "🔔Updating UI Please Wait⏳";
     Duration = 5;
 })
@@ -1194,7 +1194,10 @@ local UICorner29 = Instance.new("UICorner")
 UICorner29.Name = "UICorner"
 UICorner29.CornerRadius = UDim.new(1, 0)
 UICorner29.Parent = ReturnIfn
+print("✅Done UI")
 
 wait(0.5)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
+
+print("✅Done System")
