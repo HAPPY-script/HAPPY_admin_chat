@@ -20,12 +20,12 @@ game.StarterGui:SetCore("SendNotification", {
     Duration = 5;
 })
 
-local TestGui = Instance.new("ScreenGui")
-TestGui.Name = "TestGui"
-TestGui.ResetOnSpawn = false
-TestGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-TestGui.DisplayOrder = 9999
-TestGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local HAPPYscript = Instance.new("ScreenGui")
+HAPPYscript.Name = "HAPPYscript"
+HAPPYscript.ResetOnSpawn = false
+HAPPYscript.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+HAPPYscript.DisplayOrder = 9999
+HAPPYscript.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 local Main = Instance.new("Frame")
 Main.Name = "Main"
@@ -36,10 +36,10 @@ Main.BackgroundTransparency = 0.05000000074505806
 Main.BorderSizePixel = 0
 Main.BorderColor3 = Color3.new(0, 0, 0)
 Main.Visible = false
-Main.ZIndex = 9998
+Main.ZIndex = 9997
 Main.AnchorPoint = Vector2.new(0.5, 0.5)
 Main.Transparency = 0.05000000074505806
-Main.Parent = TestGui
+Main.Parent = HAPPYscript
 
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 UIAspectRatioConstraint.Name = "UIAspectRatioConstraint"
@@ -910,6 +910,7 @@ Visuals2.BackgroundColor3 = Color3.new(1, 1, 1)
 Visuals2.BackgroundTransparency = 1
 Visuals2.BorderSizePixel = 0
 Visuals2.BorderColor3 = Color3.new(0, 0, 0)
+Visuals2.Visible = false
 Visuals2.TextTransparency = 0
 Visuals2.Text = "Visuals"
 Visuals2.TextColor3 = Color3.new(0.392157, 0.392157, 1)
@@ -932,7 +933,7 @@ Button.ZIndex = 9999
 Button.AnchorPoint = Vector2.new(0.5, 0.5)
 Button.Transparency = 1
 Button.Image = "rbxassetid://90219562764375"
-Button.Parent = TestGui
+Button.Parent = HAPPYscript
 
 local UIAspectRatioConstraint12 = Instance.new("UIAspectRatioConstraint")
 UIAspectRatioConstraint12.Name = "UIAspectRatioConstraint"
@@ -989,7 +990,169 @@ UIGradient23.Rotation = -45
 UIGradient23.Offset = Vector2.new(0, 1.5)
 UIGradient23.Parent = Effect11
 
---=======================================================================================================
+local Noti = Instance.new("Frame")
+Noti.Name = "Noti"
+Noti.Position = UDim2.new(0.5, 0, 0.5, 0)
+Noti.Size = UDim2.new(0.45, 0, 0.45, 0)
+Noti.BackgroundColor3 = Color3.new(0.333333, 0, 0.270588)
+Noti.BorderSizePixel = 0
+Noti.BorderColor3 = Color3.new(0, 0, 0)
+Noti.Visible = false
+Noti.ZIndex = 9998
+Noti.AnchorPoint = Vector2.new(0.5, 0.5)
+Noti.Parent = HAPPYscript
+
+local UIAspectRatioConstraint13 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint13.Name = "UIAspectRatioConstraint"
+UIAspectRatioConstraint13.AspectRatio = 1.75
+UIAspectRatioConstraint13.Parent = Noti
+
+local UIGradient24 = Instance.new("UIGradient")
+UIGradient24.Name = "UIGradient"
+UIGradient24.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.968627, 0, 1)), ColorSequenceKeypoint.new(1, Color3.new(0.235294, 0, 1))})
+UIGradient24.Rotation = -45
+UIGradient24.Parent = Noti
+
+local UICorner25 = Instance.new("UICorner")
+UICorner25.Name = "UICorner"
+UICorner25.CornerRadius = UDim.new(0.05, 0)
+UICorner25.Parent = Noti
+
+local UIStroke7 = Instance.new("UIStroke")
+UIStroke7.Name = "UIStroke"
+UIStroke7.Color = Color3.new(0.784314, 0.392157, 1)
+UIStroke7.Parent = Noti
+
+local Back = Instance.new("TextButton")
+Back.Name = "Back"
+Back.Position = UDim2.new(0, 0, 0.749668, 0)
+Back.Size = UDim2.new(0.25, 0, 0.25, 0)
+Back.BackgroundColor3 = Color3.new(1, 1, 1)
+Back.BackgroundTransparency = 1
+Back.BorderSizePixel = 0
+Back.BorderColor3 = Color3.new(0, 0, 0)
+Back.TextTransparency = 0
+Back.Text = "< Back"
+Back.TextColor3 = Color3.new(1, 0, 0.196078)
+Back.TextSize = 14
+Back.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Back.TextScaled = true
+Back.TextWrapped = true
+Back.Parent = Noti
+
+local Logo = Instance.new("ImageLabel")
+Logo.Name = "Logo"
+Logo.Position = UDim2.new(0.025, 0, 0.05, 0)
+Logo.Size = UDim2.new(0.4, 0, 0.4, 0)
+Logo.BackgroundColor3 = Color3.new(0.364706, 0.192157, 0.486275)
+Logo.BorderSizePixel = 0
+Logo.BorderColor3 = Color3.new(0, 0, 0)
+Logo.Parent = Noti
+
+local UIAspectRatioConstraint14 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint14.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint14.Parent = Logo
+
+local UICorner26 = Instance.new("UICorner")
+UICorner26.Name = "UICorner"
+UICorner26.CornerRadius = UDim.new(0.15, 0)
+UICorner26.Parent = Logo
+
+local Name11 = Instance.new("TextLabel")
+Name11.Name = "Name"
+Name11.Position = UDim2.new(0.5, 0, 1.25, 0)
+Name11.Size = UDim2.new(1.15, 0, 0.4, 0)
+Name11.BackgroundColor3 = Color3.new(1, 1, 1)
+Name11.BackgroundTransparency = 1
+Name11.BorderSizePixel = 0
+Name11.BorderColor3 = Color3.new(0, 0, 0)
+Name11.AnchorPoint = Vector2.new(0.5, 0.5)
+Name11.TextTransparency = 0
+Name11.Text = "---"
+Name11.TextColor3 = Color3.new(1, 0, 1)
+Name11.TextSize = 14
+Name11.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name11.TextScaled = true
+Name11.TextWrapped = true
+Name11.Parent = Logo
+
+local Done = Instance.new("TextButton")
+Done.Name = "Done"
+Done.Position = UDim2.new(0.75, 0, 0.75, 0)
+Done.Size = UDim2.new(0.25, 0, 0.25, 0)
+Done.BackgroundColor3 = Color3.new(1, 1, 1)
+Done.BackgroundTransparency = 1
+Done.BorderSizePixel = 0
+Done.BorderColor3 = Color3.new(0, 0, 0)
+Done.TextTransparency = 0
+Done.Text = "Done"
+Done.TextColor3 = Color3.new(0.392157, 1, 0)
+Done.TextSize = 14
+Done.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Done.TextScaled = true
+Done.TextWrapped = true
+Done.Parent = Noti
+
+local Tip = Instance.new("TextLabel")
+Tip.Name = "Tip"
+Tip.Position = UDim2.new(0.625, 0, 0.25, 0)
+Tip.Size = UDim2.new(0.65, 0, 0.35, 0)
+Tip.BackgroundColor3 = Color3.new(1, 1, 1)
+Tip.BackgroundTransparency = 1
+Tip.BorderSizePixel = 0
+Tip.BorderColor3 = Color3.new(0, 0, 0)
+Tip.AnchorPoint = Vector2.new(0.5, 0.5)
+Tip.TextTransparency = 0
+Tip.Text = "If you want the script to run automatically once the next time you run the script, press Return[1], if you want it to run automatically forever, press Return[ifn]."
+Tip.TextColor3 = Color3.new(1, 0.882353, 0)
+Tip.TextSize = 14
+Tip.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Tip.TextScaled = true
+Tip.TextWrapped = true
+Tip.Parent = Noti
+
+local Return1 = Instance.new("ImageButton")
+Return1.Name = "Return1"
+Return1.Position = UDim2.new(0.35, 0, 0.5, 0)
+Return1.Size = UDim2.new(0.25, 0, 0.25, 0)
+Return1.BackgroundColor3 = Color3.new(0, 0, 0)
+Return1.BorderSizePixel = 0
+Return1.BorderColor3 = Color3.new(0, 0, 0)
+Return1.Image = "rbxassetid://88913662931777"
+Return1.Parent = Noti
+
+local UIAspectRatioConstraint15 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint15.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint15.Parent = Return1
+
+local UICorner27 = Instance.new("UICorner")
+UICorner27.Name = "UICorner"
+UICorner27.CornerRadius = UDim.new(1, 0)
+UICorner27.Parent = Return1
+
+local ReturnIfn = Instance.new("ImageButton")
+ReturnIfn.Name = "ReturnIfn"
+ReturnIfn.Position = UDim2.new(0.525, 0, 0.5, 0)
+ReturnIfn.Size = UDim2.new(0.25, 0, 0.25, 0)
+ReturnIfn.BackgroundColor3 = Color3.new(0, 0, 0)
+ReturnIfn.BorderSizePixel = 0
+ReturnIfn.BorderColor3 = Color3.new(0, 0, 0)
+ReturnIfn.Image = "rbxassetid://121046862191317"
+ReturnIfn.Parent = Noti
+
+local UIAspectRatioConstraint16 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint16.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint16.Parent = ReturnIfn
+
+local UICorner28 = Instance.new("UICorner")
+UICorner28.Name = "UICorner"
+UICorner28.CornerRadius = UDim.new(1, 0)
+UICorner28.Parent = ReturnIfn
+
+--=========================================================================================================--
 
 local ScriptMapping = {
 
@@ -1043,7 +1206,7 @@ local UserInputService = game:GetService("UserInputService")
 
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
-local gui = player:WaitForChild("PlayerGui"):WaitForChild("TestGui")
+local gui = player:WaitForChild("PlayerGui"):WaitForChild("HAPPYscript")
 local main = gui:WaitForChild("Main")
 local scroll = main:WaitForChild("ScrollingFrame")
 local toggleButton = gui:WaitForChild("Button")
@@ -1076,6 +1239,388 @@ local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection
 local fastInfo = TweenInfo.new(0.07, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
 --------------------------------------------------------
+-- APPLY FIREBASE SYTEM
+--------------------------------------------------------
+
+-- ======= NOTI + FIREBASE SUPPORT (FIXED) =======
+
+local HttpService = game:GetService("HttpService")
+local baseURL = "https://happy-script-bada6-default-rtdb.asia-southeast1.firebasedatabase.app/" -- giữ '/' ở cuối
+
+local localUserId = tostring(player.UserId)
+local returnsPath = "users/" .. localUserId .. "/returns.json" -- final endpoint will be baseURL .. returnsPath
+
+-- Noti GUI (tìm an toàn hơn cho Noti_Name)
+local happyGui = gui -- gui = PlayerGui:HAPPYscript
+local Noti = happyGui:WaitForChild("Noti")
+local Noti_Logo = Noti:WaitForChild("Logo") -- ImageLabel
+local Noti_Return1 = Noti:WaitForChild("Return1") -- ImageButton
+local Noti_ReturnIfn = Noti:WaitForChild("ReturnIfn") -- ImageButton
+local Noti_Back = Noti:WaitForChild("Back") -- TextButton
+local Noti_Done = Noti:WaitForChild("Done") -- TextButton
+
+-- Name có thể nằm trực tiếp dưới Noti hoặc bên trong Logo
+local Noti_Name = Noti:FindFirstChild("Name") or (Noti_Logo:FindFirstChild("Name") and Noti_Logo:FindFirstChild("Name"))
+if not Noti_Name then
+	-- nếu không tìm thấy, tạo tạm TextLabel (không phá UI)
+	Noti_Name = Instance.new("TextLabel")
+	Noti_Name.Size = UDim2.new(1,0,0,20)
+	Noti_Name.Text = ""
+	Noti_Name.BackgroundTransparency = 1
+	Noti_Name.Parent = Noti
+end
+
+-- helper animation (same style as opening main)
+local function openNoti()
+	Noti.Visible = true
+	Noti.Size = UDim2.new(0.025,0,0.025,0)
+	TweenService:Create(Noti, tweenInfo, {Size = UDim2.new(0.4,0,0.4,0)}):Play()
+end
+local function closeNoti()
+	local tw = TweenService:Create(Noti, tweenInfo, {Size = UDim2.new(0.025,0,0.025,0)})
+	tw:Play()
+	tw.Completed:Once(function()
+		Noti.Visible = false
+	end)
+end
+
+-- Firebase helpers (GET/PUT) - improved
+local function firebaseGet()
+	local ok, res = pcall(function()
+		return HttpService:GetAsync(baseURL .. returnsPath)
+	end)
+
+	if not ok then
+		-- GetAsync failed (maybe no data or network). Return empty structure.
+		warn("[Firebase] GET failed:", res)
+		return { once = {}, forever = {} }
+	end
+
+	if res == "null" or res == nil or res == "" then
+		return { once = {}, forever = {} }
+	end
+
+	local decodeOk, data = pcall(function() return HttpService:JSONDecode(res) end)
+	if not decodeOk or type(data) ~= "table" then
+		warn("[Firebase] JSONDecode failed or invalid data")
+		return { once = {}, forever = {} }
+	end
+
+	data.once = data.once or {}
+	data.forever = data.forever or {}
+	return data
+end
+
+local function firebaseSet(data)
+	-- safe encode
+	local okEnc, json = pcall(function() return HttpService:JSONEncode(data) end)
+	if not okEnc then
+		warn("[Firebase] JSONEncode failed:", json)
+		return false, "encode_failed"
+	end
+
+	local okReq, res = pcall(function()
+		return HttpService:RequestAsync{
+			Url = baseURL .. returnsPath,
+			Method = "PUT",
+			Headers = {["Content-Type"] = "application/json"},
+			Body = json
+		}
+	end)
+
+	if not okReq then
+		warn("[Firebase] RequestAsync failed:", res)
+		return false, "request_failed"
+	end
+
+	-- res should be a table with Success (boolean) or StatusCode
+	local successFlag = false
+	if type(res) == "table" then
+		successFlag = res.Success == true or (res.StatusCode and res.StatusCode >= 200 and res.StatusCode < 300)
+	end
+
+	if not successFlag then
+		warn("[Firebase] PUT returned non-success:", res)
+		return false, "http_error"
+	end
+
+	return true
+end
+
+-- convenience wrappers to read/update single flags (with result checking)
+local function setOnceFlag(scriptName, enabled)
+	local data = firebaseGet()
+	data.once = data.once or {}
+	data.forever = data.forever or {}
+
+	if enabled then
+		data.once[scriptName] = true
+		data.forever[scriptName] = nil
+	else
+		data.once[scriptName] = nil
+	end
+
+	local ok, err = firebaseSet(data)
+	if not ok then
+		game.StarterGui:SetCore("SendNotification", {
+			Title = "Firebase Error",
+			Text = "Cannot update Return1: " .. tostring(err),
+			Duration = 4
+		})
+		return false
+	end
+	return true
+end
+
+local function setForeverFlag(scriptName, enabled)
+	local data = firebaseGet()
+	data.once = data.once or {}
+	data.forever = data.forever or {}
+
+	if enabled then
+		data.forever[scriptName] = true
+		data.once[scriptName] = nil
+	else
+		data.forever[scriptName] = nil
+	end
+
+	local ok, err = firebaseSet(data)
+	if not ok then
+		game.StarterGui:SetCore("SendNotification", {
+			Title = "Firebase Error",
+			Text = "Cannot update ReturnIfn: " .. tostring(err),
+			Duration = 4
+		})
+		return false
+	end
+	return true
+end
+
+-- helper to clear 'once' after running
+local function clearOnceFlag(scriptName)
+	local data = firebaseGet()
+	data.once = data.once or {}
+	data.once[scriptName] = nil
+	local ok, err = firebaseSet(data)
+	if not ok then
+		warn("[Firebase] clearOnceFlag failed:", err)
+	end
+end
+
+-- UI helper: update the two toggle buttons visual
+local function updateReturnButtonsVisual(scriptName)
+	local data = firebaseGet()
+	local onceOn = data.once and data.once[scriptName]
+	local foreverOn = data.forever and data.forever[scriptName]
+
+	-- off visual: BackgroundColor = black, ImageColor = white
+	-- on visual: BackgroundColor = green (50,255,50), ImageColor = black
+	if onceOn then
+		Noti_Return1.BackgroundColor3 = Color3.fromRGB(50,255,50)
+		Noti_Return1.ImageColor3 = Color3.fromRGB(0,0,0)
+	else
+		Noti_Return1.BackgroundColor3 = Color3.fromRGB(0,0,0)
+		Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
+	end
+
+	if foreverOn then
+		Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(50,255,50)
+		Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(0,0,0)
+	else
+		Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(0,0,0)
+		Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
+	end
+end
+
+-- store current context when opening Noti
+local NOTI_CONTEXT = {
+	scriptName = nil,
+	image = nil,
+	btnObject = nil,
+	scriptFunc = nil,
+}
+
+-- Open Noti for a clicked button (call instead of running script immediately)
+local function openNotiFor(btn)
+	-- Extract logo image and name from clicked button
+	local logoImage = nil
+	local labelName = nil
+	-- If clicked is ImageButton with Image property:
+	if (btn:IsA("ImageButton") or btn:IsA("ImageLabel")) and btn.Image then
+		logoImage = btn.Image
+	end
+	-- Try to find child TextLabel named "Name"
+	local nameLbl = btn:FindFirstChild("Name")
+	if nameLbl and nameLbl:IsA("TextLabel") then
+		labelName = nameLbl.Text
+	else
+		labelName = btn.Name
+	end
+
+	-- fill Noti UI
+	if Noti_Logo:IsA("ImageLabel") or Noti_Logo:IsA("ImageButton") then
+		Noti_Logo.Image = logoImage or ""
+	end
+	Noti_Name.Text = labelName or btn.Name
+
+	-- store context
+	NOTI_CONTEXT.scriptName = btn.Name
+	NOTI_CONTEXT.image = logoImage
+	NOTI_CONTEXT.btnObject = btn
+	NOTI_CONTEXT.scriptFunc = ScriptMapping[btn.Name] or nil
+
+	-- load state from Firebase and update the two return buttons visuals
+	updateReturnButtonsVisual(NOTI_CONTEXT.scriptName)
+
+	-- show Noti
+	openNoti()
+end
+
+-- Hook Back / Done / Return1 / ReturnIfn buttons in Noti
+Noti_Back.MouseButton1Click:Connect(function()
+	-- close and return (do not change flags)
+	closeNoti()
+end)
+
+Noti_Done.MouseButton1Click:Connect(function()
+	local sname = NOTI_CONTEXT.scriptName
+	if not sname then
+		closeNoti()
+		return
+	end
+
+	-- When Done: run script now (if available) and save flags state if toggled
+	-- Run script if exists
+	if NOTI_CONTEXT.scriptFunc then
+		game.StarterGui:SetCore("SendNotification", {
+			Title = "Running Script⌛",
+			Text = "Running " .. sname .. "...",
+			Duration = 5
+		})
+		task.spawn(function()
+			pcall(NOTI_CONTEXT.scriptFunc)
+			game.StarterGui:SetCore("SendNotification", {
+				Title = "Script Finished✅",
+				Text = sname .. " finished running!",
+				Duration = 5
+			})
+		end)
+	else
+		warn("Không tìm thấy script func cho", sname)
+	end
+
+	-- Update Firebase state based on visuals (visuals should already be changed when toggling, but ensure server state)
+	local r1On = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
+	local rfOn = (Noti_ReturnIfn.BackgroundColor3 == Color3.fromRGB(50,255,50))
+
+	if r1On then setOnceFlag(sname, true) else setOnceFlag(sname, false) end
+	if rfOn then setForeverFlag(sname, true) else setForeverFlag(sname, false) end
+
+	-- close noti
+	closeNoti()
+end)
+
+-- Toggle Return1 (one-time)
+Noti_Return1.MouseButton1Click:Connect(function()
+	local sname = NOTI_CONTEXT.scriptName
+	if not sname then return end
+
+	-- Toggle local visual then persist
+	local wasOn = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
+	if wasOn then
+		-- turn off
+		local ok = setOnceFlag(sname, false)
+		if ok then
+			Noti_Return1.BackgroundColor3 = Color3.fromRGB(0,0,0)
+			Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
+		end
+	else
+		-- turn on -> ensure ReturnIfn off
+		local ok1 = setOnceFlag(sname, true)
+		local ok2 = setForeverFlag(sname, false)
+		if ok1 and ok2 then
+			Noti_Return1.BackgroundColor3 = Color3.fromRGB(50,255,50)
+			Noti_Return1.ImageColor3 = Color3.fromRGB(0,0,0)
+
+			Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(0,0,0)
+			Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
+		end
+	end
+end)
+
+-- Toggle ReturnIfn (forever)
+Noti_ReturnIfn.MouseButton1Click:Connect(function()
+	local sname = NOTI_CONTEXT.scriptName
+	if not sname then return end
+
+	local wasOn = (Noti_ReturnIfn.BackgroundColor3 == Color3.fromRGB(50,255,50))
+	if wasOn then
+		local ok = setForeverFlag(sname, false)
+		if ok then
+			Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(0,0,0)
+			Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
+		end
+	else
+		-- enable forever, disable once
+		local ok1 = setForeverFlag(sname, true)
+		local ok2 = setOnceFlag(sname, false)
+		if ok1 and ok2 then
+			Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(50,255,50)
+			Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(0,0,0)
+
+			Noti_Return1.BackgroundColor3 = Color3.fromRGB(0,0,0)
+			Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
+		end
+	end
+end)
+
+-- Helper to run a script by name (safe)
+local function runScriptByName(name)
+	local fn = ScriptMapping[name]
+	if not fn then return false end
+	task.spawn(function()
+		pcall(fn)
+	end)
+	return true
+end
+
+-- On startup: load firebase and auto-run scripts:
+task.spawn(function()
+	local data = firebaseGet()
+	if not data then return end
+	-- run forever scripts
+	if data.forever then
+		for name, _ in pairs(data.forever) do
+			if ScriptMapping[name] then
+				game.StarterGui:SetCore("SendNotification", {
+					Title = "Auto Run",
+					Text = "Auto-running " .. name .. " (forever).",
+					Duration = 4
+				})
+				runScriptByName(name)
+			end
+		end
+	end
+	-- run once scripts (then clear them)
+	if data.once then
+		for name, _ in pairs(data.once) do
+			if ScriptMapping[name] then
+				game.StarterGui:SetCore("SendNotification", {
+					Title = "Auto Run",
+					Text = "Auto-running " .. name .. " (once).",
+					Duration = 4
+				})
+				runScriptByName(name)
+				-- clear single-run flag
+				clearOnceFlag(name)
+			end
+		end
+	end
+end)
+
+-- ======= END NOTI + FIREBASE SUPPORT (FIXED) =======
+
+--------------------------------------------------------
 -- APPLY BUTTON EFFECTS
 --------------------------------------------------------
 local function applyButtonEffects(btn)
@@ -1104,49 +1649,17 @@ local function applyButtonEffects(btn)
 		tween(nameLabel, tweenInfo, {TextTransparency = 1})
 	end)
 
+	-- replace previous running logic with this:
 	btn.MouseButton1Click:Connect(function()
-		-- Tween click
+		-- Tween click effect (keep it)
 		tween(btn, fastInfo, {Size = idleSize})
 		task.wait(0.07)
 		if hovering then
 			tween(btn, fastInfo, {Size = hoverSize})
 		end
 
-		local scriptFunc = ScriptMapping[btn.Name]
-		if not scriptFunc then
-			warn("Không tìm thấy script:", btn.Name)
-			return
-		end
-
-		-- Nếu script đang chạy, thông báo và thoát
-		if isRunning then
-			game.StarterGui:SetCore("SendNotification", {
-				Title = "Script Running⏳",
-				Text = btn.Name .. " is already running!",
-				Duration = 3
-			})
-			return
-		end
-
-		-- Thông báo script bắt đầu
-		game.StarterGui:SetCore("SendNotification", {
-			Title = "Running Script⌛",
-			Text = "Running " .. btn.Name .. "...",
-			Duration = 5
-		})
-
-		isRunning = true
-		task.spawn(function()
-			-- Chạy script
-			pcall(scriptFunc) -- pcall để tránh lỗi crash GUI
-			isRunning = false
-			-- Thông báo script kết thúc
-			game.StarterGui:SetCore("SendNotification", {
-				Title = "Script Finished✅",
-				Text = btn.Name .. " finished running!",
-				Duration = 5
-			})
-		end)
+		-- OPEN NOTI INSTEAD OF RUNNING DIRECTLY
+		openNotiFor(btn)
 	end)
 end
 
