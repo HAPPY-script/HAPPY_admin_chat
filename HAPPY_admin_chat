@@ -31,12 +31,12 @@ local Main = Instance.new("Frame")
 Main.Name = "Main"
 Main.Position = UDim2.new(0.5, 0, 0.5, 0)
 Main.Size = UDim2.new(0.75, 0, 0.75, 0)
-Main.BackgroundColor3 = Color3.new(0.117647, 0, 0.196078)
+Main.BackgroundColor3 = Color3.new(1, 1, 1)
 Main.BackgroundTransparency = 0.05000000074505806
 Main.BorderSizePixel = 0
 Main.BorderColor3 = Color3.new(0, 0, 0)
 Main.Visible = false
-Main.ZIndex = 9997
+Main.ZIndex = 9996
 Main.AnchorPoint = Vector2.new(0.5, 0.5)
 Main.Transparency = 0.05000000074505806
 Main.Parent = HAPPYscript
@@ -59,6 +59,7 @@ ScrollingFrame.BackgroundColor3 = Color3.new(1, 1, 1)
 ScrollingFrame.BackgroundTransparency = 1
 ScrollingFrame.BorderSizePixel = 0
 ScrollingFrame.BorderColor3 = Color3.new(0, 0, 0)
+ScrollingFrame.ZIndex = 2
 ScrollingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 ScrollingFrame.Transparency = 1
 ScrollingFrame.Active = true
@@ -838,8 +839,8 @@ UICorner22.Parent = Main
 
 local UIGradient21 = Instance.new("UIGradient")
 UIGradient21.Name = "UIGradient"
-UIGradient21.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(0.5, Color3.new(0.968627, 0, 1)), ColorSequenceKeypoint.new(1, Color3.new(1, 0, 0.392157))})
-UIGradient21.Rotation = 90
+UIGradient21.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.52549, 0.137255, 1)), ColorSequenceKeypoint.new(0.181661, Color3.new(0.535966, 0.713413, 0.989524)), ColorSequenceKeypoint.new(0.5, Color3.new(0.541176, 1, 0.984314)), ColorSequenceKeypoint.new(0.854671, Color3.new(0.523129, 0.539792, 0.991533)), ColorSequenceKeypoint.new(1, Color3.new(0.501961, 0, 1))})
+UIGradient21.Rotation = 95
 UIGradient21.Parent = Main
 
 local Title = Instance.new("TextLabel")
@@ -850,6 +851,7 @@ Title.BackgroundColor3 = Color3.new(1, 1, 1)
 Title.BackgroundTransparency = 1
 Title.BorderSizePixel = 0
 Title.BorderColor3 = Color3.new(0, 0, 0)
+Title.ZIndex = 2
 Title.AnchorPoint = Vector2.new(0.5, 0.5)
 Title.TextTransparency = 0
 Title.Text = "HAPPY script"
@@ -874,9 +876,10 @@ Character2.BackgroundColor3 = Color3.new(1, 1, 1)
 Character2.BackgroundTransparency = 1
 Character2.BorderSizePixel = 0
 Character2.BorderColor3 = Color3.new(0, 0, 0)
+Character2.ZIndex = 2
 Character2.TextTransparency = 0
 Character2.Text = "Character"
-Character2.TextColor3 = Color3.new(0.392157, 0.392157, 1)
+Character2.TextColor3 = Color3.new(0, 1, 0.588235)
 Character2.TextSize = 14
 Character2.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 Character2.TextScaled = true
@@ -892,9 +895,10 @@ GameHub2.BackgroundColor3 = Color3.new(1, 1, 1)
 GameHub2.BackgroundTransparency = 1
 GameHub2.BorderSizePixel = 0
 GameHub2.BorderColor3 = Color3.new(0, 0, 0)
+GameHub2.ZIndex = 2
 GameHub2.TextTransparency = 0
 GameHub2.Text = "GameHub"
-GameHub2.TextColor3 = Color3.new(0.392157, 0.392157, 1)
+GameHub2.TextColor3 = Color3.new(0, 1, 0.588235)
 GameHub2.TextSize = 14
 GameHub2.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 GameHub2.TextScaled = true
@@ -911,6 +915,7 @@ Visuals2.BackgroundTransparency = 1
 Visuals2.BorderSizePixel = 0
 Visuals2.BorderColor3 = Color3.new(0, 0, 0)
 Visuals2.Visible = false
+Visuals2.ZIndex = 2
 Visuals2.TextTransparency = 0
 Visuals2.Text = "Visuals"
 Visuals2.TextColor3 = Color3.new(0.392157, 0.392157, 1)
@@ -920,6 +925,39 @@ Visuals2.TextScaled = true
 Visuals2.TextWrapped = true
 Visuals2.TextXAlignment = Enum.TextXAlignment.Left
 Visuals2.Parent = Main
+
+local Particle = Instance.new("ImageLabel")
+Particle.Name = "Particle"
+Particle.Position = UDim2.new(0.5, 0, -100, 0)
+Particle.Size = UDim2.new(0.25, 0, 0.25, 0)
+Particle.BackgroundColor3 = Color3.new(1, 1, 1)
+Particle.BackgroundTransparency = 1
+Particle.BorderSizePixel = 0
+Particle.BorderColor3 = Color3.new(0, 0, 0)
+Particle.AnchorPoint = Vector2.new(0.5, 0.5)
+Particle.Transparency = 1
+Particle.Image = "rbxassetid://137831468"
+Particle.ImageTransparency = 0.25
+Particle.Parent = Main
+
+local UIAspectRatioConstraint12 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint12.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint12.Parent = Particle
+
+local BackGround = Instance.new("ImageLabel")
+BackGround.Name = "BackGround"
+BackGround.Position = UDim2.new(0.5, 0, 0.5, 0)
+BackGround.Size = UDim2.new(1, 0, 1, 0)
+BackGround.BackgroundColor3 = Color3.new(1, 1, 1)
+BackGround.BackgroundTransparency = 1
+BackGround.BorderSizePixel = 0
+BackGround.BorderColor3 = Color3.new(0, 0, 0)
+BackGround.AnchorPoint = Vector2.new(0.5, 0.5)
+BackGround.Transparency = 1
+BackGround.Image = "rbxassetid://127394633690099"
+BackGround.ImageTransparency = 0.5
+BackGround.Parent = Main
 
 local Button = Instance.new("ImageButton")
 Button.Name = "Button"
@@ -935,10 +973,10 @@ Button.Transparency = 1
 Button.Image = "rbxassetid://90219562764375"
 Button.Parent = HAPPYscript
 
-local UIAspectRatioConstraint12 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint12.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint13 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint13.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint12.Parent = Button
+UIAspectRatioConstraint13.Parent = Button
 
 local UICorner23 = Instance.new("UICorner")
 UICorner23.Name = "UICorner"
@@ -957,8 +995,8 @@ Version.Rotation = -15
 Version.AnchorPoint = Vector2.new(0.5, 0.5)
 Version.TextTransparency = 0
 Version.TextStrokeTransparency = 0
-Version.Text = "v0.03"
-Version.TextColor3 = Color3.new(0.831373, 0, 1)
+Version.Text = "v0.04"
+Version.TextColor3 = Color3.new(0.513726, 1, 0.945098)
 Version.TextSize = 14
 Version.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 Version.TextScaled = true
@@ -1002,10 +1040,10 @@ Noti.ZIndex = 9998
 Noti.AnchorPoint = Vector2.new(0.5, 0.5)
 Noti.Parent = HAPPYscript
 
-local UIAspectRatioConstraint13 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint13.Name = "UIAspectRatioConstraint"
-UIAspectRatioConstraint13.AspectRatio = 1.75
-UIAspectRatioConstraint13.Parent = Noti
+local UIAspectRatioConstraint14 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint14.Name = "UIAspectRatioConstraint"
+UIAspectRatioConstraint14.AspectRatio = 1.75
+UIAspectRatioConstraint14.Parent = Noti
 
 local UIGradient24 = Instance.new("UIGradient")
 UIGradient24.Name = "UIGradient"
@@ -1049,10 +1087,10 @@ Logo.BorderSizePixel = 0
 Logo.BorderColor3 = Color3.new(0, 0, 0)
 Logo.Parent = Noti
 
-local UIAspectRatioConstraint14 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint14.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint15 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint15.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint14.Parent = Logo
+UIAspectRatioConstraint15.Parent = Logo
 
 local UICorner26 = Instance.new("UICorner")
 UICorner26.Name = "UICorner"
@@ -1122,10 +1160,10 @@ Return1.BorderColor3 = Color3.new(0, 0, 0)
 Return1.Image = "rbxassetid://88913662931777"
 Return1.Parent = Noti
 
-local UIAspectRatioConstraint15 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint15.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint16 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint16.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint15.Parent = Return1
+UIAspectRatioConstraint16.Parent = Return1
 
 local UICorner27 = Instance.new("UICorner")
 UICorner27.Name = "UICorner"
@@ -1142,17 +1180,17 @@ ReturnIfn.BorderColor3 = Color3.new(0, 0, 0)
 ReturnIfn.Image = "rbxassetid://121046862191317"
 ReturnIfn.Parent = Noti
 
-local UIAspectRatioConstraint16 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint16.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint17 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint17.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint16.Parent = ReturnIfn
+UIAspectRatioConstraint17.Parent = ReturnIfn
 
 local UICorner28 = Instance.new("UICorner")
 UICorner28.Name = "UICorner"
 UICorner28.CornerRadius = UDim.new(1, 0)
 UICorner28.Parent = ReturnIfn
 
---=========================================================================================================--
+--=======================================================================================================--
 
 local ScriptMapping = {
 
@@ -1820,7 +1858,7 @@ end)
 
 local tabButtons = {btnCharacter, btnGameHub, btnVisuals}
 
-local normalColor = Color3.fromRGB(100, 100, 255)
+local normalColor = Color3.fromRGB(0, 255, 150)
 local hoverColor = Color3.fromRGB(255, 0, 100)
 
 local tabTweenInfo = TweenInfo.new(
@@ -1930,3 +1968,76 @@ applyGradientToFrameButtons(frameVisuals)
 -- APPLY GRADIENT FOR MAIN MENU BUTTON
 --------------------------------------------------------
 applyGradientEffect(toggleButton)
+
+--EFFECT
+local particleTemplate = main:WaitForChild("Particle")
+
+local SETTINGS = {
+	SpawnRate = 0.5,       -- Tăng tần suất nhẹ cho cảm giác dày nhưng vẫn mượt
+	MinSize = 10,
+	MaxSize = 20,
+	MinFallTime = 17,        -- Rơi chậm hơn
+	MaxFallTime = 25,
+	MinRotation = -10,      -- Tuyết chỉ xoay nhẹ
+	MaxRotation = 10,
+	FadeOutTime = 0.6       -- Fade mượt hơn
+}
+
+local function createParticle()
+	if #main.ScrollingFrame:GetChildren() > 180 then return end
+
+	local particle = particleTemplate:Clone()
+	particle.Visible = true
+	particle.Parent = main.ScrollingFrame
+
+	-- Kích thước
+	local size = math.random(SETTINGS.MinSize, SETTINGS.MaxSize)
+	particle.Size = UDim2.fromOffset(size, size)
+
+	-- Xoay nhẹ
+	particle.Rotation = math.random(SETTINGS.MinRotation, SETTINGS.MaxRotation)
+	particle.ImageTransparency = 0
+	particle.ZIndex = 1
+
+	particle.AnchorPoint = Vector2.new(0.5, 0.5)
+	particle.Position = UDim2.new(math.random(), 0, 0, -15)
+
+	local fallTime = math.random(SETTINGS.MinFallTime, SETTINGS.MaxFallTime)
+
+	-- Dao động trái/phải như tuyết thật
+	local sideOffset = math.random(-40, 40)
+
+	local fallTween = TweenService:Create(
+		particle,
+		TweenInfo.new(fallTime, Enum.EasingStyle.Linear),
+		{
+			Position = UDim2.new(
+				particle.Position.X.Scale + (sideOffset / main.AbsoluteSize.X),
+				0,
+				1,
+				20
+			)
+		}
+	)
+
+	fallTween:Play()
+
+	fallTween.Completed:Connect(function()
+		local fadeTween = TweenService:Create(
+			particle,
+			TweenInfo.new(SETTINGS.FadeOutTime, Enum.EasingStyle.Linear),
+			{ImageTransparency = 1}
+		)
+		fadeTween:Play()
+		fadeTween.Completed:Connect(function()
+			particle:Destroy()
+		end)
+	end)
+end
+
+task.spawn(function()
+	while true do
+		createParticle()
+		task.wait(SETTINGS.SpawnRate)
+	end
+end)
