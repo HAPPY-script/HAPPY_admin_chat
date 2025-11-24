@@ -1242,35 +1242,46 @@ local fastInfo = TweenInfo.new(0.07, Enum.EasingStyle.Quad, Enum.EasingDirection
 -- APPLY FIREBASE SYTEM
 --------------------------------------------------------
 
--- ======= NOTI + FIREBASE SUPPORT (FIXED) =======
+-- ======= NOTI + FIREBASE SUPPORT (MẪU-TYPE, DÙNG HttpRequest) =======
+
+-- Auto-detect http request (giống script mẫu)
+local function HttpRequest(data)
+	if syn and syn.request then
+		return syn.request(data)
+	elseif http and http.request then
+		return http.request(data)
+	elseif http_request then
+		return http_request(data)
+	elseif request then
+		return request(data)
+	elseif fluxus and fluxus.request then
+		return fluxus.request(data)
+	else
+		error("Executor không hỗ trợ http request!")
+	end
+end
 
 local HttpService = game:GetService("HttpService")
-local baseURL = "https://happy-script-bada6-default-rtdb.asia-southeast1.firebasedatabase.app/" -- giữ '/' ở cuối
+local PROJECT_URL = "https://happy-script-bada6-default-rtdb.asia-southeast1.firebasedatabase.app/users/"
+local URL = PROJECT_URL .. tostring(player.UserId) .. ".json" -- endpoint giống mẫu
 
-local localUserId = tostring(player.UserId)
-local returnsPath = "users/" .. localUserId .. "/returns.json" -- final endpoint will be baseURL .. returnsPath
-
--- Noti GUI (tìm an toàn hơn cho Noti_Name)
-local happyGui = gui -- gui = PlayerGui:HAPPYscript
+-- Noti GUI (tìm an toàn)
+local happyGui = gui
 local Noti = happyGui:WaitForChild("Noti")
-local Noti_Logo = Noti:WaitForChild("Logo") -- ImageLabel
-local Noti_Return1 = Noti:WaitForChild("Return1") -- ImageButton
-local Noti_ReturnIfn = Noti:WaitForChild("ReturnIfn") -- ImageButton
-local Noti_Back = Noti:WaitForChild("Back") -- TextButton
-local Noti_Done = Noti:WaitForChild("Done") -- TextButton
-
--- Name có thể nằm trực tiếp dưới Noti hoặc bên trong Logo
+local Noti_Logo = Noti:WaitForChild("Logo")
+local Noti_Return1 = Noti:WaitForChild("Return1")
+local Noti_ReturnIfn = Noti:WaitForChild("ReturnIfn")
+local Noti_Back = Noti:WaitForChild("Back")
+local Noti_Done = Noti:WaitForChild("Done")
 local Noti_Name = Noti:FindFirstChild("Name") or (Noti_Logo:FindFirstChild("Name") and Noti_Logo:FindFirstChild("Name"))
 if not Noti_Name then
-	-- nếu không tìm thấy, tạo tạm TextLabel (không phá UI)
 	Noti_Name = Instance.new("TextLabel")
 	Noti_Name.Size = UDim2.new(1,0,0,20)
-	Noti_Name.Text = ""
 	Noti_Name.BackgroundTransparency = 1
+	Noti_Name.Text = ""
 	Noti_Name.Parent = Noti
 end
 
--- helper animation (same style as opening main)
 local function openNoti()
 	Noti.Visible = true
 	Noti.Size = UDim2.new(0.025,0,0.025,0)
@@ -1284,137 +1295,150 @@ local function closeNoti()
 	end)
 end
 
--- Firebase helpers (GET/PUT) - improved
+-- Firebase helpers using HttpRequest (GET / PUT)
 local function firebaseGet()
 	local ok, res = pcall(function()
-		return HttpService:GetAsync(baseURL .. returnsPath)
+		return HttpRequest({Url = URL, Method = "GET"})
 	end)
 
-	if not ok then
-		-- GetAsync failed (maybe no data or network). Return empty structure.
-		warn("[Firebase] GET failed:", res)
-		return { once = {}, forever = {} }
+	if not ok or not res then
+		warn("[Firebase] GET request failed:", res)
+		return { returns = { once = {}, forever = {} } }
 	end
 
-	if res == "null" or res == nil or res == "" then
-		return { once = {}, forever = {} }
+	-- response body might be in res.Body (executor returns table) or res (if syn returns table)
+	local body = res.Body or res.body or res.Response or res
+	-- if syn.request returns table with Body
+	if type(body) ~= "string" then
+		-- try extract fields
+		if res.Body then body = res.Body
+		elseif res.body then body = res.body
+		elseif res.Response then body = res.Response
+		else body = tostring(res)
+		end
 	end
 
-	local decodeOk, data = pcall(function() return HttpService:JSONDecode(res) end)
+	-- If status code check
+	local status = res.StatusCode or res.status or res.Success and 200 or 0
+	if status < 200 or status >= 300 then
+		-- If 404 or no data, treat as empty
+		if status == 404 or body == "null" then
+			return { returns = { once = {}, forever = {} } }
+		else
+			warn("[Firebase] GET status:", status, body)
+			return { returns = { once = {}, forever = {} } }
+		end
+	end
+
+	-- decode body (could be "null")
+	if not body or body == "null" or body == "" then
+		return { returns = { once = {}, forever = {} } }
+	end
+
+	local decodeOk, data = pcall(function() return HttpService:JSONDecode(body) end)
 	if not decodeOk or type(data) ~= "table" then
 		warn("[Firebase] JSONDecode failed or invalid data")
-		return { once = {}, forever = {} }
+		return { returns = { once = {}, forever = {} } }
 	end
 
-	data.once = data.once or {}
-	data.forever = data.forever or {}
+	-- ensure returns structure
+	data.returns = data.returns or {}
+	data.returns.once = data.returns.once or {}
+	data.returns.forever = data.returns.forever or {}
 	return data
 end
 
-local function firebaseSet(data)
-	-- safe encode
-	local okEnc, json = pcall(function() return HttpService:JSONEncode(data) end)
+local function firebaseSetFull(userData)
+	-- userData should be a table representing the whole user object
+	local json = nil
+	local okEnc, enc = pcall(function() return HttpService:JSONEncode(userData) end)
 	if not okEnc then
-		warn("[Firebase] JSONEncode failed:", json)
-		return false, "encode_failed"
+		warn("[Firebase] JSONEncode failed:", enc)
+		return false
 	end
+	json = enc
 
 	local okReq, res = pcall(function()
-		return HttpService:RequestAsync{
-			Url = baseURL .. returnsPath,
+		return HttpRequest({
+			Url = URL,
 			Method = "PUT",
-			Headers = {["Content-Type"] = "application/json"},
+			Headers = { ["Content-Type"] = "application/json" },
 			Body = json
-		}
+		})
 	end)
 
-	if not okReq then
-		warn("[Firebase] RequestAsync failed:", res)
-		return false, "request_failed"
+	if not okReq or not res then
+		warn("[Firebase] PUT request failed:", res)
+		return false
 	end
 
-	-- res should be a table with Success (boolean) or StatusCode
-	local successFlag = false
-	if type(res) == "table" then
-		successFlag = res.Success == true or (res.StatusCode and res.StatusCode >= 200 and res.StatusCode < 300)
+	local status = res.StatusCode or res.status or 0
+	if status >= 200 and status < 300 then
+		return true
 	end
 
-	if not successFlag then
-		warn("[Firebase] PUT returned non-success:", res)
-		return false, "http_error"
-	end
-
-	return true
+	warn("[Firebase] PUT returned status:", status, res)
+	return false
 end
 
--- convenience wrappers to read/update single flags (with result checking)
+-- convenience wrappers
 local function setOnceFlag(scriptName, enabled)
 	local data = firebaseGet()
-	data.once = data.once or {}
-	data.forever = data.forever or {}
-
+	data.returns = data.returns or { once = {}, forever = {} }
 	if enabled then
-		data.once[scriptName] = true
-		data.forever[scriptName] = nil
+		data.returns.once[scriptName] = true
+		if data.returns.forever then data.returns.forever[scriptName] = nil end
 	else
-		data.once[scriptName] = nil
+		if data.returns.once then data.returns.once[scriptName] = nil end
 	end
 
-	local ok, err = firebaseSet(data)
+	local ok = firebaseSetFull(data)
 	if not ok then
 		game.StarterGui:SetCore("SendNotification", {
 			Title = "Firebase Error",
-			Text = "Cannot update Return1: " .. tostring(err),
+			Text = "Cannot update Return1 for " .. scriptName,
 			Duration = 4
 		})
-		return false
 	end
-	return true
+	return ok
 end
 
 local function setForeverFlag(scriptName, enabled)
 	local data = firebaseGet()
-	data.once = data.once or {}
-	data.forever = data.forever or {}
-
+	data.returns = data.returns or { once = {}, forever = {} }
 	if enabled then
-		data.forever[scriptName] = true
-		data.once[scriptName] = nil
+		data.returns.forever[scriptName] = true
+		if data.returns.once then data.returns.once[scriptName] = nil end
 	else
-		data.forever[scriptName] = nil
+		if data.returns.forever then data.returns.forever[scriptName] = nil end
 	end
 
-	local ok, err = firebaseSet(data)
+	local ok = firebaseSetFull(data)
 	if not ok then
 		game.StarterGui:SetCore("SendNotification", {
 			Title = "Firebase Error",
-			Text = "Cannot update ReturnIfn: " .. tostring(err),
+			Text = "Cannot update ReturnIfn for " .. scriptName,
 			Duration = 4
 		})
-		return false
 	end
-	return true
+	return ok
 end
 
--- helper to clear 'once' after running
 local function clearOnceFlag(scriptName)
 	local data = firebaseGet()
-	data.once = data.once or {}
-	data.once[scriptName] = nil
-	local ok, err = firebaseSet(data)
-	if not ok then
-		warn("[Firebase] clearOnceFlag failed:", err)
-	end
+	data.returns = data.returns or { once = {}, forever = {} }
+	if data.returns.once then data.returns.once[scriptName] = nil end
+	local ok = firebaseSetFull(data)
+	if not ok then warn("[Firebase] clearOnceFlag failed for", scriptName) end
+	return ok
 end
 
 -- UI helper: update the two toggle buttons visual
 local function updateReturnButtonsVisual(scriptName)
 	local data = firebaseGet()
-	local onceOn = data.once and data.once[scriptName]
-	local foreverOn = data.forever and data.forever[scriptName]
+	local onceOn = data.returns and data.returns.once and data.returns.once[scriptName]
+	local foreverOn = data.returns and data.returns.forever and data.returns.forever[scriptName]
 
-	-- off visual: BackgroundColor = black, ImageColor = white
-	-- on visual: BackgroundColor = green (50,255,50), ImageColor = black
 	if onceOn then
 		Noti_Return1.BackgroundColor3 = Color3.fromRGB(50,255,50)
 		Noti_Return1.ImageColor3 = Color3.fromRGB(0,0,0)
@@ -1432,7 +1456,7 @@ local function updateReturnButtonsVisual(scriptName)
 	end
 end
 
--- store current context when opening Noti
+-- context
 local NOTI_CONTEXT = {
 	scriptName = nil,
 	image = nil,
@@ -1440,57 +1464,32 @@ local NOTI_CONTEXT = {
 	scriptFunc = nil,
 }
 
--- Open Noti for a clicked button (call instead of running script immediately)
 local function openNotiFor(btn)
-	-- Extract logo image and name from clicked button
 	local logoImage = nil
 	local labelName = nil
-	-- If clicked is ImageButton with Image property:
-	if (btn:IsA("ImageButton") or btn:IsA("ImageLabel")) and btn.Image then
-		logoImage = btn.Image
-	end
-	-- Try to find child TextLabel named "Name"
+	if (btn:IsA("ImageButton") or btn:IsA("ImageLabel")) and btn.Image then logoImage = btn.Image end
 	local nameLbl = btn:FindFirstChild("Name")
-	if nameLbl and nameLbl:IsA("TextLabel") then
-		labelName = nameLbl.Text
-	else
-		labelName = btn.Name
-	end
+	if nameLbl and nameLbl:IsA("TextLabel") then labelName = nameLbl.Text else labelName = btn.Name end
 
-	-- fill Noti UI
-	if Noti_Logo:IsA("ImageLabel") or Noti_Logo:IsA("ImageButton") then
-		Noti_Logo.Image = logoImage or ""
-	end
+	if Noti_Logo:IsA("ImageLabel") or Noti_Logo:IsA("ImageButton") then Noti_Logo.Image = logoImage or "" end
 	Noti_Name.Text = labelName or btn.Name
 
-	-- store context
 	NOTI_CONTEXT.scriptName = btn.Name
 	NOTI_CONTEXT.image = logoImage
 	NOTI_CONTEXT.btnObject = btn
 	NOTI_CONTEXT.scriptFunc = ScriptMapping[btn.Name] or nil
 
-	-- load state from Firebase and update the two return buttons visuals
 	updateReturnButtonsVisual(NOTI_CONTEXT.scriptName)
-
-	-- show Noti
 	openNoti()
 end
 
--- Hook Back / Done / Return1 / ReturnIfn buttons in Noti
-Noti_Back.MouseButton1Click:Connect(function()
-	-- close and return (do not change flags)
-	closeNoti()
-end)
+-- Hook Back / Done / Return1 / ReturnIfn
+Noti_Back.MouseButton1Click:Connect(function() closeNoti() end)
 
 Noti_Done.MouseButton1Click:Connect(function()
 	local sname = NOTI_CONTEXT.scriptName
-	if not sname then
-		closeNoti()
-		return
-	end
+	if not sname then closeNoti(); return end
 
-	-- When Done: run script now (if available) and save flags state if toggled
-	-- Run script if exists
 	if NOTI_CONTEXT.scriptFunc then
 		game.StarterGui:SetCore("SendNotification", {
 			Title = "Running Script⌛",
@@ -1509,88 +1508,72 @@ Noti_Done.MouseButton1Click:Connect(function()
 		warn("Không tìm thấy script func cho", sname)
 	end
 
-	-- Update Firebase state based on visuals (visuals should already be changed when toggling, but ensure server state)
+	-- persist current visual states to server (ensure server state matches UI)
 	local r1On = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
 	local rfOn = (Noti_ReturnIfn.BackgroundColor3 == Color3.fromRGB(50,255,50))
 
 	if r1On then setOnceFlag(sname, true) else setOnceFlag(sname, false) end
 	if rfOn then setForeverFlag(sname, true) else setForeverFlag(sname, false) end
 
-	-- close noti
 	closeNoti()
 end)
 
--- Toggle Return1 (one-time)
 Noti_Return1.MouseButton1Click:Connect(function()
 	local sname = NOTI_CONTEXT.scriptName
 	if not sname then return end
 
-	-- Toggle local visual then persist
 	local wasOn = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
 	if wasOn then
-		-- turn off
-		local ok = setOnceFlag(sname, false)
-		if ok then
+		if setOnceFlag(sname, false) then
 			Noti_Return1.BackgroundColor3 = Color3.fromRGB(0,0,0)
 			Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
 		end
 	else
-		-- turn on -> ensure ReturnIfn off
-		local ok1 = setOnceFlag(sname, true)
-		local ok2 = setForeverFlag(sname, false)
-		if ok1 and ok2 then
+		-- enable once and turn off forever
+		if setOnceFlag(sname, true) and setForeverFlag(sname, false) then
 			Noti_Return1.BackgroundColor3 = Color3.fromRGB(50,255,50)
 			Noti_Return1.ImageColor3 = Color3.fromRGB(0,0,0)
-
 			Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(0,0,0)
 			Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
 		end
 	end
 end)
 
--- Toggle ReturnIfn (forever)
 Noti_ReturnIfn.MouseButton1Click:Connect(function()
 	local sname = NOTI_CONTEXT.scriptName
 	if not sname then return end
 
 	local wasOn = (Noti_ReturnIfn.BackgroundColor3 == Color3.fromRGB(50,255,50))
 	if wasOn then
-		local ok = setForeverFlag(sname, false)
-		if ok then
+		if setForeverFlag(sname, false) then
 			Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(0,0,0)
 			Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
 		end
 	else
-		-- enable forever, disable once
-		local ok1 = setForeverFlag(sname, true)
-		local ok2 = setOnceFlag(sname, false)
-		if ok1 and ok2 then
+		-- enable forever and disable once
+		if setForeverFlag(sname, true) and setOnceFlag(sname, false) then
 			Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(50,255,50)
 			Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(0,0,0)
-
 			Noti_Return1.BackgroundColor3 = Color3.fromRGB(0,0,0)
 			Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
 		end
 	end
 end)
 
--- Helper to run a script by name (safe)
 local function runScriptByName(name)
 	local fn = ScriptMapping[name]
 	if not fn then return false end
-	task.spawn(function()
-		pcall(fn)
-	end)
+	task.spawn(function() pcall(fn) end)
 	return true
 end
 
--- On startup: load firebase and auto-run scripts:
+-- Startup: GET flags and auto-run
 task.spawn(function()
 	local data = firebaseGet()
 	if not data then return end
-	-- run forever scripts
-	if data.forever then
-		for name, _ in pairs(data.forever) do
+	-- run forever
+	if data.returns and data.returns.forever then
+		for name, _ in pairs(data.returns.forever) do
 			if ScriptMapping[name] then
 				game.StarterGui:SetCore("SendNotification", {
 					Title = "Auto Run",
@@ -1601,9 +1584,9 @@ task.spawn(function()
 			end
 		end
 	end
-	-- run once scripts (then clear them)
-	if data.once then
-		for name, _ in pairs(data.once) do
+	-- run once then clear
+	if data.returns and data.returns.once then
+		for name, _ in pairs(data.returns.once) do
 			if ScriptMapping[name] then
 				game.StarterGui:SetCore("SendNotification", {
 					Title = "Auto Run",
@@ -1611,14 +1594,14 @@ task.spawn(function()
 					Duration = 4
 				})
 				runScriptByName(name)
-				-- clear single-run flag
+				-- clear once flag for this script
 				clearOnceFlag(name)
 			end
 		end
 	end
 end)
 
--- ======= END NOTI + FIREBASE SUPPORT (FIXED) =======
+-- ======= END NOTI + FIREBASE SUPPORT (MẪU-TYPE) =======
 
 --------------------------------------------------------
 -- APPLY BUTTON EFFECTS
