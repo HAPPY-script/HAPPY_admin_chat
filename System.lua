@@ -714,62 +714,75 @@ btnVisuals.MouseButton1Click:Connect(function()
 end)
 
 --------------------------------------------------------
--- ULTRA RELIABLE MOBILE + PC CLICK/DRAG SYSTEM
+-- DRAG UI + CLICK TOGGLE
 --------------------------------------------------------
 
 local UIS = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
 
-local dragging = false
-local isTouch = false
+local frame = toggleButton -- GUI cần kéo
+local dragSpeed = 0.1
+
+local dragToggle = false
+local dragStart = nil
 local startPos = nil
-local clickThreshold = 12
 
-toggleButton.Active = true
-toggleButton.AutoButtonColor = false
+-- DRAG SYSTEM (giống DragUI gốc)
 
--- START
-toggleButton.InputBegan:Connect(function(input)
+local function updateInput(input)
+	local delta = input.Position - dragStart
+	local pos = UDim2.new(
+		startPos.X.Scale,
+		startPos.X.Offset + delta.X,
+		startPos.Y.Scale,
+		startPos.Y.Offset + delta.Y
+	)
+
+	TweenService:Create(frame, TweenInfo.new(dragSpeed), {Position = pos}):Play()
+end
+
+frame.InputBegan:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1
 		or input.UserInputType == Enum.UserInputType.Touch then
 
-		dragging = false
-		isTouch = (input.UserInputType == Enum.UserInputType.Touch)
+		dragToggle = true
+		dragStart = input.Position
+		startPos = frame.Position
 
-		startPos = Vector2.new(input.Position.X, input.Position.Y)
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragToggle = false
+			end
+		end)
 	end
 end)
 
--- MOVE
-toggleButton.InputChanged:Connect(function(input)
-	if not startPos then return end
-	if input.UserInputType ~= Enum.UserInputType.MouseMovement 
-		and input.UserInputType ~= Enum.UserInputType.Touch then return end
+UIS.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement
+		or input.UserInputType == Enum.UserInputType.Touch then
 
-	-- Tinh movement (mobile nhảy rất ít)
-	local currentPos = Vector2.new(input.Position.X, input.Position.Y)
-	local moved = (currentPos - startPos).Magnitude
-
-	-- Chỉ tính DRAG nếu di chuyển nhiều hơn threshold
-	if moved > clickThreshold then
-		dragging = true
+		if dragToggle then
+			updateInput(input)
+		end
 	end
 end)
 
--- END
-toggleButton.InputEnded:Connect(function(input)
-	if input.UserInputType ~= Enum.UserInputType.MouseButton1
-		and input.UserInputType ~= Enum.UserInputType.Touch then return end
+-- CLICK TOGGLE (PC + MOBILE)
 
-	-- CLICK THẬT → toggle
-	if not dragging then
-		menuOpen = not menuOpen
-		if menuOpen then openMenu() else closeMenu() end
+frame.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1
+		or input.UserInputType == Enum.UserInputType.Touch then
+
+		-- Nếu KHÔNG drag (di chuyển 0px → click thật)
+		if not dragToggle then
+			menuOpen = not menuOpen
+			if menuOpen then
+				openMenu()
+			else
+				closeMenu()
+			end
+		end
 	end
-
-	-- reset
-	dragging = false
-	isTouch = false
-	startPos = nil
 end)
 
 --------------------------------------------------------
