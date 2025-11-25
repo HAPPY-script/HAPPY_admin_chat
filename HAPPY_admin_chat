@@ -180,6 +180,11 @@ ImageLabel.Transparency = 1
 ImageLabel.Image = "rbxassetid://17687447043"
 ImageLabel.Parent = Loading
 
+local UICorner3 = Instance.new("UICorner")
+UICorner3.Name = "UICorner"
+UICorner3.CornerRadius = UDim.new(0.15, 0)
+UICorner3.Parent = Loading
+
 local MM2 = Instance.new("ImageButton")
 MM2.Name = "MM2"
 MM2.Position = UDim2.new(0.5, 0, 0.2, 0)
@@ -198,10 +203,10 @@ UIAspectRatioConstraint3.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint3.Parent = MM2
 
-local UICorner3 = Instance.new("UICorner")
-UICorner3.Name = "UICorner"
-UICorner3.CornerRadius = UDim.new(0.1, 0)
-UICorner3.Parent = MM2
+local UICorner4 = Instance.new("UICorner")
+UICorner4.Name = "UICorner"
+UICorner4.CornerRadius = UDim.new(0.1, 0)
+UICorner4.Parent = MM2
 
 local UIStroke2 = Instance.new("UIStroke")
 UIStroke2.Name = "UIStroke"
@@ -243,10 +248,10 @@ Effect2.BorderSizePixel = 0
 Effect2.BorderColor3 = Color3.new(0, 0, 0)
 Effect2.Parent = MM2
 
-local UICorner4 = Instance.new("UICorner")
-UICorner4.Name = "UICorner"
-UICorner4.CornerRadius = UDim.new(0.1, 0)
-UICorner4.Parent = Effect2
+local UICorner5 = Instance.new("UICorner")
+UICorner5.Name = "UICorner"
+UICorner5.CornerRadius = UDim.new(0.1, 0)
+UICorner5.Parent = Effect2
 
 local UIGradient4 = Instance.new("UIGradient")
 UIGradient4.Name = "UIGradient"
@@ -281,6 +286,11 @@ ImageLabel2.Transparency = 1
 ImageLabel2.Image = "rbxassetid://17687447043"
 ImageLabel2.Parent = Loading2
 
+local UICorner6 = Instance.new("UICorner")
+UICorner6.Name = "UICorner"
+UICorner6.CornerRadius = UDim.new(0.15, 0)
+UICorner6.Parent = Loading2
+
 local DeadRails = Instance.new("ImageButton")
 DeadRails.Name = "DeadRails"
 DeadRails.Position = UDim2.new(0.8, 0, 0.2, 0)
@@ -299,10 +309,10 @@ UIAspectRatioConstraint4.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint4.Parent = DeadRails
 
-local UICorner5 = Instance.new("UICorner")
-UICorner5.Name = "UICorner"
-UICorner5.CornerRadius = UDim.new(0.1, 0)
-UICorner5.Parent = DeadRails
+local UICorner7 = Instance.new("UICorner")
+UICorner7.Name = "UICorner"
+UICorner7.CornerRadius = UDim.new(0.1, 0)
+UICorner7.Parent = DeadRails
 
 local UIStroke3 = Instance.new("UIStroke")
 UIStroke3.Name = "UIStroke"
@@ -345,10 +355,10 @@ Effect3.BorderSizePixel = 0
 Effect3.BorderColor3 = Color3.new(0, 0, 0)
 Effect3.Parent = DeadRails
 
-local UICorner6 = Instance.new("UICorner")
-UICorner6.Name = "UICorner"
-UICorner6.CornerRadius = UDim.new(0.1, 0)
-UICorner6.Parent = Effect3
+local UICorner8 = Instance.new("UICorner")
+UICorner8.Name = "UICorner"
+UICorner8.CornerRadius = UDim.new(0.1, 0)
+UICorner8.Parent = Effect3
 
 local UIGradient6 = Instance.new("UIGradient")
 UIGradient6.Name = "UIGradient"
@@ -383,6 +393,11 @@ ImageLabel3.Transparency = 1
 ImageLabel3.Image = "rbxassetid://17687447043"
 ImageLabel3.Parent = Loading3
 
+local UICorner9 = Instance.new("UICorner")
+UICorner9.Name = "UICorner"
+UICorner9.CornerRadius = UDim.new(0.15, 0)
+UICorner9.Parent = Loading3
+
 local ZombieStories = Instance.new("ImageButton")
 ZombieStories.Name = "ZombieStories"
 ZombieStories.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -401,10 +416,10 @@ UIAspectRatioConstraint5.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint5.Parent = ZombieStories
 
-local UICorner7 = Instance.new("UICorner")
-UICorner7.Name = "UICorner"
-UICorner7.CornerRadius = UDim.new(0.1, 0)
-UICorner7.Parent = ZombieStories
+local UICorner10 = Instance.new("UICorner")
+UICorner10.Name = "UICorner"
+UICorner10.CornerRadius = UDim.new(0.1, 0)
+UICorner10.Parent = ZombieStories
 
 local UIStroke4 = Instance.new("UIStroke")
 UIStroke4.Name = "UIStroke"
@@ -447,10 +462,10 @@ Effect4.BorderSizePixel = 0
 Effect4.BorderColor3 = Color3.new(0, 0, 0)
 Effect4.Parent = ZombieStories
 
-local UICorner8 = Instance.new("UICorner")
-UICorner8.Name = "UICorner"
-UICorner8.CornerRadius = UDim.new(0.1, 0)
-UICorner8.Parent = Effect4
+local UICorner11 = Instance.new("UICorner")
+UICorner11.Name = "UICorner"
+UICorner11.CornerRadius = UDim.new(0.1, 0)
+UICorner11.Parent = Effect4
 
 local UIGradient8 = Instance.new("UIGradient")
 UIGradient8.Name = "UIGradient"
@@ -485,6 +500,11 @@ ImageLabel4.Transparency = 1
 ImageLabel4.Image = "rbxassetid://17687447043"
 ImageLabel4.Parent = Loading4
 
+local UICorner12 = Instance.new("UICorner")
+UICorner12.Name = "UICorner"
+UICorner12.CornerRadius = UDim.new(0.15, 0)
+UICorner12.Parent = Loading4
+
 local GunfightArena = Instance.new("ImageButton")
 GunfightArena.Name = "GunfightArena"
 GunfightArena.Position = UDim2.new(0.2, 0, 0.5, 0)
@@ -503,10 +523,10 @@ UIAspectRatioConstraint6.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint6.Parent = GunfightArena
 
-local UICorner9 = Instance.new("UICorner")
-UICorner9.Name = "UICorner"
-UICorner9.CornerRadius = UDim.new(0.1, 0)
-UICorner9.Parent = GunfightArena
+local UICorner13 = Instance.new("UICorner")
+UICorner13.Name = "UICorner"
+UICorner13.CornerRadius = UDim.new(0.1, 0)
+UICorner13.Parent = GunfightArena
 
 local UIStroke5 = Instance.new("UIStroke")
 UIStroke5.Name = "UIStroke"
@@ -549,10 +569,10 @@ Effect5.BorderSizePixel = 0
 Effect5.BorderColor3 = Color3.new(0, 0, 0)
 Effect5.Parent = GunfightArena
 
-local UICorner10 = Instance.new("UICorner")
-UICorner10.Name = "UICorner"
-UICorner10.CornerRadius = UDim.new(0.1, 0)
-UICorner10.Parent = Effect5
+local UICorner14 = Instance.new("UICorner")
+UICorner14.Name = "UICorner"
+UICorner14.CornerRadius = UDim.new(0.1, 0)
+UICorner14.Parent = Effect5
 
 local UIGradient10 = Instance.new("UIGradient")
 UIGradient10.Name = "UIGradient"
@@ -587,6 +607,11 @@ ImageLabel5.Transparency = 1
 ImageLabel5.Image = "rbxassetid://17687447043"
 ImageLabel5.Parent = Loading5
 
+local UICorner15 = Instance.new("UICorner")
+UICorner15.Name = "UICorner"
+UICorner15.CornerRadius = UDim.new(0.15, 0)
+UICorner15.Parent = Loading5
+
 local Character = Instance.new("Frame")
 Character.Name = "Character"
 Character.Size = UDim2.new(1, 0, 1, 0)
@@ -616,10 +641,10 @@ UIAspectRatioConstraint7.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint7.Parent = Fly
 
-local UICorner11 = Instance.new("UICorner")
-UICorner11.Name = "UICorner"
-UICorner11.CornerRadius = UDim.new(0.15, 0)
-UICorner11.Parent = Fly
+local UICorner16 = Instance.new("UICorner")
+UICorner16.Name = "UICorner"
+UICorner16.CornerRadius = UDim.new(0.15, 0)
+UICorner16.Parent = Fly
 
 local UIGradient11 = Instance.new("UIGradient")
 UIGradient11.Name = "UIGradient"
@@ -654,10 +679,10 @@ Effect6.BorderSizePixel = 0
 Effect6.BorderColor3 = Color3.new(0, 0, 0)
 Effect6.Parent = Fly
 
-local UICorner12 = Instance.new("UICorner")
-UICorner12.Name = "UICorner"
-UICorner12.CornerRadius = UDim.new(0.1, 0)
-UICorner12.Parent = Effect6
+local UICorner17 = Instance.new("UICorner")
+UICorner17.Name = "UICorner"
+UICorner17.CornerRadius = UDim.new(0.1, 0)
+UICorner17.Parent = Effect6
 
 local UIGradient12 = Instance.new("UIGradient")
 UIGradient12.Name = "UIGradient"
@@ -692,6 +717,11 @@ ImageLabel6.Transparency = 1
 ImageLabel6.Image = "rbxassetid://17687447043"
 ImageLabel6.Parent = Loading6
 
+local UICorner18 = Instance.new("UICorner")
+UICorner18.Name = "UICorner"
+UICorner18.CornerRadius = UDim.new(0.15, 0)
+UICorner18.Parent = Loading6
+
 local IfnJump = Instance.new("ImageButton")
 IfnJump.Name = "IfnJump"
 IfnJump.Position = UDim2.new(0.8, 0, 0.2, 0)
@@ -710,10 +740,10 @@ UIAspectRatioConstraint8.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint8.Parent = IfnJump
 
-local UICorner13 = Instance.new("UICorner")
-UICorner13.Name = "UICorner"
-UICorner13.CornerRadius = UDim.new(0.15, 0)
-UICorner13.Parent = IfnJump
+local UICorner19 = Instance.new("UICorner")
+UICorner19.Name = "UICorner"
+UICorner19.CornerRadius = UDim.new(0.15, 0)
+UICorner19.Parent = IfnJump
 
 local UIGradient13 = Instance.new("UIGradient")
 UIGradient13.Name = "UIGradient"
@@ -749,10 +779,10 @@ Effect7.BorderSizePixel = 0
 Effect7.BorderColor3 = Color3.new(0, 0, 0)
 Effect7.Parent = IfnJump
 
-local UICorner14 = Instance.new("UICorner")
-UICorner14.Name = "UICorner"
-UICorner14.CornerRadius = UDim.new(0.1, 0)
-UICorner14.Parent = Effect7
+local UICorner20 = Instance.new("UICorner")
+UICorner20.Name = "UICorner"
+UICorner20.CornerRadius = UDim.new(0.1, 0)
+UICorner20.Parent = Effect7
 
 local UIGradient14 = Instance.new("UIGradient")
 UIGradient14.Name = "UIGradient"
@@ -787,6 +817,11 @@ ImageLabel7.Transparency = 1
 ImageLabel7.Image = "rbxassetid://17687447043"
 ImageLabel7.Parent = Loading7
 
+local UICorner21 = Instance.new("UICorner")
+UICorner21.Name = "UICorner"
+UICorner21.CornerRadius = UDim.new(0.15, 0)
+UICorner21.Parent = Loading7
+
 local Speed = Instance.new("ImageButton")
 Speed.Name = "Speed"
 Speed.Position = UDim2.new(0.5, 0, 0.2, 0)
@@ -805,10 +840,10 @@ UIAspectRatioConstraint9.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint9.Parent = Speed
 
-local UICorner15 = Instance.new("UICorner")
-UICorner15.Name = "UICorner"
-UICorner15.CornerRadius = UDim.new(0.15, 0)
-UICorner15.Parent = Speed
+local UICorner22 = Instance.new("UICorner")
+UICorner22.Name = "UICorner"
+UICorner22.CornerRadius = UDim.new(0.15, 0)
+UICorner22.Parent = Speed
 
 local UIGradient15 = Instance.new("UIGradient")
 UIGradient15.Name = "UIGradient"
@@ -843,10 +878,10 @@ Effect8.BorderSizePixel = 0
 Effect8.BorderColor3 = Color3.new(0, 0, 0)
 Effect8.Parent = Speed
 
-local UICorner16 = Instance.new("UICorner")
-UICorner16.Name = "UICorner"
-UICorner16.CornerRadius = UDim.new(0.1, 0)
-UICorner16.Parent = Effect8
+local UICorner23 = Instance.new("UICorner")
+UICorner23.Name = "UICorner"
+UICorner23.CornerRadius = UDim.new(0.1, 0)
+UICorner23.Parent = Effect8
 
 local UIGradient16 = Instance.new("UIGradient")
 UIGradient16.Name = "UIGradient"
@@ -881,6 +916,11 @@ ImageLabel8.Transparency = 1
 ImageLabel8.Image = "rbxassetid://17687447043"
 ImageLabel8.Parent = Loading8
 
+local UICorner24 = Instance.new("UICorner")
+UICorner24.Name = "UICorner"
+UICorner24.CornerRadius = UDim.new(0.15, 0)
+UICorner24.Parent = Loading8
+
 local Explorer = Instance.new("ImageButton")
 Explorer.Name = "Explorer"
 Explorer.Position = UDim2.new(0.2, 0, 0.5, 0)
@@ -899,10 +939,10 @@ UIAspectRatioConstraint10.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint10.Parent = Explorer
 
-local UICorner17 = Instance.new("UICorner")
-UICorner17.Name = "UICorner"
-UICorner17.CornerRadius = UDim.new(0.15, 0)
-UICorner17.Parent = Explorer
+local UICorner25 = Instance.new("UICorner")
+UICorner25.Name = "UICorner"
+UICorner25.CornerRadius = UDim.new(0.15, 0)
+UICorner25.Parent = Explorer
 
 local UIGradient17 = Instance.new("UIGradient")
 UIGradient17.Name = "UIGradient"
@@ -937,10 +977,10 @@ Effect9.BorderSizePixel = 0
 Effect9.BorderColor3 = Color3.new(0, 0, 0)
 Effect9.Parent = Explorer
 
-local UICorner18 = Instance.new("UICorner")
-UICorner18.Name = "UICorner"
-UICorner18.CornerRadius = UDim.new(0.1, 0)
-UICorner18.Parent = Effect9
+local UICorner26 = Instance.new("UICorner")
+UICorner26.Name = "UICorner"
+UICorner26.CornerRadius = UDim.new(0.1, 0)
+UICorner26.Parent = Effect9
 
 local UIGradient18 = Instance.new("UIGradient")
 UIGradient18.Name = "UIGradient"
@@ -975,6 +1015,11 @@ ImageLabel9.Transparency = 1
 ImageLabel9.Image = "rbxassetid://17687447043"
 ImageLabel9.Parent = Loading9
 
+local UICorner27 = Instance.new("UICorner")
+UICorner27.Name = "UICorner"
+UICorner27.CornerRadius = UDim.new(0.15, 0)
+UICorner27.Parent = Loading9
+
 local HitBox = Instance.new("ImageButton")
 HitBox.Name = "HitBox"
 HitBox.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -993,10 +1038,10 @@ UIAspectRatioConstraint11.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint11.Parent = HitBox
 
-local UICorner19 = Instance.new("UICorner")
-UICorner19.Name = "UICorner"
-UICorner19.CornerRadius = UDim.new(0.15, 0)
-UICorner19.Parent = HitBox
+local UICorner28 = Instance.new("UICorner")
+UICorner28.Name = "UICorner"
+UICorner28.CornerRadius = UDim.new(0.15, 0)
+UICorner28.Parent = HitBox
 
 local UIGradient19 = Instance.new("UIGradient")
 UIGradient19.Name = "UIGradient"
@@ -1032,10 +1077,10 @@ Effect10.BorderSizePixel = 0
 Effect10.BorderColor3 = Color3.new(0, 0, 0)
 Effect10.Parent = HitBox
 
-local UICorner20 = Instance.new("UICorner")
-UICorner20.Name = "UICorner"
-UICorner20.CornerRadius = UDim.new(0.1, 0)
-UICorner20.Parent = Effect10
+local UICorner29 = Instance.new("UICorner")
+UICorner29.Name = "UICorner"
+UICorner29.CornerRadius = UDim.new(0.1, 0)
+UICorner29.Parent = Effect10
 
 local UIGradient20 = Instance.new("UIGradient")
 UIGradient20.Name = "UIGradient"
@@ -1070,6 +1115,11 @@ ImageLabel10.Transparency = 1
 ImageLabel10.Image = "rbxassetid://17687447043"
 ImageLabel10.Parent = Loading10
 
+local UICorner30 = Instance.new("UICorner")
+UICorner30.Name = "UICorner"
+UICorner30.CornerRadius = UDim.new(0.15, 0)
+UICorner30.Parent = Loading10
+
 local Visuals = Instance.new("Frame")
 Visuals.Name = "Visuals"
 Visuals.Size = UDim2.new(1, 0, 1, 0)
@@ -1087,15 +1137,15 @@ UIStroke6.Color = Color3.new(1, 0, 0.784314)
 UIStroke6.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UIStroke6.Parent = ScrollingFrame
 
-local UICorner21 = Instance.new("UICorner")
-UICorner21.Name = "UICorner"
-UICorner21.CornerRadius = UDim.new(0.025, 0)
-UICorner21.Parent = ScrollingFrame
+local UICorner31 = Instance.new("UICorner")
+UICorner31.Name = "UICorner"
+UICorner31.CornerRadius = UDim.new(0.025, 0)
+UICorner31.Parent = ScrollingFrame
 
-local UICorner22 = Instance.new("UICorner")
-UICorner22.Name = "UICorner"
-UICorner22.CornerRadius = UDim.new(0.025, 0)
-UICorner22.Parent = Main
+local UICorner32 = Instance.new("UICorner")
+UICorner32.Name = "UICorner"
+UICorner32.CornerRadius = UDim.new(0.025, 0)
+UICorner32.Parent = Main
 
 local UIGradient21 = Instance.new("UIGradient")
 UIGradient21.Name = "UIGradient"
@@ -1219,10 +1269,10 @@ BackGround.Image = "rbxassetid://127394633690099"
 BackGround.ImageTransparency = 0.5
 BackGround.Parent = Main
 
-local UICorner23 = Instance.new("UICorner")
-UICorner23.Name = "UICorner"
-UICorner23.CornerRadius = UDim.new(0.025, 0)
-UICorner23.Parent = BackGround
+local UICorner33 = Instance.new("UICorner")
+UICorner33.Name = "UICorner"
+UICorner33.CornerRadius = UDim.new(0.025, 0)
+UICorner33.Parent = BackGround
 
 local Button = Instance.new("ImageButton")
 Button.Name = "Button"
@@ -1243,10 +1293,10 @@ UIAspectRatioConstraint13.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint13.Parent = Button
 
-local UICorner24 = Instance.new("UICorner")
-UICorner24.Name = "UICorner"
-UICorner24.CornerRadius = UDim.new(0.1, 0)
-UICorner24.Parent = Button
+local UICorner34 = Instance.new("UICorner")
+UICorner34.Name = "UICorner"
+UICorner34.CornerRadius = UDim.new(0.1, 0)
+UICorner34.Parent = Button
 
 local Version = Instance.new("TextLabel")
 Version.Name = "Version"
@@ -1260,7 +1310,7 @@ Version.Rotation = -15
 Version.AnchorPoint = Vector2.new(0.5, 0.5)
 Version.TextTransparency = 0
 Version.TextStrokeTransparency = 0
-Version.Text = "v0.05"
+Version.Text = "v0.04"
 Version.TextColor3 = Color3.new(0.513726, 1, 0.945098)
 Version.TextSize = 14
 Version.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
@@ -1281,10 +1331,10 @@ Effect11.BorderSizePixel = 0
 Effect11.BorderColor3 = Color3.new(0, 0, 0)
 Effect11.Parent = Button
 
-local UICorner25 = Instance.new("UICorner")
-UICorner25.Name = "UICorner"
-UICorner25.CornerRadius = UDim.new(0.1, 0)
-UICorner25.Parent = Effect11
+local UICorner35 = Instance.new("UICorner")
+UICorner35.Name = "UICorner"
+UICorner35.CornerRadius = UDim.new(0.1, 0)
+UICorner35.Parent = Effect11
 
 local UIGradient23 = Instance.new("UIGradient")
 UIGradient23.Name = "UIGradient"
@@ -1316,10 +1366,10 @@ UIGradient24.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(
 UIGradient24.Rotation = -45
 UIGradient24.Parent = Noti
 
-local UICorner26 = Instance.new("UICorner")
-UICorner26.Name = "UICorner"
-UICorner26.CornerRadius = UDim.new(0.05, 0)
-UICorner26.Parent = Noti
+local UICorner36 = Instance.new("UICorner")
+UICorner36.Name = "UICorner"
+UICorner36.CornerRadius = UDim.new(0.05, 0)
+UICorner36.Parent = Noti
 
 local UIStroke7 = Instance.new("UIStroke")
 UIStroke7.Name = "UIStroke"
@@ -1357,10 +1407,10 @@ UIAspectRatioConstraint15.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint15.Parent = Logo
 
-local UICorner27 = Instance.new("UICorner")
-UICorner27.Name = "UICorner"
-UICorner27.CornerRadius = UDim.new(0.15, 0)
-UICorner27.Parent = Logo
+local UICorner37 = Instance.new("UICorner")
+UICorner37.Name = "UICorner"
+UICorner37.CornerRadius = UDim.new(0.15, 0)
+UICorner37.Parent = Logo
 
 local Name11 = Instance.new("TextLabel")
 Name11.Name = "Name"
@@ -1430,10 +1480,10 @@ UIAspectRatioConstraint16.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint16.Parent = Return1
 
-local UICorner28 = Instance.new("UICorner")
-UICorner28.Name = "UICorner"
-UICorner28.CornerRadius = UDim.new(1, 0)
-UICorner28.Parent = Return1
+local UICorner38 = Instance.new("UICorner")
+UICorner38.Name = "UICorner"
+UICorner38.CornerRadius = UDim.new(1, 0)
+UICorner38.Parent = Return1
 
 local ReturnIfn = Instance.new("ImageButton")
 ReturnIfn.Name = "ReturnIfn"
@@ -1450,10 +1500,10 @@ UIAspectRatioConstraint17.Name = "UIAspectRatioConstraint"
 
 UIAspectRatioConstraint17.Parent = ReturnIfn
 
-local UICorner29 = Instance.new("UICorner")
-UICorner29.Name = "UICorner"
-UICorner29.CornerRadius = UDim.new(1, 0)
-UICorner29.Parent = ReturnIfn
+local UICorner39 = Instance.new("UICorner")
+UICorner39.Name = "UICorner"
+UICorner39.CornerRadius = UDim.new(1, 0)
+UICorner39.Parent = ReturnIfn
 
 --=======================================================================================================--
 
