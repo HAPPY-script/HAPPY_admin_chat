@@ -714,39 +714,58 @@ btnVisuals.MouseButton1Click:Connect(function()
 end)
 
 --------------------------------------------------------
--- TOGGLE MAIN MENU (PC + MOBILE)
+-- CLEAN & RELIABLE CLICK TOGGLE (PC + MOBILE)
 --------------------------------------------------------
 
-toggleButton.Activated:Connect(function()
-	menuOpen = not menuOpen
-	if menuOpen then
-		openMenu()
-	else
-		closeMenu()
+local UIS = game:GetService("UserInputService")
+
+local dragging = false
+local dragStartPos = nil
+local clickThreshold = 10  -- mobile recommended: 8–12px
+
+toggleButton.Active = true  -- allow mobile input
+
+-- Khi bắt đầu chạm vào button
+toggleButton.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1
+		or input.UserInputType == Enum.UserInputType.Touch then
+
+		dragging = false
+		dragStartPos = input.Position
 	end
 end)
 
+-- Kiểm tra nếu ngón tay di chuyển → tính là DRAG, không toggle
 toggleButton.InputChanged:Connect(function(input)
-	if dragStartPos 
-		and (input.UserInputType == Enum.UserInputType.MouseMovement 
-			or input.UserInputType == Enum.UserInputType.Touch) then
-		local delta = (input.Position - dragStartPos).Magnitude
-		if delta > clickThreshold then
+	if dragStartPos == nil then return end
+
+	if input.UserInputType == Enum.UserInputType.MouseMovement
+		or input.UserInputType == Enum.UserInputType.Touch then
+
+		local dist = (input.Position - dragStartPos).Magnitude
+		if dist > clickThreshold then
 			dragging = true
 		end
 	end
 end)
 
+-- Khi thả → nếu KHÔNG DRAG thì là CLICK
 toggleButton.InputEnded:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1
 		or input.UserInputType == Enum.UserInputType.Touch then
 
+		-- CLICK thực sự
 		if not dragging then
 			menuOpen = not menuOpen
-			if menuOpen then openMenu() else closeMenu() end
+			if menuOpen then
+				openMenu()
+			else
+				closeMenu()
+			end
 		end
 
 		dragStartPos = nil
+		dragging = false
 	end
 end)
 
