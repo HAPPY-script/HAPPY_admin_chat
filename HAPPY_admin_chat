@@ -1456,3 +1456,11 @@ UICorner29.CornerRadius = UDim.new(1, 0)
 UICorner29.Parent = ReturnIfn
 
 --=======================================================================================================--
+
+print("✅Done UI")
+
+wait(0.5)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
+
+print("✅Done System")
