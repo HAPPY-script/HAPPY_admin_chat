@@ -154,6 +154,32 @@ UIGradient2.Rotation = -45
 UIGradient2.Offset = Vector2.new(0, -1.5)
 UIGradient2.Parent = Effect
 
+local Loading = Instance.new("Frame")
+Loading.Name = "Loading"
+Loading.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading.Size = UDim2.new(1, 0, 1, 0)
+Loading.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading.BackgroundTransparency = 0.10000000149011612
+Loading.BorderSizePixel = 0
+Loading.BorderColor3 = Color3.new(0, 0, 0)
+Loading.Visible = false
+Loading.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading.Transparency = 0.10000000149011612
+Loading.Parent = BloxFruit
+
+local ImageLabel = Instance.new("ImageLabel")
+ImageLabel.Name = "ImageLabel"
+ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel.BackgroundTransparency = 1
+ImageLabel.BorderSizePixel = 0
+ImageLabel.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel.Transparency = 1
+ImageLabel.Image = "rbxassetid://17687447043"
+ImageLabel.Parent = Loading
+
 local MM2 = Instance.new("ImageButton")
 MM2.Name = "MM2"
 MM2.Position = UDim2.new(0.5, 0, 0.2, 0)
@@ -228,6 +254,32 @@ UIGradient4.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 
 UIGradient4.Rotation = -45
 UIGradient4.Offset = Vector2.new(0, -1.5)
 UIGradient4.Parent = Effect2
+
+local Loading2 = Instance.new("Frame")
+Loading2.Name = "Loading"
+Loading2.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading2.Size = UDim2.new(1, 0, 1, 0)
+Loading2.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading2.BackgroundTransparency = 0.10000000149011612
+Loading2.BorderSizePixel = 0
+Loading2.BorderColor3 = Color3.new(0, 0, 0)
+Loading2.Visible = false
+Loading2.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading2.Transparency = 0.10000000149011612
+Loading2.Parent = MM2
+
+local ImageLabel2 = Instance.new("ImageLabel")
+ImageLabel2.Name = "ImageLabel"
+ImageLabel2.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel2.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel2.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel2.BackgroundTransparency = 1
+ImageLabel2.BorderSizePixel = 0
+ImageLabel2.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel2.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel2.Transparency = 1
+ImageLabel2.Image = "rbxassetid://17687447043"
+ImageLabel2.Parent = Loading2
 
 local DeadRails = Instance.new("ImageButton")
 DeadRails.Name = "DeadRails"
@@ -305,6 +357,32 @@ UIGradient6.Rotation = -45
 UIGradient6.Offset = Vector2.new(0, -1.5)
 UIGradient6.Parent = Effect3
 
+local Loading3 = Instance.new("Frame")
+Loading3.Name = "Loading"
+Loading3.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading3.Size = UDim2.new(1, 0, 1, 0)
+Loading3.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading3.BackgroundTransparency = 0.10000000149011612
+Loading3.BorderSizePixel = 0
+Loading3.BorderColor3 = Color3.new(0, 0, 0)
+Loading3.Visible = false
+Loading3.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading3.Transparency = 0.10000000149011612
+Loading3.Parent = DeadRails
+
+local ImageLabel3 = Instance.new("ImageLabel")
+ImageLabel3.Name = "ImageLabel"
+ImageLabel3.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel3.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel3.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel3.BackgroundTransparency = 1
+ImageLabel3.BorderSizePixel = 0
+ImageLabel3.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel3.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel3.Transparency = 1
+ImageLabel3.Image = "rbxassetid://17687447043"
+ImageLabel3.Parent = Loading3
+
 local ZombieStories = Instance.new("ImageButton")
 ZombieStories.Name = "ZombieStories"
 ZombieStories.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -381,6 +459,32 @@ UIGradient8.Rotation = -45
 UIGradient8.Offset = Vector2.new(0, -1.5)
 UIGradient8.Parent = Effect4
 
+local Loading4 = Instance.new("Frame")
+Loading4.Name = "Loading"
+Loading4.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading4.Size = UDim2.new(1, 0, 1, 0)
+Loading4.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading4.BackgroundTransparency = 0.10000000149011612
+Loading4.BorderSizePixel = 0
+Loading4.BorderColor3 = Color3.new(0, 0, 0)
+Loading4.Visible = false
+Loading4.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading4.Transparency = 0.10000000149011612
+Loading4.Parent = ZombieStories
+
+local ImageLabel4 = Instance.new("ImageLabel")
+ImageLabel4.Name = "ImageLabel"
+ImageLabel4.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel4.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel4.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel4.BackgroundTransparency = 1
+ImageLabel4.BorderSizePixel = 0
+ImageLabel4.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel4.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel4.Transparency = 1
+ImageLabel4.Image = "rbxassetid://17687447043"
+ImageLabel4.Parent = Loading4
+
 local GunfightArena = Instance.new("ImageButton")
 GunfightArena.Name = "GunfightArena"
 GunfightArena.Position = UDim2.new(0.2, 0, 0.5, 0)
@@ -456,6 +560,32 @@ UIGradient10.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1,
 UIGradient10.Rotation = -45
 UIGradient10.Offset = Vector2.new(0, -1.5)
 UIGradient10.Parent = Effect5
+
+local Loading5 = Instance.new("Frame")
+Loading5.Name = "Loading"
+Loading5.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading5.Size = UDim2.new(1, 0, 1, 0)
+Loading5.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading5.BackgroundTransparency = 0.10000000149011612
+Loading5.BorderSizePixel = 0
+Loading5.BorderColor3 = Color3.new(0, 0, 0)
+Loading5.Visible = false
+Loading5.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading5.Transparency = 0.10000000149011612
+Loading5.Parent = GunfightArena
+
+local ImageLabel5 = Instance.new("ImageLabel")
+ImageLabel5.Name = "ImageLabel"
+ImageLabel5.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel5.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel5.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel5.BackgroundTransparency = 1
+ImageLabel5.BorderSizePixel = 0
+ImageLabel5.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel5.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel5.Transparency = 1
+ImageLabel5.Image = "rbxassetid://17687447043"
+ImageLabel5.Parent = Loading5
 
 local Character = Instance.new("Frame")
 Character.Name = "Character"
@@ -536,6 +666,32 @@ UIGradient12.Rotation = -45
 UIGradient12.Offset = Vector2.new(0, -1.5)
 UIGradient12.Parent = Effect6
 
+local Loading6 = Instance.new("Frame")
+Loading6.Name = "Loading"
+Loading6.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading6.Size = UDim2.new(1, 0, 1, 0)
+Loading6.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading6.BackgroundTransparency = 0.10000000149011612
+Loading6.BorderSizePixel = 0
+Loading6.BorderColor3 = Color3.new(0, 0, 0)
+Loading6.Visible = false
+Loading6.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading6.Transparency = 0.10000000149011612
+Loading6.Parent = Fly
+
+local ImageLabel6 = Instance.new("ImageLabel")
+ImageLabel6.Name = "ImageLabel"
+ImageLabel6.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel6.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel6.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel6.BackgroundTransparency = 1
+ImageLabel6.BorderSizePixel = 0
+ImageLabel6.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel6.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel6.Transparency = 1
+ImageLabel6.Image = "rbxassetid://17687447043"
+ImageLabel6.Parent = Loading6
+
 local IfnJump = Instance.new("ImageButton")
 IfnJump.Name = "IfnJump"
 IfnJump.Position = UDim2.new(0.8, 0, 0.2, 0)
@@ -605,6 +761,32 @@ UIGradient14.Rotation = -45
 UIGradient14.Offset = Vector2.new(0, -1.5)
 UIGradient14.Parent = Effect7
 
+local Loading7 = Instance.new("Frame")
+Loading7.Name = "Loading"
+Loading7.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading7.Size = UDim2.new(1, 0, 1, 0)
+Loading7.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading7.BackgroundTransparency = 0.10000000149011612
+Loading7.BorderSizePixel = 0
+Loading7.BorderColor3 = Color3.new(0, 0, 0)
+Loading7.Visible = false
+Loading7.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading7.Transparency = 0.10000000149011612
+Loading7.Parent = IfnJump
+
+local ImageLabel7 = Instance.new("ImageLabel")
+ImageLabel7.Name = "ImageLabel"
+ImageLabel7.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel7.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel7.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel7.BackgroundTransparency = 1
+ImageLabel7.BorderSizePixel = 0
+ImageLabel7.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel7.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel7.Transparency = 1
+ImageLabel7.Image = "rbxassetid://17687447043"
+ImageLabel7.Parent = Loading7
+
 local Speed = Instance.new("ImageButton")
 Speed.Name = "Speed"
 Speed.Position = UDim2.new(0.5, 0, 0.2, 0)
@@ -672,6 +854,32 @@ UIGradient16.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1,
 UIGradient16.Rotation = -45
 UIGradient16.Offset = Vector2.new(0, -1.5)
 UIGradient16.Parent = Effect8
+
+local Loading8 = Instance.new("Frame")
+Loading8.Name = "Loading"
+Loading8.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading8.Size = UDim2.new(1, 0, 1, 0)
+Loading8.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading8.BackgroundTransparency = 0.10000000149011612
+Loading8.BorderSizePixel = 0
+Loading8.BorderColor3 = Color3.new(0, 0, 0)
+Loading8.Visible = false
+Loading8.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading8.Transparency = 0.10000000149011612
+Loading8.Parent = Speed
+
+local ImageLabel8 = Instance.new("ImageLabel")
+ImageLabel8.Name = "ImageLabel"
+ImageLabel8.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel8.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel8.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel8.BackgroundTransparency = 1
+ImageLabel8.BorderSizePixel = 0
+ImageLabel8.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel8.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel8.Transparency = 1
+ImageLabel8.Image = "rbxassetid://17687447043"
+ImageLabel8.Parent = Loading8
 
 local Explorer = Instance.new("ImageButton")
 Explorer.Name = "Explorer"
@@ -741,6 +949,32 @@ UIGradient18.Rotation = -45
 UIGradient18.Offset = Vector2.new(0, -1.5)
 UIGradient18.Parent = Effect9
 
+local Loading9 = Instance.new("Frame")
+Loading9.Name = "Loading"
+Loading9.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading9.Size = UDim2.new(1, 0, 1, 0)
+Loading9.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading9.BackgroundTransparency = 0.10000000149011612
+Loading9.BorderSizePixel = 0
+Loading9.BorderColor3 = Color3.new(0, 0, 0)
+Loading9.Visible = false
+Loading9.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading9.Transparency = 0.10000000149011612
+Loading9.Parent = Explorer
+
+local ImageLabel9 = Instance.new("ImageLabel")
+ImageLabel9.Name = "ImageLabel"
+ImageLabel9.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel9.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel9.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel9.BackgroundTransparency = 1
+ImageLabel9.BorderSizePixel = 0
+ImageLabel9.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel9.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel9.Transparency = 1
+ImageLabel9.Image = "rbxassetid://17687447043"
+ImageLabel9.Parent = Loading9
+
 local HitBox = Instance.new("ImageButton")
 HitBox.Name = "HitBox"
 HitBox.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -809,6 +1043,32 @@ UIGradient20.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1,
 UIGradient20.Rotation = -45
 UIGradient20.Offset = Vector2.new(0, -1.5)
 UIGradient20.Parent = Effect10
+
+local Loading10 = Instance.new("Frame")
+Loading10.Name = "Loading"
+Loading10.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading10.Size = UDim2.new(1, 0, 1, 0)
+Loading10.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading10.BackgroundTransparency = 0.10000000149011612
+Loading10.BorderSizePixel = 0
+Loading10.BorderColor3 = Color3.new(0, 0, 0)
+Loading10.Visible = false
+Loading10.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading10.Transparency = 0.10000000149011612
+Loading10.Parent = HitBox
+
+local ImageLabel10 = Instance.new("ImageLabel")
+ImageLabel10.Name = "ImageLabel"
+ImageLabel10.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel10.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel10.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel10.BackgroundTransparency = 1
+ImageLabel10.BorderSizePixel = 0
+ImageLabel10.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel10.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel10.Transparency = 1
+ImageLabel10.Image = "rbxassetid://17687447043"
+ImageLabel10.Parent = Loading10
 
 local Visuals = Instance.new("Frame")
 Visuals.Name = "Visuals"
@@ -1000,7 +1260,7 @@ Version.Rotation = -15
 Version.AnchorPoint = Vector2.new(0.5, 0.5)
 Version.TextTransparency = 0
 Version.TextStrokeTransparency = 0
-Version.Text = "v0.04"
+Version.Text = "v0.05"
 Version.TextColor3 = Color3.new(0.513726, 1, 0.945098)
 Version.TextSize = 14
 Version.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
@@ -1194,10 +1454,5 @@ local UICorner29 = Instance.new("UICorner")
 UICorner29.Name = "UICorner"
 UICorner29.CornerRadius = UDim.new(1, 0)
 UICorner29.Parent = ReturnIfn
-print("✅Done UI")
 
-wait(0.5)
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
-
-print("✅Done System")
+--=======================================================================================================--
