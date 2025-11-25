@@ -182,7 +182,7 @@ ImageLabel.Parent = Loading
 
 local UICorner3 = Instance.new("UICorner")
 UICorner3.Name = "UICorner"
-UICorner3.CornerRadius = UDim.new(0.15, 0)
+UICorner3.CornerRadius = UDim.new(0.1, 0)
 UICorner3.Parent = Loading
 
 local MM2 = Instance.new("ImageButton")
@@ -288,7 +288,7 @@ ImageLabel2.Parent = Loading2
 
 local UICorner6 = Instance.new("UICorner")
 UICorner6.Name = "UICorner"
-UICorner6.CornerRadius = UDim.new(0.15, 0)
+UICorner6.CornerRadius = UDim.new(0.1, 0)
 UICorner6.Parent = Loading2
 
 local DeadRails = Instance.new("ImageButton")
@@ -395,7 +395,7 @@ ImageLabel3.Parent = Loading3
 
 local UICorner9 = Instance.new("UICorner")
 UICorner9.Name = "UICorner"
-UICorner9.CornerRadius = UDim.new(0.15, 0)
+UICorner9.CornerRadius = UDim.new(0.1, 0)
 UICorner9.Parent = Loading3
 
 local ZombieStories = Instance.new("ImageButton")
@@ -502,7 +502,7 @@ ImageLabel4.Parent = Loading4
 
 local UICorner12 = Instance.new("UICorner")
 UICorner12.Name = "UICorner"
-UICorner12.CornerRadius = UDim.new(0.15, 0)
+UICorner12.CornerRadius = UDim.new(0.1, 0)
 UICorner12.Parent = Loading4
 
 local GunfightArena = Instance.new("ImageButton")
@@ -609,7 +609,7 @@ ImageLabel5.Parent = Loading5
 
 local UICorner15 = Instance.new("UICorner")
 UICorner15.Name = "UICorner"
-UICorner15.CornerRadius = UDim.new(0.15, 0)
+UICorner15.CornerRadius = UDim.new(0.1, 0)
 UICorner15.Parent = Loading5
 
 local Character = Instance.new("Frame")
@@ -719,7 +719,7 @@ ImageLabel6.Parent = Loading6
 
 local UICorner18 = Instance.new("UICorner")
 UICorner18.Name = "UICorner"
-UICorner18.CornerRadius = UDim.new(0.15, 0)
+UICorner18.CornerRadius = UDim.new(0.1, 0)
 UICorner18.Parent = Loading6
 
 local IfnJump = Instance.new("ImageButton")
@@ -819,7 +819,7 @@ ImageLabel7.Parent = Loading7
 
 local UICorner21 = Instance.new("UICorner")
 UICorner21.Name = "UICorner"
-UICorner21.CornerRadius = UDim.new(0.15, 0)
+UICorner21.CornerRadius = UDim.new(0.1, 0)
 UICorner21.Parent = Loading7
 
 local Speed = Instance.new("ImageButton")
@@ -918,7 +918,7 @@ ImageLabel8.Parent = Loading8
 
 local UICorner24 = Instance.new("UICorner")
 UICorner24.Name = "UICorner"
-UICorner24.CornerRadius = UDim.new(0.15, 0)
+UICorner24.CornerRadius = UDim.new(0.1, 0)
 UICorner24.Parent = Loading8
 
 local Explorer = Instance.new("ImageButton")
@@ -1017,7 +1017,7 @@ ImageLabel9.Parent = Loading9
 
 local UICorner27 = Instance.new("UICorner")
 UICorner27.Name = "UICorner"
-UICorner27.CornerRadius = UDim.new(0.15, 0)
+UICorner27.CornerRadius = UDim.new(0.1, 0)
 UICorner27.Parent = Loading9
 
 local HitBox = Instance.new("ImageButton")
@@ -1117,7 +1117,7 @@ ImageLabel10.Parent = Loading10
 
 local UICorner30 = Instance.new("UICorner")
 UICorner30.Name = "UICorner"
-UICorner30.CornerRadius = UDim.new(0.15, 0)
+UICorner30.CornerRadius = UDim.new(0.1, 0)
 UICorner30.Parent = Loading10
 
 local Visuals = Instance.new("Frame")
@@ -1163,7 +1163,7 @@ Title.BorderSizePixel = 0
 Title.BorderColor3 = Color3.new(0, 0, 0)
 Title.ZIndex = 2
 Title.AnchorPoint = Vector2.new(0.5, 0.5)
-Title.TextTransparency = 0
+Title.Transparency = 1
 Title.Text = "HAPPY script"
 Title.TextColor3 = Color3.new(1, 0, 0.901961)
 Title.TextSize = 14
@@ -1187,7 +1187,7 @@ Character2.BackgroundTransparency = 1
 Character2.BorderSizePixel = 0
 Character2.BorderColor3 = Color3.new(0, 0, 0)
 Character2.ZIndex = 2
-Character2.TextTransparency = 0
+Character2.Transparency = 1
 Character2.Text = "Character"
 Character2.TextColor3 = Color3.new(0, 1, 0.588235)
 Character2.TextSize = 14
@@ -1206,7 +1206,7 @@ GameHub2.BackgroundTransparency = 1
 GameHub2.BorderSizePixel = 0
 GameHub2.BorderColor3 = Color3.new(0, 0, 0)
 GameHub2.ZIndex = 2
-GameHub2.TextTransparency = 0
+GameHub2.Transparency = 1
 GameHub2.Text = "GameHub"
 GameHub2.TextColor3 = Color3.new(0, 1, 0.588235)
 GameHub2.TextSize = 14
@@ -1226,7 +1226,7 @@ Visuals2.BorderSizePixel = 0
 Visuals2.BorderColor3 = Color3.new(0, 0, 0)
 Visuals2.Visible = false
 Visuals2.ZIndex = 2
-Visuals2.TextTransparency = 0
+Visuals2.Transparency = 1
 Visuals2.Text = "Visuals"
 Visuals2.TextColor3 = Color3.new(0.392157, 0.392157, 1)
 Visuals2.TextSize = 14
@@ -1308,8 +1308,7 @@ Version.BorderSizePixel = 0
 Version.BorderColor3 = Color3.new(0, 0, 0)
 Version.Rotation = -15
 Version.AnchorPoint = Vector2.new(0.5, 0.5)
-Version.TextTransparency = 0
-Version.TextStrokeTransparency = 0
+Version.Transparency = 1
 Version.Text = "v0.05"
 Version.TextColor3 = Color3.new(0.513726, 1, 0.945098)
 Version.TextSize = 14
@@ -1317,11 +1316,6 @@ Version.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWei
 Version.TextScaled = true
 Version.TextWrapped = true
 Version.Parent = Button
-
-local UIDragDetector2 = Instance.new("UIDragDetector")
-UIDragDetector2.Name = "UIDragDetector"
-
-UIDragDetector2.Parent = Button
 
 local Effect11 = Instance.new("Frame")
 Effect11.Name = "Effect"
@@ -1342,6 +1336,11 @@ UIGradient23.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1,
 UIGradient23.Rotation = -45
 UIGradient23.Offset = Vector2.new(0, 1.5)
 UIGradient23.Parent = Effect11
+
+local UIDragDetector2 = Instance.new("UIDragDetector")
+UIDragDetector2.Name = "UIDragDetector"
+
+UIDragDetector2.Parent = Button
 
 local Noti = Instance.new("Frame")
 Noti.Name = "Noti"
@@ -1384,7 +1383,7 @@ Back.BackgroundColor3 = Color3.new(1, 1, 1)
 Back.BackgroundTransparency = 1
 Back.BorderSizePixel = 0
 Back.BorderColor3 = Color3.new(0, 0, 0)
-Back.TextTransparency = 0
+Back.Transparency = 1
 Back.Text = "< Back"
 Back.TextColor3 = Color3.new(1, 0, 0.196078)
 Back.TextSize = 14
@@ -1421,7 +1420,7 @@ Name11.BackgroundTransparency = 1
 Name11.BorderSizePixel = 0
 Name11.BorderColor3 = Color3.new(0, 0, 0)
 Name11.AnchorPoint = Vector2.new(0.5, 0.5)
-Name11.TextTransparency = 0
+Name11.Transparency = 1
 Name11.Text = "---"
 Name11.TextColor3 = Color3.new(1, 0, 1)
 Name11.TextSize = 14
@@ -1438,7 +1437,7 @@ Done.BackgroundColor3 = Color3.new(1, 1, 1)
 Done.BackgroundTransparency = 1
 Done.BorderSizePixel = 0
 Done.BorderColor3 = Color3.new(0, 0, 0)
-Done.TextTransparency = 0
+Done.Transparency = 1
 Done.Text = "Done"
 Done.TextColor3 = Color3.new(0.392157, 1, 0)
 Done.TextSize = 14
@@ -1456,7 +1455,7 @@ Tip.BackgroundTransparency = 1
 Tip.BorderSizePixel = 0
 Tip.BorderColor3 = Color3.new(0, 0, 0)
 Tip.AnchorPoint = Vector2.new(0.5, 0.5)
-Tip.TextTransparency = 0
+Tip.Transparency = 1
 Tip.Text = "If you want the script to run automatically once the next time you run the script, press Return[1], if you want it to run automatically forever, press Return[ifn]."
 Tip.TextColor3 = Color3.new(1, 0.882353, 0)
 Tip.TextSize = 14
@@ -1504,6 +1503,19 @@ local UICorner39 = Instance.new("UICorner")
 UICorner39.Name = "UICorner"
 UICorner39.CornerRadius = UDim.new(1, 0)
 UICorner39.Parent = ReturnIfn
+
+--SettingFix
+Version.TextTransparency = 0
+Version.TextStrokeTransparency = 0
+Back.TextTransparency = 0
+Done.TextTransparency = 0
+Tip.TextTransparency = 0
+Name11.TextTransparency = 0
+Visuals2.TextTransparency = 0
+Character2.TextTransparency = 0
+GameHub2.TextTransparency = 0
+Title.TextTransparency = 0
+--EndFix
 
 --=======================================================================================================--
 
