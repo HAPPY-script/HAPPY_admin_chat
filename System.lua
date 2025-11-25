@@ -113,36 +113,76 @@ end
 
 -- ======= NOTI + FIREBASE SUPPORT (MẪU-TYPE, DÙNG HttpRequest) =======
 
--- Hàm helper: bật Loading
-local function startLoading(btn)
-	local loadingFrame = btn:FindFirstChild("Loading")
-	if loadingFrame then
-		loadingFrame.Visible = true
-		local img = loadingFrame:FindFirstChildWhichIsA("ImageLabel")
-		if img then
-			img.Rotation = 0
-			-- xoay liên tục
-			loadingFrame:GetAttribute("LoadingTween") -- clear cũ nếu có
-			local conn
-			conn = game:GetService("RunService").RenderStepped:Connect(function(dt)
-				img.Rotation = img.Rotation + 360 * dt -- xoay 360 độ / giây
-			end)
-			loadingFrame:SetAttribute("LoadingTween", conn)
+-- ============================
+-- Loading helpers (improved)
+-- ============================
+local RunService = game:GetService("RunService")
+-- weak-key table để lưu connection theo loadingFrame (auto GC khi frame mất)
+local loadingConns = setmetatable({}, { __mode = "k" })
+
+local function findSpinnerImage(loadingFrame)
+	-- tìm ImageLabel an toàn, có thể là con trực tiếp hoặc descendant
+	if not loadingFrame then return nil end
+	-- ưu tiên FindFirstChildOfClass (direct child)
+	local img = loadingFrame:FindFirstChildOfClass("ImageLabel")
+	if img then return img end
+	-- fallback: tìm descendant đầu tiên là ImageLabel
+	for _, v in ipairs(loadingFrame:GetDescendants()) do
+		if v:IsA("ImageLabel") then
+			return v
 		end
+	end
+	return nil
+end
+
+local function startLoading(btn)
+	if not btn or not btn.Parent then return end
+	local loadingFrame = btn:FindFirstChild("Loading")
+	if not loadingFrame then return end
+
+	-- nếu đã đang loading thì không tạo lại connection
+	if loadingConns[loadingFrame] then
+		loadingFrame.Visible = true
+		return
+	end
+
+	local img = findSpinnerImage(loadingFrame)
+	if img then
+		-- reset rotation và show
+		img.Rotation = 0
+		loadingFrame.Visible = true
+
+		-- tạo connection xoay
+		local conn = RunService.Heartbeat:Connect(function(dt)
+			-- xoay 360 độ / giây (mượt & frame-rate independent)
+			img.Rotation = (img.Rotation + 360 * dt) % 360
+		end)
+
+		loadingConns[loadingFrame] = conn
+	else
+		-- nếu không có image thì chỉ show frame
+		loadingFrame.Visible = true
 	end
 end
 
--- Hàm helper: tắt Loading
 local function stopLoading(btn)
+	if not btn then return end
 	local loadingFrame = btn:FindFirstChild("Loading")
-	if loadingFrame then
-		loadingFrame.Visible = false
-		local conn = loadingFrame:GetAttribute("LoadingTween")
-		if conn then
-			conn:Disconnect()
-			loadingFrame:SetAttribute("LoadingTween", nil)
-		end
+	if not loadingFrame then return end
+
+	-- disconnect connection nếu có
+	local conn = loadingConns[loadingFrame]
+	if conn then
+		pcall(function() conn:Disconnect() end)
+		loadingConns[loadingFrame] = nil
 	end
+
+	-- reset rotation của image (nếu có) và ẩn frame
+	local img = findSpinnerImage(loadingFrame)
+	if img then
+		img.Rotation = 0
+	end
+	loadingFrame.Visible = false
 end
 
 -- Auto-detect http request (giống script mẫu)
@@ -457,8 +497,6 @@ Noti_Return1.MouseButton1Click:Connect(function()
 	local sname = NOTI_CONTEXT.scriptName
 	if not sname then return end
 
-	startLoading(Noti_Return1)  -- Bật Loading khi bấm
-
 	task.spawn(function()
 		local wasOn = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
 		if wasOn then
@@ -475,16 +513,12 @@ Noti_Return1.MouseButton1Click:Connect(function()
 				Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
 			end
 		end
-
-		stopLoading(Noti_Return1)  -- Tắt Loading khi xong
 	end)
 end)
 
 Noti_ReturnIfn.MouseButton1Click:Connect(function()
 	local sname = NOTI_CONTEXT.scriptName
 	if not sname then return end
-
-	startLoading(Noti_ReturnIfn)  -- Bật Loading khi bấm
 
 	task.spawn(function()
 		local wasOn = (Noti_ReturnIfn.BackgroundColor3 == Color3.fromRGB(50,255,50))
@@ -502,8 +536,6 @@ Noti_ReturnIfn.MouseButton1Click:Connect(function()
 				Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
 			end
 		end
-
-		stopLoading(Noti_ReturnIfn)  -- Tắt Loading khi xong
 	end)
 end)
 
@@ -588,8 +620,23 @@ local function applyButtonEffects(btn)
 			tween(btn, fastInfo, {Size = hoverSize})
 		end
 
-		-- OPEN NOTI INSTEAD OF RUNNING DIRECTLY
-		openNotiFor(btn)
+		-- START LOADING trước khi gọi openNotiFor (openNotiFor sẽ gọi firebaseGet/updateReturnButtonsVisual)
+		startLoading(btn)
+
+		-- Mở Noti (đặt trong pcall để đảm bảo stopLoading luôn được gọi)
+		task.spawn(function()
+			local ok, err = pcall(function()
+				openNotiFor(btn)
+			end)
+
+			-- nếu có lỗi thì log
+			if not ok then
+				warn("[openNotiFor] error:", err)
+			end
+
+			-- STOP LOADING ngay sau khi openNotiFor hoàn tất (dù thành công hay lỗi)
+			stopLoading(btn)
+		end)
 	end)
 end
 
