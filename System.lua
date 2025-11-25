@@ -113,6 +113,38 @@ end
 
 -- ======= NOTI + FIREBASE SUPPORT (MẪU-TYPE, DÙNG HttpRequest) =======
 
+-- Hàm helper: bật Loading
+local function startLoading(btn)
+	local loadingFrame = btn:FindFirstChild("Loading")
+	if loadingFrame then
+		loadingFrame.Visible = true
+		local img = loadingFrame:FindFirstChildWhichIsA("ImageLabel")
+		if img then
+			img.Rotation = 0
+			-- xoay liên tục
+			loadingFrame:GetAttribute("LoadingTween") -- clear cũ nếu có
+			local conn
+			conn = game:GetService("RunService").RenderStepped:Connect(function(dt)
+				img.Rotation = img.Rotation + 360 * dt -- xoay 360 độ / giây
+			end)
+			loadingFrame:SetAttribute("LoadingTween", conn)
+		end
+	end
+end
+
+-- Hàm helper: tắt Loading
+local function stopLoading(btn)
+	local loadingFrame = btn:FindFirstChild("Loading")
+	if loadingFrame then
+		loadingFrame.Visible = false
+		local conn = loadingFrame:GetAttribute("LoadingTween")
+		if conn then
+			conn:Disconnect()
+			loadingFrame:SetAttribute("LoadingTween", nil)
+		end
+	end
+end
+
 -- Auto-detect http request (giống script mẫu)
 local function HttpRequest(data)
 	if syn and syn.request then
@@ -425,42 +457,54 @@ Noti_Return1.MouseButton1Click:Connect(function()
 	local sname = NOTI_CONTEXT.scriptName
 	if not sname then return end
 
-	local wasOn = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
-	if wasOn then
-		if setOnceFlag(sname, false) then
-			Noti_Return1.BackgroundColor3 = Color3.fromRGB(0,0,0)
-			Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
+	startLoading(Noti_Return1)  -- Bật Loading khi bấm
+
+	task.spawn(function()
+		local wasOn = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
+		if wasOn then
+			if setOnceFlag(sname, false) then
+				Noti_Return1.BackgroundColor3 = Color3.fromRGB(0,0,0)
+				Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
+			end
+		else
+			-- enable once and turn off forever
+			if setOnceFlag(sname, true) and setForeverFlag(sname, false) then
+				Noti_Return1.BackgroundColor3 = Color3.fromRGB(50,255,50)
+				Noti_Return1.ImageColor3 = Color3.fromRGB(0,0,0)
+				Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(0,0,0)
+				Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
+			end
 		end
-	else
-		-- enable once and turn off forever
-		if setOnceFlag(sname, true) and setForeverFlag(sname, false) then
-			Noti_Return1.BackgroundColor3 = Color3.fromRGB(50,255,50)
-			Noti_Return1.ImageColor3 = Color3.fromRGB(0,0,0)
-			Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(0,0,0)
-			Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
-		end
-	end
+
+		stopLoading(Noti_Return1)  -- Tắt Loading khi xong
+	end)
 end)
 
 Noti_ReturnIfn.MouseButton1Click:Connect(function()
 	local sname = NOTI_CONTEXT.scriptName
 	if not sname then return end
 
-	local wasOn = (Noti_ReturnIfn.BackgroundColor3 == Color3.fromRGB(50,255,50))
-	if wasOn then
-		if setForeverFlag(sname, false) then
-			Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(0,0,0)
-			Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
+	startLoading(Noti_ReturnIfn)  -- Bật Loading khi bấm
+
+	task.spawn(function()
+		local wasOn = (Noti_ReturnIfn.BackgroundColor3 == Color3.fromRGB(50,255,50))
+		if wasOn then
+			if setForeverFlag(sname, false) then
+				Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(0,0,0)
+				Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
+			end
+		else
+			-- enable forever and disable once
+			if setForeverFlag(sname, true) and setOnceFlag(sname, false) then
+				Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(50,255,50)
+				Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(0,0,0)
+				Noti_Return1.BackgroundColor3 = Color3.fromRGB(0,0,0)
+				Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
+			end
 		end
-	else
-		-- enable forever and disable once
-		if setForeverFlag(sname, true) and setOnceFlag(sname, false) then
-			Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(50,255,50)
-			Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(0,0,0)
-			Noti_Return1.BackgroundColor3 = Color3.fromRGB(0,0,0)
-			Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
-		end
-	end
+
+		stopLoading(Noti_ReturnIfn)  -- Tắt Loading khi xong
+	end)
 end)
 
 local function runScriptByName(name)
@@ -626,11 +670,12 @@ end)
 -- TOGGLE MAIN MENU (PC + MOBILE)
 --------------------------------------------------------
 
-toggleButton.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 
-		or input.UserInputType == Enum.UserInputType.Touch then
-		dragging = false
-		dragStartPos = input.Position
+toggleButton.Activated:Connect(function()
+	menuOpen = not menuOpen
+	if menuOpen then
+		openMenu()
+	else
+		closeMenu()
 	end
 end)
 
@@ -779,14 +824,13 @@ applyGradientEffect(toggleButton)
 local particleTemplate = main:WaitForChild("Particle")
 
 local SETTINGS = {
-	SpawnRate = 0.5,       -- Tăng tần suất nhẹ cho cảm giác dày nhưng vẫn mượt
+	SpawnRate = 0.5,
 	MinSize = 10,
 	MaxSize = 20,
-	MinFallTime = 17,        -- Rơi chậm hơn
+	MinFallTime = 17,
 	MaxFallTime = 25,
-	MinRotation = -10,      -- Tuyết chỉ xoay nhẹ
+	MinRotation = -10,
 	MaxRotation = 10,
-	FadeOutTime = 0.6       -- Fade mượt hơn
 }
 
 local function createParticle()
@@ -795,25 +839,36 @@ local function createParticle()
 	local particle = particleTemplate:Clone()
 	particle.Visible = true
 	particle.Parent = main.ScrollingFrame
+	particle.ImageTransparency = 1 -- Bắt đầu mờ 100%
 
-	-- Kích thước
+	-- Random size
 	local size = math.random(SETTINGS.MinSize, SETTINGS.MaxSize)
 	particle.Size = UDim2.fromOffset(size, size)
 
-	-- Xoay nhẹ
+	-- Rotation
 	particle.Rotation = math.random(SETTINGS.MinRotation, SETTINGS.MaxRotation)
-	particle.ImageTransparency = 0
 	particle.ZIndex = 1
 
 	particle.AnchorPoint = Vector2.new(0.5, 0.5)
 	particle.Position = UDim2.new(math.random(), 0, 0, -15)
 
 	local fallTime = math.random(SETTINGS.MinFallTime, SETTINGS.MaxFallTime)
-
-	-- Dao động trái/phải như tuyết thật
 	local sideOffset = math.random(-40, 40)
 
-	local fallTween = TweenService:Create(
+	----------------------------------------------------
+	-- 1. FADE IN
+	----------------------------------------------------
+	local fadeIn = TweenService:Create(
+		particle,
+		TweenInfo.new(fallTime * 0.1, Enum.EasingStyle.Linear),
+		{ImageTransparency = 0}
+	)
+	fadeIn:Play()
+
+	----------------------------------------------------
+	-- 2. MOVE
+	----------------------------------------------------
+	local move = TweenService:Create(
 		particle,
 		TweenInfo.new(fallTime, Enum.EasingStyle.Linear),
 		{
@@ -825,17 +880,21 @@ local function createParticle()
 			)
 		}
 	)
+	move:Play()
 
-	fallTween:Play()
-
-	fallTween.Completed:Connect(function()
-		local fadeTween = TweenService:Create(
+	----------------------------------------------------
+	-- 3. FADE OUT (sau 90% thời gian)
+	----------------------------------------------------
+	task.delay(fallTime * 0.9, function()
+		local fadeOut = TweenService:Create(
 			particle,
-			TweenInfo.new(SETTINGS.FadeOutTime, Enum.EasingStyle.Linear),
+			TweenInfo.new(fallTime * 0.1, Enum.EasingStyle.Linear),
 			{ImageTransparency = 1}
 		)
-		fadeTween:Play()
-		fadeTween.Completed:Connect(function()
+		fadeOut:Play()
+
+		-- Destroy sau fade-out, KHÔNG phụ thuộc tween move
+		fadeOut.Completed:Connect(function()
 			particle:Destroy()
 		end)
 	end)
