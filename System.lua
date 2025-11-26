@@ -36,7 +36,7 @@ local ScriptMapping = {
 		loadstring(code)()
 	end,
 	HitBox = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/NONE/refs/heads/main/NONE")
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HIT_BOX/refs/heads/main/HIT_BOX.lua")
 		loadstring(code)()
 	end,
 	Speed = function()
