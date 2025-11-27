@@ -1613,6 +1613,7 @@ Character2.TextTransparency = 0
 GameHub2.TextTransparency = 0
 Title.TextTransparency = 0
 Name11.TextTransparency = 1
+Name12.TextTransparency = 0
 --EndFix
 
 print("✅Done UI")
