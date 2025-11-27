@@ -76,6 +76,7 @@ GameHub.BackgroundColor3 = Color3.new(1, 1, 1)
 GameHub.BackgroundTransparency = 1
 GameHub.BorderSizePixel = 0
 GameHub.BorderColor3 = Color3.new(0, 0, 0)
+GameHub.Visible = false
 GameHub.Transparency = 1
 GameHub.Parent = ScrollingFrame
 
@@ -619,7 +620,6 @@ Character.BackgroundColor3 = Color3.new(1, 1, 1)
 Character.BackgroundTransparency = 1
 Character.BorderSizePixel = 0
 Character.BorderColor3 = Color3.new(0, 0, 0)
-Character.Visible = false
 Character.Transparency = 1
 Character.Parent = ScrollingFrame
 
@@ -1120,6 +1120,106 @@ UICorner30.Name = "UICorner"
 UICorner30.CornerRadius = UDim.new(0.1, 0)
 UICorner30.Parent = Loading10
 
+local ESP = Instance.new("ImageButton")
+ESP.Name = "ESP"
+ESP.Position = UDim2.new(0.8, 0, 0.5, 0)
+ESP.Size = UDim2.new(0.25, 0, 0.25, 0)
+ESP.BackgroundColor3 = Color3.new(1, 1, 1)
+ESP.BackgroundTransparency = 1
+ESP.BorderSizePixel = 0
+ESP.BorderColor3 = Color3.new(0, 0, 0)
+ESP.AnchorPoint = Vector2.new(0.5, 0.5)
+ESP.Transparency = 1
+ESP.Image = "rbxassetid://114063464141130"
+ESP.Parent = Character
+
+local UIAspectRatioConstraint12 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint12.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint12.Parent = ESP
+
+local UICorner31 = Instance.new("UICorner")
+UICorner31.Name = "UICorner"
+UICorner31.CornerRadius = UDim.new(0.15, 0)
+UICorner31.Parent = ESP
+
+local UIGradient21 = Instance.new("UIGradient")
+UIGradient21.Name = "UIGradient"
+UIGradient21.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient21.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient21.Rotation = 90
+UIGradient21.Offset = Vector2.new(0, 1)
+UIGradient21.Parent = ESP
+
+local Name11 = Instance.new("TextLabel")
+Name11.Name = "Name"
+Name11.Position = UDim2.new(0, 0, 0.7, 0)
+Name11.Size = UDim2.new(1, 0, 0.3, 0)
+Name11.BackgroundColor3 = Color3.new(1, 1, 1)
+Name11.BackgroundTransparency = 1
+Name11.BorderSizePixel = 0
+Name11.BorderColor3 = Color3.new(0, 0, 0)
+Name11.ZIndex = 2
+Name11.Transparency = 1
+Name11.Text = "ESP"
+Name11.TextColor3 = Color3.new(1, 1, 1)
+Name11.TextSize = 14
+Name11.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name11.TextScaled = true
+Name11.TextWrapped = true
+Name11.Parent = ESP
+
+local Effect11 = Instance.new("Frame")
+Effect11.Name = "Effect"
+Effect11.Size = UDim2.new(1, 0, 1, 0)
+Effect11.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect11.BorderSizePixel = 0
+Effect11.BorderColor3 = Color3.new(0, 0, 0)
+Effect11.Parent = ESP
+
+local UICorner32 = Instance.new("UICorner")
+UICorner32.Name = "UICorner"
+UICorner32.CornerRadius = UDim.new(0.1, 0)
+UICorner32.Parent = Effect11
+
+local UIGradient22 = Instance.new("UIGradient")
+UIGradient22.Name = "UIGradient"
+UIGradient22.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient22.Rotation = -45
+UIGradient22.Offset = Vector2.new(0, -1.5)
+UIGradient22.Parent = Effect11
+
+local Loading11 = Instance.new("Frame")
+Loading11.Name = "Loading"
+Loading11.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading11.Size = UDim2.new(1, 0, 1, 0)
+Loading11.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading11.BackgroundTransparency = 0.10000000149011612
+Loading11.BorderSizePixel = 0
+Loading11.BorderColor3 = Color3.new(0, 0, 0)
+Loading11.Visible = false
+Loading11.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading11.Transparency = 0.10000000149011612
+Loading11.Parent = ESP
+
+local ImageLabel11 = Instance.new("ImageLabel")
+ImageLabel11.Name = "ImageLabel"
+ImageLabel11.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel11.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel11.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel11.BackgroundTransparency = 1
+ImageLabel11.BorderSizePixel = 0
+ImageLabel11.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel11.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel11.Transparency = 1
+ImageLabel11.Image = "rbxassetid://17687447043"
+ImageLabel11.Parent = Loading11
+
+local UICorner33 = Instance.new("UICorner")
+UICorner33.Name = "UICorner"
+UICorner33.CornerRadius = UDim.new(0.1, 0)
+UICorner33.Parent = Loading11
+
 local Visuals = Instance.new("Frame")
 Visuals.Name = "Visuals"
 Visuals.Size = UDim2.new(1, 0, 1, 0)
@@ -1137,21 +1237,21 @@ UIStroke6.Color = Color3.new(1, 0, 0.784314)
 UIStroke6.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UIStroke6.Parent = ScrollingFrame
 
-local UICorner31 = Instance.new("UICorner")
-UICorner31.Name = "UICorner"
-UICorner31.CornerRadius = UDim.new(0.025, 0)
-UICorner31.Parent = ScrollingFrame
+local UICorner34 = Instance.new("UICorner")
+UICorner34.Name = "UICorner"
+UICorner34.CornerRadius = UDim.new(0.025, 0)
+UICorner34.Parent = ScrollingFrame
 
-local UICorner32 = Instance.new("UICorner")
-UICorner32.Name = "UICorner"
-UICorner32.CornerRadius = UDim.new(0.025, 0)
-UICorner32.Parent = Main
+local UICorner35 = Instance.new("UICorner")
+UICorner35.Name = "UICorner"
+UICorner35.CornerRadius = UDim.new(0.025, 0)
+UICorner35.Parent = Main
 
-local UIGradient21 = Instance.new("UIGradient")
-UIGradient21.Name = "UIGradient"
-UIGradient21.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.52549, 0.137255, 1)), ColorSequenceKeypoint.new(0.181661, Color3.new(0.535966, 0.713413, 0.989524)), ColorSequenceKeypoint.new(0.5, Color3.new(0.541176, 1, 0.984314)), ColorSequenceKeypoint.new(0.854671, Color3.new(0.523129, 0.539792, 0.991533)), ColorSequenceKeypoint.new(1, Color3.new(0.501961, 0, 1))})
-UIGradient21.Rotation = 95
-UIGradient21.Parent = Main
+local UIGradient23 = Instance.new("UIGradient")
+UIGradient23.Name = "UIGradient"
+UIGradient23.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.52549, 0.137255, 1)), ColorSequenceKeypoint.new(0.181661, Color3.new(0.535966, 0.713413, 0.989524)), ColorSequenceKeypoint.new(0.5, Color3.new(0.541176, 1, 0.984314)), ColorSequenceKeypoint.new(0.854671, Color3.new(0.523129, 0.539792, 0.991533)), ColorSequenceKeypoint.new(1, Color3.new(0.501961, 0, 1))})
+UIGradient23.Rotation = 95
+UIGradient23.Parent = Main
 
 local Title = Instance.new("TextLabel")
 Title.Name = "Title"
@@ -1172,11 +1272,11 @@ Title.TextScaled = true
 Title.TextWrapped = true
 Title.Parent = Main
 
-local UIGradient22 = Instance.new("UIGradient")
-UIGradient22.Name = "UIGradient"
-UIGradient22.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 0, 0.615686)), ColorSequenceKeypoint.new(1, Color3.new(0.8, 0, 1))})
-UIGradient22.Rotation = -45
-UIGradient22.Parent = Title
+local UIGradient24 = Instance.new("UIGradient")
+UIGradient24.Name = "UIGradient"
+UIGradient24.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 0, 0.615686)), ColorSequenceKeypoint.new(1, Color3.new(0.8, 0, 1))})
+UIGradient24.Rotation = -45
+UIGradient24.Parent = Title
 
 local Character2 = Instance.new("TextButton")
 Character2.Name = "Character"
@@ -1250,10 +1350,10 @@ Particle.Image = "rbxassetid://137831468"
 Particle.ImageTransparency = 0.25
 Particle.Parent = Main
 
-local UIAspectRatioConstraint12 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint12.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint13 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint13.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint12.Parent = Particle
+UIAspectRatioConstraint13.Parent = Particle
 
 local BackGround = Instance.new("ImageLabel")
 BackGround.Name = "BackGround"
@@ -1269,10 +1369,10 @@ BackGround.Image = "rbxassetid://127394633690099"
 BackGround.ImageTransparency = 0.5
 BackGround.Parent = Main
 
-local UICorner33 = Instance.new("UICorner")
-UICorner33.Name = "UICorner"
-UICorner33.CornerRadius = UDim.new(0.025, 0)
-UICorner33.Parent = BackGround
+local UICorner36 = Instance.new("UICorner")
+UICorner36.Name = "UICorner"
+UICorner36.CornerRadius = UDim.new(0.025, 0)
+UICorner36.Parent = BackGround
 
 local Button = Instance.new("ImageButton")
 Button.Name = "Button"
@@ -1288,15 +1388,15 @@ Button.Transparency = 1
 Button.Image = "rbxassetid://90219562764375"
 Button.Parent = HAPPYscript
 
-local UIAspectRatioConstraint13 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint13.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint14 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint14.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint13.Parent = Button
+UIAspectRatioConstraint14.Parent = Button
 
-local UICorner34 = Instance.new("UICorner")
-UICorner34.Name = "UICorner"
-UICorner34.CornerRadius = UDim.new(0.1, 0)
-UICorner34.Parent = Button
+local UICorner37 = Instance.new("UICorner")
+UICorner37.Name = "UICorner"
+UICorner37.CornerRadius = UDim.new(0.1, 0)
+UICorner37.Parent = Button
 
 local Version = Instance.new("TextLabel")
 Version.Name = "Version"
@@ -1317,25 +1417,25 @@ Version.TextScaled = true
 Version.TextWrapped = true
 Version.Parent = Button
 
-local Effect11 = Instance.new("Frame")
-Effect11.Name = "Effect"
-Effect11.Size = UDim2.new(1, 0, 1, 0)
-Effect11.BackgroundColor3 = Color3.new(1, 1, 1)
-Effect11.BorderSizePixel = 0
-Effect11.BorderColor3 = Color3.new(0, 0, 0)
-Effect11.Parent = Button
+local Effect12 = Instance.new("Frame")
+Effect12.Name = "Effect"
+Effect12.Size = UDim2.new(1, 0, 1, 0)
+Effect12.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect12.BorderSizePixel = 0
+Effect12.BorderColor3 = Color3.new(0, 0, 0)
+Effect12.Parent = Button
 
-local UICorner35 = Instance.new("UICorner")
-UICorner35.Name = "UICorner"
-UICorner35.CornerRadius = UDim.new(0.1, 0)
-UICorner35.Parent = Effect11
+local UICorner38 = Instance.new("UICorner")
+UICorner38.Name = "UICorner"
+UICorner38.CornerRadius = UDim.new(0.1, 0)
+UICorner38.Parent = Effect12
 
-local UIGradient23 = Instance.new("UIGradient")
-UIGradient23.Name = "UIGradient"
-UIGradient23.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.5, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient23.Rotation = -45
-UIGradient23.Offset = Vector2.new(0, 1.5)
-UIGradient23.Parent = Effect11
+local UIGradient25 = Instance.new("UIGradient")
+UIGradient25.Name = "UIGradient"
+UIGradient25.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.5, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient25.Rotation = -45
+UIGradient25.Offset = Vector2.new(0, 1.5)
+UIGradient25.Parent = Effect12
 
 local Noti = Instance.new("Frame")
 Noti.Name = "Noti"
@@ -1349,21 +1449,21 @@ Noti.ZIndex = 9998
 Noti.AnchorPoint = Vector2.new(0.5, 0.5)
 Noti.Parent = HAPPYscript
 
-local UIAspectRatioConstraint14 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint14.Name = "UIAspectRatioConstraint"
-UIAspectRatioConstraint14.AspectRatio = 1.75
-UIAspectRatioConstraint14.Parent = Noti
+local UIAspectRatioConstraint15 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint15.Name = "UIAspectRatioConstraint"
+UIAspectRatioConstraint15.AspectRatio = 1.75
+UIAspectRatioConstraint15.Parent = Noti
 
-local UIGradient24 = Instance.new("UIGradient")
-UIGradient24.Name = "UIGradient"
-UIGradient24.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.968627, 0, 1)), ColorSequenceKeypoint.new(1, Color3.new(0.235294, 0, 1))})
-UIGradient24.Rotation = -45
-UIGradient24.Parent = Noti
+local UIGradient26 = Instance.new("UIGradient")
+UIGradient26.Name = "UIGradient"
+UIGradient26.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.968627, 0, 1)), ColorSequenceKeypoint.new(1, Color3.new(0.235294, 0, 1))})
+UIGradient26.Rotation = -45
+UIGradient26.Parent = Noti
 
-local UICorner36 = Instance.new("UICorner")
-UICorner36.Name = "UICorner"
-UICorner36.CornerRadius = UDim.new(0.05, 0)
-UICorner36.Parent = Noti
+local UICorner39 = Instance.new("UICorner")
+UICorner39.Name = "UICorner"
+UICorner39.CornerRadius = UDim.new(0.05, 0)
+UICorner39.Parent = Noti
 
 local UIStroke7 = Instance.new("UIStroke")
 UIStroke7.Name = "UIStroke"
@@ -1396,33 +1496,33 @@ Logo.BorderSizePixel = 0
 Logo.BorderColor3 = Color3.new(0, 0, 0)
 Logo.Parent = Noti
 
-local UIAspectRatioConstraint15 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint15.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint16 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint16.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint15.Parent = Logo
+UIAspectRatioConstraint16.Parent = Logo
 
-local UICorner37 = Instance.new("UICorner")
-UICorner37.Name = "UICorner"
-UICorner37.CornerRadius = UDim.new(0.15, 0)
-UICorner37.Parent = Logo
+local UICorner40 = Instance.new("UICorner")
+UICorner40.Name = "UICorner"
+UICorner40.CornerRadius = UDim.new(0.15, 0)
+UICorner40.Parent = Logo
 
-local Name11 = Instance.new("TextLabel")
-Name11.Name = "Name"
-Name11.Position = UDim2.new(0.5, 0, 1.25, 0)
-Name11.Size = UDim2.new(1.15, 0, 0.4, 0)
-Name11.BackgroundColor3 = Color3.new(1, 1, 1)
-Name11.BackgroundTransparency = 1
-Name11.BorderSizePixel = 0
-Name11.BorderColor3 = Color3.new(0, 0, 0)
-Name11.AnchorPoint = Vector2.new(0.5, 0.5)
-Name11.Transparency = 1
-Name11.Text = "---"
-Name11.TextColor3 = Color3.new(1, 0, 1)
-Name11.TextSize = 14
-Name11.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-Name11.TextScaled = true
-Name11.TextWrapped = true
-Name11.Parent = Logo
+local Name12 = Instance.new("TextLabel")
+Name12.Name = "Name"
+Name12.Position = UDim2.new(0.5, 0, 1.25, 0)
+Name12.Size = UDim2.new(1.15, 0, 0.4, 0)
+Name12.BackgroundColor3 = Color3.new(1, 1, 1)
+Name12.BackgroundTransparency = 1
+Name12.BorderSizePixel = 0
+Name12.BorderColor3 = Color3.new(0, 0, 0)
+Name12.AnchorPoint = Vector2.new(0.5, 0.5)
+Name12.Transparency = 1
+Name12.Text = "---"
+Name12.TextColor3 = Color3.new(1, 0, 1)
+Name12.TextSize = 14
+Name12.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name12.TextScaled = true
+Name12.TextWrapped = true
+Name12.Parent = Logo
 
 local Done = Instance.new("TextButton")
 Done.Name = "Done"
@@ -1469,15 +1569,15 @@ Return1.BorderColor3 = Color3.new(0, 0, 0)
 Return1.Image = "rbxassetid://88913662931777"
 Return1.Parent = Noti
 
-local UIAspectRatioConstraint16 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint16.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint17 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint17.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint16.Parent = Return1
+UIAspectRatioConstraint17.Parent = Return1
 
-local UICorner38 = Instance.new("UICorner")
-UICorner38.Name = "UICorner"
-UICorner38.CornerRadius = UDim.new(1, 0)
-UICorner38.Parent = Return1
+local UICorner41 = Instance.new("UICorner")
+UICorner41.Name = "UICorner"
+UICorner41.CornerRadius = UDim.new(1, 0)
+UICorner41.Parent = Return1
 
 local ReturnIfn = Instance.new("ImageButton")
 ReturnIfn.Name = "ReturnIfn"
@@ -1489,15 +1589,15 @@ ReturnIfn.BorderColor3 = Color3.new(0, 0, 0)
 ReturnIfn.Image = "rbxassetid://121046862191317"
 ReturnIfn.Parent = Noti
 
-local UIAspectRatioConstraint17 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint17.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint18 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint18.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint17.Parent = ReturnIfn
+UIAspectRatioConstraint18.Parent = ReturnIfn
 
-local UICorner39 = Instance.new("UICorner")
-UICorner39.Name = "UICorner"
-UICorner39.CornerRadius = UDim.new(1, 0)
-UICorner39.Parent = ReturnIfn
+local UICorner42 = Instance.new("UICorner")
+UICorner42.Name = "UICorner"
+UICorner42.CornerRadius = UDim.new(1, 0)
+UICorner42.Parent = ReturnIfn
 
 --=======================================================================================================--
 
