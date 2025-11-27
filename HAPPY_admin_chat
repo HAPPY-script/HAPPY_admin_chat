@@ -1621,4 +1621,12 @@ wait(0.5)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
 
-print("✅Done System")
+print("✅Done System1")
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua"))()
+
+print("✅Done System2")
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"))()
+
+print("✅DONE ALL✅")
