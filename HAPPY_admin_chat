@@ -14,11 +14,19 @@ if _G.HAPPY_script then
 end
 _G.HAPPY_script = true
 
+local function waitLoad(name, pct)
+    if shared.HAPPY_LOADER_UPDATE then
+        shared.HAPPY_LOADER_UPDATE(name, pct)
+    end
+end
+
 game.StarterGui:SetCore("SendNotification", {
     Title = "⚜️HAPPY script v0.05⚜️";
     Text = "Good Luck🍀";
     Duration = 5;
 })
+
+waitLoad("Loading UI", 0.10)
 
 local HAPPYscript = Instance.new("ScreenGui")
 HAPPYscript.Name = "HAPPYscript"
@@ -1601,6 +1609,8 @@ UICorner42.Parent = ReturnIfn
 
 --=======================================================================================================--
 
+waitLoad("Editing properties", 0.40)
+
 --SettingFix
 Version.TextTransparency = 0
 Version.TextStrokeTransparency = 0
@@ -1618,6 +1628,8 @@ Name12.TextTransparency = 0
 
 print("✅Done UI")
 
+waitLoad("System loading", 0.65)
+
 wait(0.5)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
@@ -1628,6 +1640,10 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/re
 
 print("✅Done System2")
 
+waitLoad("Checking data", 0.85)
+
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"))()
 
-print("✅DONE ALL✅")
+waitLoad("✅COMPLETE✅", 0.85)
+
+print("✅COMPLETE✅")
