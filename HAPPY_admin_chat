@@ -1644,6 +1644,6 @@ waitLoad("Checking data", 0.85)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"))()
 
-waitLoad("✅COMPLETE✅", 0.85)
+waitLoad("✅COMPLETE✅", 1)
 
 print("✅COMPLETE✅")
