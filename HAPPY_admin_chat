@@ -16,7 +16,7 @@ _G.HAPPY_script = true
 
 game.StarterGui:SetCore("SendNotification", {
     Title = "⚜️HAPPY script v0.05⚜️";
-    Text = "🔔Updating UI Please Wait⏳";
+    Text = "Good Luck🍀";
     Duration = 5;
 })
 
