@@ -26,7 +26,7 @@ game.StarterGui:SetCore("SendNotification", {
     Duration = 5;
 })
 
-waitLoad("Loading UI", 0.10)
+waitLoad("Loading UI🖼", 0.10)
 
 local HAPPYscript = Instance.new("ScreenGui")
 HAPPYscript.Name = "HAPPYscript"
@@ -1607,9 +1607,11 @@ UICorner42.Name = "UICorner"
 UICorner42.CornerRadius = UDim.new(1, 0)
 UICorner42.Parent = ReturnIfn
 
+wait(2)
+
 --=======================================================================================================--
 
-waitLoad("Editing properties", 0.40)
+waitLoad("Editing properties🛠", 0.40)
 
 --SettingFix
 Version.TextTransparency = 0
@@ -1628,7 +1630,7 @@ Name12.TextTransparency = 0
 
 print("✅Done UI")
 
-waitLoad("System loading", 0.65)
+waitLoad("System loading⚙", 0.60)
 
 wait(0.5)
 
@@ -1636,14 +1638,20 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_ad
 
 print("✅Done System1")
 
+wait(0.5)
+
+waitLoad("Get data💾", 0.725)
+
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua"))()
 
 print("✅Done System2")
 
-waitLoad("Checking data", 0.85)
+wait(0.5)
+
+waitLoad("Checking data🔍", 0.85)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"))()
 
 waitLoad("✅COMPLETE✅", 1)
 
-print("✅COMPLETE✅")
+print("✅COMPLETE ALL✅")
