@@ -40,7 +40,7 @@ local ScriptMapping = {
 		loadstring(code)()
 	end,
 	Speed = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/CHECK_SEVER_SPEED/refs/heads/main/CHECK_SEVER_SPEED")
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SPEED/refs/heads/main/SPEED.lua")
 		loadstring(code)()
 	end,
 	ESP = function()
