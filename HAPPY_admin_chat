@@ -1768,7 +1768,20 @@ print("✅Done System Command")
 --------------------------------------------------
 wait(0.5)
 
-Button.Visible = true
+local function safeShow(button)
+    if not button.Parent then
+        repeat task.wait() until button.Parent
+    end
+    if button:IsA("GuiObject") then
+        repeat task.wait() until button.AbsoluteSize.X > 0
+    end
+    for i = 1, 5 do
+        button.Visible = true
+        task.wait(0.1)
+    end
+end
+safeShow(Button)
+
 --------------------------------------------------
 waitLoad("Checking data🔍", 0.9)
 
