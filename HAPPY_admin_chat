@@ -136,7 +136,7 @@ Name.BorderColor3 = Color3.new(0, 0, 0)
 Name.ZIndex = 2
 Name.Transparency = 1
 Name.Text = "Blox Fruit"
-Name.TextColor3 = Color3.new(1, 0.784314, 0)
+Name.TextColor3 = Color3.new(1, 0.588235, 0)
 Name.TextSize = 14
 Name.FontFace = Font.new("rbxasset://fonts/families/PermanentMarker.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
 Name.TextScaled = true
@@ -628,6 +628,7 @@ Character.BackgroundColor3 = Color3.new(1, 1, 1)
 Character.BackgroundTransparency = 1
 Character.BorderSizePixel = 0
 Character.BorderColor3 = Color3.new(0, 0, 0)
+Character.Visible = false
 Character.Transparency = 1
 Character.Parent = ScrollingFrame
 
@@ -1228,22 +1229,120 @@ UICorner33.Name = "UICorner"
 UICorner33.CornerRadius = UDim.new(0.1, 0)
 UICorner33.Parent = Loading11
 
-local Visuals = Instance.new("Frame")
-Visuals.Name = "Visuals"
-Visuals.Size = UDim2.new(1, 0, 1, 0)
-Visuals.BackgroundColor3 = Color3.new(1, 1, 1)
-Visuals.BackgroundTransparency = 1
-Visuals.BorderSizePixel = 0
-Visuals.BorderColor3 = Color3.new(0, 0, 0)
-Visuals.Visible = false
-Visuals.Transparency = 1
-Visuals.Parent = ScrollingFrame
+local System = Instance.new("Frame")
+System.Name = "System"
+System.Size = UDim2.new(1, 0, 1, 0)
+System.BackgroundColor3 = Color3.new(1, 1, 1)
+System.BackgroundTransparency = 1
+System.BorderSizePixel = 0
+System.BorderColor3 = Color3.new(0, 0, 0)
+System.Transparency = 1
+System.Parent = ScrollingFrame
+
+local ReportTitle = Instance.new("TextLabel")
+ReportTitle.Name = "ReportTitle"
+ReportTitle.Size = UDim2.new(0.3, 0, 0.1, 0)
+ReportTitle.BackgroundColor3 = Color3.new(1, 1, 1)
+ReportTitle.BackgroundTransparency = 1
+ReportTitle.BorderSizePixel = 0
+ReportTitle.BorderColor3 = Color3.new(0, 0, 0)
+ReportTitle.Transparency = 1
+ReportTitle.Text = "Report"
+ReportTitle.TextColor3 = Color3.new(1, 0, 0.392157)
+ReportTitle.TextSize = 14
+ReportTitle.FontFace = Font.new("rbxasset://fonts/families/Oswald.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+ReportTitle.TextScaled = true
+ReportTitle.TextWrapped = true
+ReportTitle.Parent = System
+
+local TextBox = Instance.new("TextBox")
+TextBox.Name = "TextBox"
+TextBox.Position = UDim2.new(0.5, 0, 0.275, 0)
+TextBox.Size = UDim2.new(0.9, 0, 0.3, 0)
+TextBox.BackgroundColor3 = Color3.new(0, 0, 0)
+TextBox.BackgroundTransparency = 0.5
+TextBox.BorderSizePixel = 0
+TextBox.BorderColor3 = Color3.new(0, 0, 0)
+TextBox.AnchorPoint = Vector2.new(0.5, 0.5)
+TextBox.Transparency = 0.5
+TextBox.Text = ""
+TextBox.TextColor3 = Color3.new(1, 1, 1)
+TextBox.TextSize = 25
+TextBox.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+TextBox.TextWrapped = true
+TextBox.TextXAlignment = Enum.TextXAlignment.Left
+TextBox.TextYAlignment = Enum.TextYAlignment.Top
+TextBox.ClearTextOnFocus = false
+TextBox.PlaceholderText = "Report the problem you encountered"
+TextBox.PlaceholderColor3 = Color3.new(0.392157, 0.392157, 0.392157)
+TextBox.Parent = System
 
 local UIStroke6 = Instance.new("UIStroke")
 UIStroke6.Name = "UIStroke"
-UIStroke6.Color = Color3.new(1, 0, 0.784314)
+UIStroke6.Color = Color3.new(1, 0, 0.392157)
+UIStroke6.Thickness = 1.25
 UIStroke6.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UIStroke6.Parent = ScrollingFrame
+UIStroke6.Parent = TextBox
+
+local MaxText = Instance.new("TextLabel")
+MaxText.Name = "MaxText"
+MaxText.Position = UDim2.new(0.773305, 0, 0.769086, 0)
+MaxText.Size = UDim2.new(0.225, 0, 0.225, 0)
+MaxText.BackgroundColor3 = Color3.new(1, 1, 1)
+MaxText.BackgroundTransparency = 1
+MaxText.BorderSizePixel = 0
+MaxText.BorderColor3 = Color3.new(0, 0, 0)
+MaxText.Transparency = 1
+MaxText.Text = "0/222"
+MaxText.TextColor3 = Color3.new(1, 0, 0.392157)
+MaxText.TextSize = 25
+MaxText.FontFace = Font.new("rbxasset://fonts/families/Oswald.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+MaxText.TextWrapped = true
+MaxText.TextXAlignment = Enum.TextXAlignment.Right
+MaxText.TextYAlignment = Enum.TextYAlignment.Bottom
+MaxText.Parent = TextBox
+
+local SendButton = Instance.new("ImageButton")
+SendButton.Name = "SendButton"
+SendButton.Position = UDim2.new(0.5, 0, 1.125, 0)
+SendButton.Size = UDim2.new(1, 0, 0.25, 0)
+SendButton.BackgroundColor3 = Color3.new(1, 0, 0.392157)
+SendButton.BorderSizePixel = 0
+SendButton.BorderColor3 = Color3.new(0, 0, 0)
+SendButton.AnchorPoint = Vector2.new(0.5, 0.5)
+SendButton.Image = "rbxassetid://18940312887"
+SendButton.ScaleType = Enum.ScaleType.Fit
+SendButton.Parent = TextBox
+
+local UIStroke7 = Instance.new("UIStroke")
+UIStroke7.Name = "UIStroke"
+UIStroke7.Color = Color3.new(1, 0, 0.392157)
+UIStroke7.Thickness = 1.25
+UIStroke7.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke7.Parent = SendButton
+
+local Tip = Instance.new("TextLabel")
+Tip.Name = "Tip"
+Tip.Position = UDim2.new(0.275, 0, 0, 0)
+Tip.Size = UDim2.new(0.7, 0, 0.12, 0)
+Tip.BackgroundColor3 = Color3.new(1, 1, 1)
+Tip.BackgroundTransparency = 1
+Tip.BorderSizePixel = 0
+Tip.BorderColor3 = Color3.new(0, 0, 0)
+Tip.Transparency = 1
+Tip.Text = "Please make sure your report is satisfactory before submitting, because you will not be able to submit further if Admin has not approved it."
+Tip.TextColor3 = Color3.new(1, 0.784314, 0)
+Tip.TextSize = 2
+Tip.FontFace = Font.new("rbxasset://fonts/families/Oswald.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Tip.TextScaled = true
+Tip.TextWrapped = true
+Tip.Parent = System
+
+local UIStroke8 = Instance.new("UIStroke")
+UIStroke8.Name = "UIStroke"
+UIStroke8.Color = Color3.new(1, 0, 0.784314)
+UIStroke8.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke8.Parent = ScrollingFrame
 
 local UICorner34 = Instance.new("UICorner")
 UICorner34.Name = "UICorner"
@@ -1324,25 +1423,24 @@ GameHub2.TextWrapped = true
 GameHub2.TextXAlignment = Enum.TextXAlignment.Left
 GameHub2.Parent = Main
 
-local Visuals2 = Instance.new("TextButton")
-Visuals2.Name = "Visuals"
-Visuals2.Position = UDim2.new(0.025, 0, 0.675, 0)
-Visuals2.Size = UDim2.new(0.3, 0, 0.15, 0)
-Visuals2.BackgroundColor3 = Color3.new(1, 1, 1)
-Visuals2.BackgroundTransparency = 1
-Visuals2.BorderSizePixel = 0
-Visuals2.BorderColor3 = Color3.new(0, 0, 0)
-Visuals2.Visible = false
-Visuals2.ZIndex = 2
-Visuals2.Transparency = 1
-Visuals2.Text = "Visuals"
-Visuals2.TextColor3 = Color3.new(0.392157, 0.392157, 1)
-Visuals2.TextSize = 14
-Visuals2.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-Visuals2.TextScaled = true
-Visuals2.TextWrapped = true
-Visuals2.TextXAlignment = Enum.TextXAlignment.Left
-Visuals2.Parent = Main
+local System2 = Instance.new("TextButton")
+System2.Name = "System"
+System2.Position = UDim2.new(0.025, 0, 0.675, 0)
+System2.Size = UDim2.new(0.3, 0, 0.15, 0)
+System2.BackgroundColor3 = Color3.new(1, 1, 1)
+System2.BackgroundTransparency = 1
+System2.BorderSizePixel = 0
+System2.BorderColor3 = Color3.new(0, 0, 0)
+System2.ZIndex = 2
+System2.Transparency = 1
+System2.Text = "System"
+System2.TextColor3 = Color3.new(0, 1, 0.588235)
+System2.TextSize = 14
+System2.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+System2.TextScaled = true
+System2.TextWrapped = true
+System2.TextXAlignment = Enum.TextXAlignment.Left
+System2.Parent = Main
 
 local Particle = Instance.new("ImageLabel")
 Particle.Name = "Particle"
@@ -1390,12 +1488,12 @@ Button.BackgroundColor3 = Color3.new(1, 1, 1)
 Button.BackgroundTransparency = 1
 Button.BorderSizePixel = 0
 Button.BorderColor3 = Color3.new(0, 0, 0)
+Button.Visible = false
 Button.ZIndex = 9999
 Button.AnchorPoint = Vector2.new(0.5, 0.5)
 Button.Transparency = 1
 Button.Image = "rbxassetid://90219562764375"
 Button.Parent = HAPPYscript
-Button.Visible = false
 
 local UIAspectRatioConstraint14 = Instance.new("UIAspectRatioConstraint")
 UIAspectRatioConstraint14.Name = "UIAspectRatioConstraint"
@@ -1474,10 +1572,10 @@ UICorner39.Name = "UICorner"
 UICorner39.CornerRadius = UDim.new(0.05, 0)
 UICorner39.Parent = Noti
 
-local UIStroke7 = Instance.new("UIStroke")
-UIStroke7.Name = "UIStroke"
-UIStroke7.Color = Color3.new(0.784314, 0.392157, 1)
-UIStroke7.Parent = Noti
+local UIStroke9 = Instance.new("UIStroke")
+UIStroke9.Name = "UIStroke"
+UIStroke9.Color = Color3.new(0.784314, 0.392157, 1)
+UIStroke9.Parent = Noti
 
 local Back = Instance.new("TextButton")
 Back.Name = "Back"
@@ -1550,23 +1648,23 @@ Done.TextScaled = true
 Done.TextWrapped = true
 Done.Parent = Noti
 
-local Tip = Instance.new("TextLabel")
-Tip.Name = "Tip"
-Tip.Position = UDim2.new(0.625, 0, 0.25, 0)
-Tip.Size = UDim2.new(0.65, 0, 0.35, 0)
-Tip.BackgroundColor3 = Color3.new(1, 1, 1)
-Tip.BackgroundTransparency = 1
-Tip.BorderSizePixel = 0
-Tip.BorderColor3 = Color3.new(0, 0, 0)
-Tip.AnchorPoint = Vector2.new(0.5, 0.5)
-Tip.Transparency = 1
-Tip.Text = "If you want the script to run automatically once the next time you run the script, press Return[1], if you want it to run automatically forever, press Return[ifn]."
-Tip.TextColor3 = Color3.new(1, 0.882353, 0)
-Tip.TextSize = 14
-Tip.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-Tip.TextScaled = true
-Tip.TextWrapped = true
-Tip.Parent = Noti
+local Tip2 = Instance.new("TextLabel")
+Tip2.Name = "Tip"
+Tip2.Position = UDim2.new(0.625, 0, 0.25, 0)
+Tip2.Size = UDim2.new(0.65, 0, 0.35, 0)
+Tip2.BackgroundColor3 = Color3.new(1, 1, 1)
+Tip2.BackgroundTransparency = 1
+Tip2.BorderSizePixel = 0
+Tip2.BorderColor3 = Color3.new(0, 0, 0)
+Tip2.AnchorPoint = Vector2.new(0.5, 0.5)
+Tip2.Transparency = 1
+Tip2.Text = "If you want the script to run automatically once the next time you run the script, press Return[1], if you want it to run automatically forever, press Return[ifn]."
+Tip2.TextColor3 = Color3.new(1, 0.882353, 0)
+Tip2.TextSize = 14
+Tip2.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Tip2.TextScaled = true
+Tip2.TextWrapped = true
+Tip2.Parent = Noti
 
 local Return1 = Instance.new("ImageButton")
 Return1.Name = "Return1"
@@ -1612,7 +1710,7 @@ wait(2)
 
 --=======================================================================================================--
 
-waitLoad("Editing properties🛠", 0.35)
+waitLoad("Editing properties🛠", 0.30)
 
 --SettingFix
 Version.TextTransparency = 0
@@ -1620,48 +1718,62 @@ Version.TextStrokeTransparency = 0
 Back.TextTransparency = 0
 Done.TextTransparency = 0
 Tip.TextTransparency = 0
+Tip.TextStrokeTransparency = 0.5
+Tip2.TextTransparency = 0
 Name11.TextTransparency = 0
-Visuals2.TextTransparency = 0
+System2.TextTransparency = 0
 Character2.TextTransparency = 0
 GameHub2.TextTransparency = 0
 Title.TextTransparency = 0
 Name11.TextTransparency = 1
 Name12.TextTransparency = 0
+ReportTitle.TextTransparency = 0
+MaxText.TextTransparency = 0
+TextBox.TextTransparency = 0
 --EndFix
 
 print("✅Done UI")
 
 wait(0.5)
-
-waitLoad("Add winter effect❄", 0.45)
+--------------------------------------------------
+waitLoad("Add winter effect❄", 0.425)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua"))()
 
 print("✅Done winter effect")
-
+--------------------------------------------------
 wait(0.5)
-
-waitLoad("System loading⚙", 0.625)
+--------------------------------------------------
+waitLoad("System loading⚙", 0.55)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
 
-print("✅Done System1")
-
+print("✅Done System")
+--------------------------------------------------
 wait(0.5)
+--------------------------------------------------
+waitLoad("Reporting system loading⚙", 0.75)
 
-waitLoad("Get data💾", 0.775)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
+
+print("✅Done Report System")
+--------------------------------------------------
+wait(0.5)
+--------------------------------------------------
+waitLoad("Get data💾", 0.8)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua"))()
 
-print("✅Done System2")
-
+print("✅Done System Command")
+--------------------------------------------------
 wait(0.5)
 
 Button.Visible = true
-waitLoad("Checking data🔍", 0.875)
+--------------------------------------------------
+waitLoad("Checking data🔍", 0.9)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"))()
 
 waitLoad("✅COMPLETE✅", 1)
-
+--------------------------------------------------
 print("✅COMPLETE ALL✅")
