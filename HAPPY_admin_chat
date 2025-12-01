@@ -1395,6 +1395,7 @@ Button.AnchorPoint = Vector2.new(0.5, 0.5)
 Button.Transparency = 1
 Button.Image = "rbxassetid://90219562764375"
 Button.Parent = HAPPYscript
+Button.Visible = false
 
 local UIAspectRatioConstraint14 = Instance.new("UIAspectRatioConstraint")
 UIAspectRatioConstraint14.Name = "UIAspectRatioConstraint"
@@ -1648,6 +1649,7 @@ print("✅Done System2")
 
 wait(0.5)
 
+Button.Visible = true
 waitLoad("Checking data🔍", 0.85)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"))()
