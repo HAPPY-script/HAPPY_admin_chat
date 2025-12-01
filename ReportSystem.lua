@@ -13,28 +13,31 @@ local function HttpRequest(data)
 	elseif fluxus and fluxus.request then
 		return fluxus.request(data)
 	else
-		error("Executor không hỗ trợ http request!")
+		error("Executor does NOT support http requests!")
 	end
 end
 
 --=====================================================
--- CONFIG
+-- SERVICES
 --=====================================================
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
+local StarterGui = game:GetService("StarterGui")
 
 local player = Players.LocalPlayer
 local playerName = player.Name
 
--- Firebase link
+--=====================================================
+-- FIREBASE CONFIG
+--=====================================================
 local PROJECT_URL = "https://happy-script-bada6-default-rtdb.asia-southeast1.firebasedatabase.app/reports/"
 local USER_URL = PROJECT_URL .. playerName .. ".json"
 
 --=====================================================
--- UI OBJECTS
+-- UI REFERENCES
 --=====================================================
 local gui = player:WaitForChild("PlayerGui"):WaitForChild("HAPPYscript")
-local scrolling = gui:WaitForChild("Main"):WaitForChild("ScrollingFrame")
+local scrolling = gui:WaitForChild("ScrollingFrame")
 local systemFrame = scrolling:WaitForChild("System")
 
 local textBox = systemFrame:WaitForChild("TextBox")
@@ -44,39 +47,60 @@ local maxText = textBox:WaitForChild("MaxText")
 local MAX_LEN = 222
 
 --=====================================================
--- FUNCTIONS
+-- CLEAN MESSAGE (FILTER INVALID FIREBASE CHARACTERS)
+--=====================================================
+local function CleanMessage(str)
+	-- Firebase KHÔNG cho phép: . # $ [ ]
+	local forbidden = "[%.#%$%[%]/\\]"
+
+	-- xoá ký tự cấm
+	str = str:gsub(forbidden, "")
+
+	-- xoá ký tự không thể JSON encode
+	local safe = {}
+	for i = 1, #str do
+		local byte = str:byte(i)
+		if byte >= 32 and byte <= 126 then
+			table.insert(safe, string.char(byte))
+		end
+	end
+
+	return table.concat(safe)
+end
+
+--=====================================================
+-- FIREBASE FUNCTIONS
 --=====================================================
 
--- 📌 Kiểm tra người chơi đã có report chưa
-local function CheckExistReport()
-	local res = HttpRequest({
-		Url = USER_URL,
-		Method = "GET"
+local function Notify(title, text)
+	StarterGui:SetCore("SendNotification", {
+		Title = title,
+		Text = text,
+		Duration = 5,
 	})
+end
+
+-- Check xem user đã có report chưa
+local function CheckExistReport()
+	local res = HttpRequest({ Url = USER_URL, Method = "GET" })
 
 	if not res or res.StatusCode ~= 200 then
-		return false -- coi như chưa có
+		return false
 	end
-
-	local data = {}
 
 	if res.Body and res.Body ~= "null" then
-		data = HttpService:JSONDecode(res.Body)
-	end
-
-	-- Nếu có data → còn report chưa được xoá
-	if data and data.message then
-		return true
+		local data = HttpService:JSONDecode(res.Body)
+		if data and data.message then
+			return true
+		end
 	end
 
 	return false
 end
 
--- 📌 Gửi report mới lên Firebase
+-- Gửi report
 local function SendReport(msg)
-	local payload = {
-		message = msg
-	}
+	local payload = { message = msg }
 
 	local res = HttpRequest({
 		Url = USER_URL,
@@ -89,52 +113,60 @@ local function SendReport(msg)
 end
 
 --=====================================================
--- UI HANDLER
+-- UI UPDATE
 --=====================================================
 
--- 📌 Cập nhật số ký tự
 textBox:GetPropertyChangedSignal("Text"):Connect(function()
-	local len = #textBox.Text
+	local txt = textBox.Text
+	local cleaned = CleanMessage(txt)
+
+	-- Nếu có ký tự bị xoá → cập nhật lại
+	if cleaned ~= txt then
+		textBox.Text = cleaned
+	end
+
+	local len = #cleaned
+
 	if len > MAX_LEN then
-		textBox.Text = textBox.Text:sub(1, MAX_LEN)
+		textBox.Text = cleaned:sub(1, MAX_LEN)
 		len = MAX_LEN
 	end
 
 	maxText.Text = len .. "/" .. MAX_LEN
 end)
 
--- 📌 Xử lý khi nhấn nút gửi
+--=====================================================
+-- SEND BUTTON HANDLER
+--=====================================================
+
 sendButton.MouseButton1Click:Connect(function()
 
 	local content = textBox.Text
 	local length = #content
 
-	-- Điều kiện độ dài
 	if length < 1 then
-		warn("Không thể gửi. Chưa nhập nội dung.")
+		Notify("Report Failed", "You must enter a message.")
 		return
 	end
 
 	if length > MAX_LEN then
-		warn("Vượt quá giới hạn kí tự.")
+		Notify("Report Failed", "Message exceeds character limit!")
 		return
 	end
 
-	-- Kiểm tra có đang có report tồn tại không
 	local exists = CheckExistReport()
 	if exists then
-		warn("Không thể gửi. Report cũ chưa được Admin xoá.")
+		Notify("Report Locked", "You already have a pending report. Wait for admin approval.")
 		return
 	end
 
-	-- Gửi report
 	local success = SendReport(content)
 
 	if success then
-		print("Gửi report thành công!")
+		Notify("Report Sent", "Your report has been submitted successfully.")
 		textBox.Text = ""
 		maxText.Text = "0/" .. MAX_LEN
 	else
-		warn("Gửi thất bại!")
+		Notify("Error", "Failed to send report. Try again later.")
 	end
 end)
