@@ -64,11 +64,11 @@ local toggleButton = gui:WaitForChild("Button")
 --------------------------------------------------------
 local btnCharacter = main:WaitForChild("Character")
 local btnGameHub = main:WaitForChild("GameHub")
-local btnVisuals = main:WaitForChild("Visuals")
+local btnVisuals = main:WaitForChild("System")
 
 local frameCharacter = scroll:WaitForChild("Character")
 local frameGameHub = scroll:WaitForChild("GameHub")
-local frameVisuals = scroll:WaitForChild("Visuals")
+local frameVisuals = scroll:WaitForChild("System")
 
 local allFrames = {
 	Character = frameCharacter,
