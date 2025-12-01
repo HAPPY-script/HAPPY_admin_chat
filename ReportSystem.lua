@@ -37,7 +37,7 @@ local USER_URL = PROJECT_URL .. playerName .. ".json"
 -- UI REFERENCES
 --=====================================================
 local gui = player:WaitForChild("PlayerGui"):WaitForChild("HAPPYscript")
-local scrolling = gui:WaitForChild("ScrollingFrame")
+local scrolling = gui:WaitForChild("Main"):WaitForChild("ScrollingFrame")
 local systemFrame = scrolling:WaitForChild("System")
 
 local textBox = systemFrame:WaitForChild("TextBox")
