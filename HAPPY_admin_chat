@@ -1711,7 +1711,7 @@ wait(2)
 --========================================================================================================================--
 
 --=====================================================================
--- SUPER SAFE LOADER FOR MOBILE (Không bao giờ bỏ qua bất kỳ script nào)
+-- SUPER SAFE LOADER
 --=====================================================================
 
 local function SafeRequire(url, flagName)
@@ -1722,21 +1722,18 @@ local function SafeRequire(url, flagName)
     end
 
     while true do
-        print("🔄 Loading:", url)
-
         local ok, res = pcall(function()
             return game:HttpGet(url)
         end)
 
         if ok and res and #res > 20 then
-            print("📥 Running script:", url)
             local runOK = pcall(function()
                 loadstring(res)()
             end)
 
             -- Nếu loadstring bị lỗi → retry
             if not runOK then
-                warn("❌ Script error, retrying:", url)
+                warn("❌ Script error, retrying:", flagName)
             else
                 -- Chờ script gửi tín hiệu phản hồi
                 local t = 0
@@ -1756,7 +1753,7 @@ local function SafeRequire(url, flagName)
                 end
             end
         else
-            warn("❌ HttpGet fail → retry:", url)
+            warn("❌ HttpGet fail → retry:", flagName)
         end
 
         task.wait(0.3)
