@@ -1748,7 +1748,7 @@ local function SafeRequire(url, flagName)
 
                 -- Khi có phản hồi → hoàn tất
                 if _G[flagName] then
-                    print("✅ Loaded OK:", flagName)
+                    print("✅ Loaded:", flagName)
                     return true
                 end
             end
@@ -1805,6 +1805,8 @@ print("✅Done Report System")
 waitLoad("Get data💾", 0.8)
 SafeRequire("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua", "AdminLoaded")
 print("✅Done System Command")
+
+Button.Visible = true
 
 waitLoad("Checking data🔍", 0.9)
 SafeRequire("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua", "DataMemberLoaded")
