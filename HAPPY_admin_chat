@@ -1706,57 +1706,51 @@ UICorner42.Name = "UICorner"
 UICorner42.CornerRadius = UDim.new(1, 0)
 UICorner42.Parent = ReturnIfn
 
-wait(2)
-
 --========================================================================================================================--
 
---=====================================================================
--- SUPER SAFE LOADER
---=====================================================================
-
-local function SafeRequire(url, flagName)
-    -- Ngăn chạy lại 2 lần tránh bug
-    if _G[flagName] == true then
-        print("⚠️ Skip reload:", flagName, "(Already loaded)")
+--=====================================================
+-- SUPER SAFE LOADER (Mobile-friendly)
+--=====================================================
+local function SafeRequire(url, flagName, timeout)
+    timeout = timeout or 8 -- timeout mặc định 8s
+    if _G[flagName] then
         return true
     end
 
-    while true do
-        local ok, res = pcall(function()
-            return game:HttpGet(url)
-        end)
+    -- pcall HttpGet
+    local ok, res = pcall(function()
+        return game:HttpGet(url)
+    end)
 
-        if ok and res and #res > 20 then
-            local runOK = pcall(function()
-                loadstring(res)()
-            end)
+    if not ok or not res or #res < 20 then
+        warn("❌ HttpGet fail → retry later:", flagName)
+        return false
+    end
 
-            -- Nếu loadstring bị lỗi → retry
-            if not runOK then
-                warn("❌ Script error, retrying:", flagName)
-            else
-                -- Chờ script gửi tín hiệu phản hồi
-                local t = 0
-                while not _G[flagName] do
-                    task.wait(0.1)
-                    t += 0.1
-                    if t > 8 then
-                        warn("⏳ No response from:", flagName, " → retry")
-                        break
-                    end
-                end
+    -- chạy script trong pcall
+    local runOK, err = pcall(function()
+        loadstring(res)()
+    end)
 
-                -- Khi có phản hồi → hoàn tất
-                if _G[flagName] then
-                    print("✅ Loaded:", flagName)
-                    return true
-                end
-            end
-        else
-            warn("❌ HttpGet fail → retry:", flagName)
-        end
+    if not runOK then
+        warn("❌ Loadstring error → retry later:", flagName, err)
+        return false
+    end
 
-        task.wait(0.3)
+    -- chờ phản hồi từ script (không dùng while true vô hạn)
+    local t = 0
+    local step = 0.1
+    while not _G[flagName] and t < timeout do
+        task.wait(step)
+        t = t + step
+    end
+
+    if _G[flagName] then
+        print("✅ Loaded:", flagName)
+        return true
+    else
+        warn("⏳ No response from:", flagName)
+        return false
     end
 end
 
@@ -1790,27 +1784,45 @@ print("✅Done UI")
 --  LOAD FROM GITHUB
 --============================================================--
 
-waitLoad("Add winter effect❄", 0.425)
-SafeRequire("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua", "NoelLoaded")
-print("✅Done winter effect")
+local function LoadAllModules()
 
-waitLoad("System loading⚙", 0.55)
-SafeRequire("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua", "SystemLoaded")
-print("✅Done System")
+    waitLoad("Add winter effect❄", 0.425)
+    if SafeRequire("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua", "NoelLoaded") then
+        task.wait(0.2)
+        print("✅Done winter effect")
+    end
 
-waitLoad("Reporting system loading⚙", 0.75)
-SafeRequire("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua", "ReportLoaded")
-print("✅Done Report System")
+    waitLoad("System loading⚙", 0.55)
+    if SafeRequire("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua", "SystemLoaded") then
+        task.wait(0.2)
+        print("✅Done System")
+    end
 
-waitLoad("Get data💾", 0.8)
-SafeRequire("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua", "AdminLoaded")
-print("✅Done System Command")
+    waitLoad("Reporting system loading⚙", 0.75)
+    if SafeRequire("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua", "ReportLoaded") then
+        task.wait(0.2)
+        print("✅Done Report System")
+    end
 
-Button.Visible = true
+    waitLoad("Get data💾", 0.8)
+    if SafeRequire("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua", "AdminLoaded") then
+        task.wait(0.2)
+        print("✅Done System Command")
+    end
 
-waitLoad("Checking data🔍", 0.9)
-SafeRequire("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua", "DataMemberLoaded")
+    waitLoad("Checking data🔍", 0.9)
+    if SafeRequire("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua", "DataMemberLoaded") then
+        task.wait(0.2)
+    end
+
+    print("✅ COMPLETE ALL MODULES ✅")
+end
+
+-- bắt đầu sau wait(2)
+task.delay(2, function()
+    waitLoad(nil, 0.1) -- đảm bảo UI sẵn sàng
+    Button.Visible = true
+    LoadAllModules()
+end)
 
 waitLoad("✅COMPLETE✅", 1)
-
-print("✅COMPLETE ALL✅")
