@@ -1711,39 +1711,40 @@ wait(2)
 --========================================================================================================================--
 
 --============================================================--
---  MOBILE-SAFE CORE
+--  MOBILE ULTRA-LOCK (Không Skip 100%)
 --============================================================--
 
 local RunService = game:GetService("RunService")
 
--- Chờ RenderStep để tránh AbsoluteSize=0 hoặc UI chưa build xong
-local function WaitRender()
-    for _ = 1, 5 do
-        RunService.RenderStepped:Wait()
+-- Ưu tiên RenderStep hạng cao nhất
+local function UltraRender()
+    -- đảm bảo 10 frame render (không thể skip)
+    for _ = 1, 10 do
+        RunService.Heartbeat:Wait()
     end
 end
 
--- Chờ GUI + RenderStep
+-- Chờ GUI load thật, không phụ thuộc AbsoluteSize
 local function WaitGui(obj)
     if not obj then return end
 
-    -- chờ Parent
+    -- chờ parent xuất hiện
     while obj.Parent == nil do
         task.wait()
     end
 
-    -- chờ GUI build frame
-    WaitRender()
+    -- ép GUI build bằng 10 frame render
+    UltraRender()
 
-    -- chờ AbsoluteSize đủ lớn
-    while obj.AbsoluteSize.X < 1 do
-        WaitRender()
+    -- ép GUI có kích thước thật
+    while obj.AbsoluteSize.X < 1 or obj.AbsoluteSize.Y < 1 do
+        UltraRender()
     end
 end
 
--- Retry Http nhưng mạnh hơn: retry 10 lần + RenderStep giữa mỗi lần
+-- Http retry max 20 lần + render giữa mỗi lần
 local function SafeGet(url)
-    for i = 1, 10 do
+    for i = 1, 20 do
         local ok, result = pcall(function()
             return game:HttpGet(url)
         end)
@@ -1752,23 +1753,33 @@ local function SafeGet(url)
             return result
         end
 
-        -- Mobile chờ RenderStep giữa mỗi lần → chống treo khung
-        RunService.RenderStepped:Wait()
-        task.wait(0.1)
+        UltraRender() -- ép khung hình render để mobile đỡ choke
+        task.wait(0.05)
     end
 
-    warn("❌ Mobile không tải được:", url)
+    warn("❌ Không tải được:", url)
     return ""
 end
 
--- Ép Visible chạy chắc chắn (RenderStep ưu tiên)
+-- Ép Visible không skip
 local function SafeShow(button)
     WaitGui(button)
-    for i = 1, 8 do
-        button.Visible = true
-        RunService.RenderStepped:Wait()
+
+    -- dùng BindToRenderStep ép Roblox ưu tiên
+    local stepName = "ForceButtonVisible_" .. tostring(button)
+
+    for i = 1, 15 do
+        RunService:BindToRenderStep(stepName, 1, function()
+            button.Visible = true
+        end)
+
+        UltraRender()
+        RunService:UnbindFromRenderStep(stepName)
     end
+
+    button.Visible = true
 end
+
 
 --============================================================--
 --  WAIT GUI OBJECTS
@@ -1783,6 +1794,7 @@ local guiObjects = {
 for _, gui in ipairs(guiObjects) do
     WaitGui(gui)
 end
+
 
 --============================================================--
 --  SETTING UI
@@ -1810,7 +1822,7 @@ TextBox.TextTransparency = 0
 
 print("✅Done UI")
 
-WaitRender()
+UltraRender()
 
 --============================================================--
 --  LOAD FROM GITHUB
@@ -1820,31 +1832,31 @@ waitLoad("Add winter effect❄", 0.425)
 loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua"))()
 print("✅Done winter effect")
 
-WaitRender()
+UltraRender()
 waitLoad("System loading⚙", 0.55)
 loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
 print("✅Done System")
 
-WaitRender()
+UltraRender()
 waitLoad("Reporting system loading⚙", 0.75)
 loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
 print("✅Done Report System")
 
-WaitRender()
+UltraRender()
 waitLoad("Get data💾", 0.8)
 loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua"))()
 print("✅Done System Command")
 
-WaitRender()
+UltraRender()
 
 --============================================================--
---  FORCE BUTTON
+--  FORCE BUTTON (CHẮC CHẮN 100%)
 --============================================================--
 
 SafeShow(Button)
 
 --============================================================--
---  LOAD DATA CUỐI
+--  FINAL LOAD
 --============================================================--
 
 waitLoad("Checking data🔍", 0.9)
