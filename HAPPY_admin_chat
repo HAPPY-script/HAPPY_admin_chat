@@ -1817,8 +1817,8 @@ end
 
 waitLoad("Activate Module▶", 0.675)
 
-Button.Visible = true
 LoadAllModules()
+Button.Visible = true
 
 waitLoad("✅COMPLETE✅", 1)
 print("✅ COMPLETE ALL✅")
