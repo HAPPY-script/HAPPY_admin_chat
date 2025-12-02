@@ -1710,91 +1710,58 @@ wait(2)
 
 --========================================================================================================================--
 
---============================================================--
---  MOBILE ULTRA-LOCK (Không Skip 100%)
---============================================================--
+--=====================================================================
+-- SUPER SAFE LOADER FOR MOBILE (Không bao giờ bỏ qua bất kỳ script nào)
+--=====================================================================
 
-local RunService = game:GetService("RunService")
-
--- Ưu tiên RenderStep hạng cao nhất
-local function UltraRender()
-    -- đảm bảo 10 frame render (không thể skip)
-    for _ = 1, 10 do
-        RunService.Heartbeat:Wait()
-    end
-end
-
--- Chờ GUI load thật, không phụ thuộc AbsoluteSize
-local function WaitGui(obj)
-    if not obj then return end
-
-    -- chờ parent xuất hiện
-    while obj.Parent == nil do
-        task.wait()
+local function SafeRequire(url, flagName)
+    -- Ngăn chạy lại 2 lần tránh bug
+    if _G[flagName] == true then
+        print("⚠️ Skip reload:", flagName, "(Already loaded)")
+        return true
     end
 
-    -- ép GUI build bằng 10 frame render
-    UltraRender()
+    while true do
+        print("🔄 Loading:", url)
 
-    -- ép GUI có kích thước thật
-    while obj.AbsoluteSize.X < 1 or obj.AbsoluteSize.Y < 1 do
-        UltraRender()
-    end
-end
-
--- Http retry max 20 lần + render giữa mỗi lần
-local function SafeGet(url)
-    for i = 1, 20 do
-        local ok, result = pcall(function()
+        local ok, res = pcall(function()
             return game:HttpGet(url)
         end)
 
-        if ok and result and #result > 20 then
-            return result
+        if ok and res and #res > 20 then
+            print("📥 Running script:", url)
+            local runOK = pcall(function()
+                loadstring(res)()
+            end)
+
+            -- Nếu loadstring bị lỗi → retry
+            if not runOK then
+                warn("❌ Script error, retrying:", url)
+            else
+                -- Chờ script gửi tín hiệu phản hồi
+                local t = 0
+                while not _G[flagName] do
+                    task.wait(0.1)
+                    t += 0.1
+                    if t > 8 then
+                        warn("⏳ No response from:", flagName, " → retry")
+                        break
+                    end
+                end
+
+                -- Khi có phản hồi → hoàn tất
+                if _G[flagName] then
+                    print("✅ Loaded OK:", flagName)
+                    return true
+                end
+            end
+        else
+            warn("❌ HttpGet fail → retry:", url)
         end
 
-        UltraRender() -- ép khung hình render để mobile đỡ choke
-        task.wait(0.05)
+        task.wait(0.3)
     end
-
-    warn("❌ Không tải được:", url)
-    return ""
 end
-
--- Ép Visible không skip
-local function SafeShow(button)
-    WaitGui(button)
-
-    -- dùng BindToRenderStep ép Roblox ưu tiên
-    local stepName = "ForceButtonVisible_" .. tostring(button)
-
-    for i = 1, 15 do
-        RunService:BindToRenderStep(stepName, 1, function()
-            button.Visible = true
-        end)
-
-        UltraRender()
-        RunService:UnbindFromRenderStep(stepName)
-    end
-
-    button.Visible = true
-end
-
-
---============================================================--
---  WAIT GUI OBJECTS
---============================================================--
-
-local guiObjects = {
-    Version, Back, Done, Tip, Tip2, Name11, Name12,
-    System2, Character2, GameHub2, Title, ReportTitle,
-    MaxText, TextBox
-}
-
-for _, gui in ipairs(guiObjects) do
-    WaitGui(gui)
-end
-
 
 --============================================================--
 --  SETTING UI
@@ -1822,45 +1789,29 @@ TextBox.TextTransparency = 0
 
 print("✅Done UI")
 
-UltraRender()
-
 --============================================================--
 --  LOAD FROM GITHUB
 --============================================================--
 
 waitLoad("Add winter effect❄", 0.425)
-loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua"))()
+SafeRequire("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua", "NoelLoaded")
 print("✅Done winter effect")
 
-UltraRender()
 waitLoad("System loading⚙", 0.55)
-loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
+SafeRequire("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua", "SystemLoaded")
 print("✅Done System")
 
-UltraRender()
 waitLoad("Reporting system loading⚙", 0.75)
-loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
+SafeRequire("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua", "ReportLoaded")
 print("✅Done Report System")
 
-UltraRender()
 waitLoad("Get data💾", 0.8)
-loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua"))()
+SafeRequire("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua", "AdminLoaded")
 print("✅Done System Command")
 
-UltraRender()
-
---============================================================--
---  FORCE BUTTON (CHẮC CHẮN 100%)
---============================================================--
-
-SafeShow(Button)
-
---============================================================--
---  FINAL LOAD
---============================================================--
-
 waitLoad("Checking data🔍", 0.9)
-loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"))()
+SafeRequire("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua", "DataMemberLoaded")
 
 waitLoad("✅COMPLETE✅", 1)
+
 print("✅COMPLETE ALL✅")
