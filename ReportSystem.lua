@@ -111,10 +111,10 @@ end
 -- Gửi report
 local function SendReport(msg)
     local payload = {
+        userId = player.UserId,
+        playerName = player.Name,
         message = msg,
-        time = GetTime(),
-        senderUserId = player.UserId,
-        senderName = player.Name
+        timestamp = os.time() * 1000  -- ms để web hiển thị chuẩn
     }
 
     local res = HttpRequest({
