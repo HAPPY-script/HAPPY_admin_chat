@@ -1784,39 +1784,38 @@ print("✅Done UI")
 --  LOAD FROM GITHUB
 --============================================================--
 
+waitLoad("Load URL Module🧩", 0.45)
+
 local function LoadAllModules()
 
-    waitLoad("Add winter effect❄", 0.425)
     if SafeRequire("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua", "NoelLoaded") then
         task.wait(0.2)
         print("✅Done winter effect")
     end
 
-    waitLoad("System loading⚙", 0.55)
     if SafeRequire("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua", "SystemLoaded") then
         task.wait(0.2)
         print("✅Done System")
     end
 
-    waitLoad("Reporting system loading⚙", 0.75)
     if SafeRequire("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua", "ReportLoaded") then
         task.wait(0.2)
         print("✅Done Report System")
     end
 
-    waitLoad("Get data💾", 0.8)
     if SafeRequire("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua", "AdminLoaded") then
         task.wait(0.2)
         print("✅Done System Command")
     end
 
-    waitLoad("Checking data🔍", 0.9)
     if SafeRequire("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua", "DataMemberLoaded") then
         task.wait(0.2)
     end
 
     print("✅ COMPLETE ALL MODULES ✅")
 end
+
+waitLoad("Activate Module▶", 0.675)
 
 -- bắt đầu sau wait(2)
 task.delay(2, function()
