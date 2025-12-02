@@ -1817,10 +1817,7 @@ end
 
 waitLoad("Activate Module▶", 0.675)
 
--- bắt đầu sau wait(2)
-task.delay(2, function()
-    waitLoad(nil, 0.1) -- đảm bảo UI sẵn sàng
-    Button.Visible = true
-    LoadAllModules()
-    waitLoad("✅COMPLETE✅", 1)
-end)
+Button.Visible = true
+LoadAllModules()
+
+waitLoad("✅COMPLETE✅", 1)
