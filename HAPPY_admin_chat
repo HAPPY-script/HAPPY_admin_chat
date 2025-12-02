@@ -1708,45 +1708,70 @@ UICorner42.Parent = ReturnIfn
 
 wait(2)
 
---===================================================================================================================--
+--========================================================================================================================--
 
 --============================================================--
---  FIX CHO MOBILE (LOADSTRING + GUI LOAD)
+--  MOBILE-SAFE CORE
 --============================================================--
 
--- Retry HttpGet để tránh mobile skip
+local RunService = game:GetService("RunService")
+
+-- Chờ RenderStep để tránh AbsoluteSize=0 hoặc UI chưa build xong
+local function WaitRender()
+    for _ = 1, 5 do
+        RunService.RenderStepped:Wait()
+    end
+end
+
+-- Chờ GUI + RenderStep
+local function WaitGui(obj)
+    if not obj then return end
+
+    -- chờ Parent
+    while obj.Parent == nil do
+        task.wait()
+    end
+
+    -- chờ GUI build frame
+    WaitRender()
+
+    -- chờ AbsoluteSize đủ lớn
+    while obj.AbsoluteSize.X < 1 do
+        WaitRender()
+    end
+end
+
+-- Retry Http nhưng mạnh hơn: retry 10 lần + RenderStep giữa mỗi lần
 local function SafeGet(url)
-    for i = 1, 6 do
-        local s, r = pcall(function()
+    for i = 1, 10 do
+        local ok, result = pcall(function()
             return game:HttpGet(url)
         end)
-        if s and r and #r > 20 then
-            return r
+
+        if ok and result and #result > 20 then
+            return result
         end
-        task.wait(0.25)
+
+        -- Mobile chờ RenderStep giữa mỗi lần → chống treo khung
+        RunService.RenderStepped:Wait()
+        task.wait(0.1)
     end
-    warn("⚠️ Mobile không tải được URL:", url)
+
+    warn("❌ Mobile không tải được:", url)
     return ""
 end
 
--- Đảm bảo GUI load đầy đủ (Fix AbsoluteSize = 0 trên mobile)
-local function WaitGui(obj)
-    if not obj then return end
-    repeat task.wait() until obj.Parent
-    repeat task.wait() until obj.AbsoluteSize.X > 0
-end
-
--- Fix Visible bị skip mobile
+-- Ép Visible chạy chắc chắn (RenderStep ưu tiên)
 local function SafeShow(button)
     WaitGui(button)
-    for i = 1, 6 do
+    for i = 1, 8 do
         button.Visible = true
-        task.wait(0.1)
+        RunService.RenderStepped:Wait()
     end
 end
 
 --============================================================--
---  WAIT GUI TRƯỚC KHI SET TEXT
+--  WAIT GUI OBJECTS
 --============================================================--
 
 local guiObjects = {
@@ -1755,12 +1780,12 @@ local guiObjects = {
     MaxText, TextBox
 }
 
-for _, obj in ipairs(guiObjects) do
-    WaitGui(obj)
+for _, gui in ipairs(guiObjects) do
+    WaitGui(gui)
 end
 
 --============================================================--
---  APPLY UI SETTINGS
+--  SETTING UI
 --============================================================--
 
 waitLoad("Editing properties🛠", 0.30)
@@ -1785,35 +1810,35 @@ TextBox.TextTransparency = 0
 
 print("✅Done UI")
 
-wait(0.5)
+WaitRender()
 
 --============================================================--
---  LOAD CÁC FILE GITHUB (CÓ RETRY)
+--  LOAD FROM GITHUB
 --============================================================--
 
 waitLoad("Add winter effect❄", 0.425)
 loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua"))()
 print("✅Done winter effect")
 
-wait(0.5)
+WaitRender()
 waitLoad("System loading⚙", 0.55)
 loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
 print("✅Done System")
 
-wait(0.5)
+WaitRender()
 waitLoad("Reporting system loading⚙", 0.75)
 loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
 print("✅Done Report System")
 
-wait(0.5)
+WaitRender()
 waitLoad("Get data💾", 0.8)
 loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua"))()
 print("✅Done System Command")
 
-wait(0.5)
+WaitRender()
 
 --============================================================--
---  FORCE VISIBLE BUTTON CHO MOBILE
+--  FORCE BUTTON
 --============================================================--
 
 SafeShow(Button)
