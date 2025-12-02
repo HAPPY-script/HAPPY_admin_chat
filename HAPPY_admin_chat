@@ -1708,11 +1708,63 @@ UICorner42.Parent = ReturnIfn
 
 wait(2)
 
---=======================================================================================================--
+--===================================================================================================================--
+
+--============================================================--
+--  FIX CHO MOBILE (LOADSTRING + GUI LOAD)
+--============================================================--
+
+-- Retry HttpGet để tránh mobile skip
+local function SafeGet(url)
+    for i = 1, 6 do
+        local s, r = pcall(function()
+            return game:HttpGet(url)
+        end)
+        if s and r and #r > 20 then
+            return r
+        end
+        task.wait(0.25)
+    end
+    warn("⚠️ Mobile không tải được URL:", url)
+    return ""
+end
+
+-- Đảm bảo GUI load đầy đủ (Fix AbsoluteSize = 0 trên mobile)
+local function WaitGui(obj)
+    if not obj then return end
+    repeat task.wait() until obj.Parent
+    repeat task.wait() until obj.AbsoluteSize.X > 0
+end
+
+-- Fix Visible bị skip mobile
+local function SafeShow(button)
+    WaitGui(button)
+    for i = 1, 6 do
+        button.Visible = true
+        task.wait(0.1)
+    end
+end
+
+--============================================================--
+--  WAIT GUI TRƯỚC KHI SET TEXT
+--============================================================--
+
+local guiObjects = {
+    Version, Back, Done, Tip, Tip2, Name11, Name12,
+    System2, Character2, GameHub2, Title, ReportTitle,
+    MaxText, TextBox
+}
+
+for _, obj in ipairs(guiObjects) do
+    WaitGui(obj)
+end
+
+--============================================================--
+--  APPLY UI SETTINGS
+--============================================================--
 
 waitLoad("Editing properties🛠", 0.30)
 
---SettingFix
 Version.TextTransparency = 0
 Version.TextStrokeTransparency = 0
 Back.TextTransparency = 0
@@ -1730,63 +1782,48 @@ Name12.TextTransparency = 0
 ReportTitle.TextTransparency = 0
 MaxText.TextTransparency = 0
 TextBox.TextTransparency = 0
---EndFix
 
 print("✅Done UI")
 
 wait(0.5)
---------------------------------------------------
+
+--============================================================--
+--  LOAD CÁC FILE GITHUB (CÓ RETRY)
+--============================================================--
+
 waitLoad("Add winter effect❄", 0.425)
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua"))()
-
+loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua"))()
 print("✅Done winter effect")
---------------------------------------------------
+
 wait(0.5)
---------------------------------------------------
 waitLoad("System loading⚙", 0.55)
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
-
+loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
 print("✅Done System")
---------------------------------------------------
+
 wait(0.5)
---------------------------------------------------
 waitLoad("Reporting system loading⚙", 0.75)
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
-
+loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
 print("✅Done Report System")
---------------------------------------------------
+
 wait(0.5)
---------------------------------------------------
 waitLoad("Get data💾", 0.8)
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua"))()
-
+loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua"))()
 print("✅Done System Command")
---------------------------------------------------
+
 wait(0.5)
 
-local function safeShow(button)
-    if not button.Parent then
-        repeat task.wait() until button.Parent
-    end
-    if button:IsA("GuiObject") then
-        repeat task.wait() until button.AbsoluteSize.X > 0
-    end
-    for i = 1, 5 do
-        button.Visible = true
-        task.wait(0.1)
-    end
-end
-safeShow(Button)
+--============================================================--
+--  FORCE VISIBLE BUTTON CHO MOBILE
+--============================================================--
 
---------------------------------------------------
+SafeShow(Button)
+
+--============================================================--
+--  LOAD DATA CUỐI
+--============================================================--
+
 waitLoad("Checking data🔍", 0.9)
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"))()
+loadstring(SafeGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"))()
 
 waitLoad("✅COMPLETE✅", 1)
---------------------------------------------------
 print("✅COMPLETE ALL✅")
