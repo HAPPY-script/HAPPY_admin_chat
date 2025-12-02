@@ -1821,3 +1821,4 @@ Button.Visible = true
 LoadAllModules()
 
 waitLoad("✅COMPLETE✅", 1)
+print("✅ COMPLETE ALL✅")
