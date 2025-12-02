@@ -80,6 +80,16 @@ local function Notify(title, text)
 	})
 end
 
+--=====================================================
+-- FORMAT TIME (giờ:phút - ngày/tháng/năm)
+--=====================================================
+local function GetTime()
+    local t = os.date("*t") -- local time của thiết bị
+    return string.format("%02d:%02d - %02d/%02d/%04d",
+        t.hour, t.min, t.day, t.month, t.year
+    )
+end
+
 -- Check xem user đã có report chưa
 local function CheckExistReport()
 	local res = HttpRequest({ Url = USER_URL, Method = "GET" })
@@ -100,16 +110,21 @@ end
 
 -- Gửi report
 local function SendReport(msg)
-	local payload = { message = msg }
+    local payload = {
+        message = msg,
+        time = GetTime(),
+        senderUserId = player.UserId,
+        senderName = player.Name
+    }
 
-	local res = HttpRequest({
-		Url = USER_URL,
-		Method = "PUT",
-		Headers = { ["Content-Type"] = "application/json" },
-		Body = HttpService:JSONEncode(payload)
-	})
+    local res = HttpRequest({
+        Url = USER_URL,
+        Method = "PUT",
+        Headers = { ["Content-Type"] = "application/json" },
+        Body = HttpService:JSONEncode(payload)
+    })
 
-	return (res and res.StatusCode == 200)
+    return (res and res.StatusCode == 200)
 end
 
 --=====================================================
