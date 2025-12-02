@@ -1,3 +1,6 @@
+
+_G.NoelLoaded = true
+
 --EFFECT
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
