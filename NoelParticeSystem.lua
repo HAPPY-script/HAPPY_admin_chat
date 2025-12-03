@@ -1,6 +1,3 @@
-
-_G.NoelLoaded = true
-
 --EFFECT
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
@@ -97,8 +94,6 @@ end)
 
 --ADMIN COMMAND
 
-_G.AdminLoaded = true
-
 --============================--
 --  CLIENT-ONLY ADMIN SYSTEM
 --============================--
@@ -157,9 +152,6 @@ Players.PlayerAdded:Connect(onPlayerAdded)
 --======================================================================================================--
 
 --DATA MEMBER
-
-
-_G.DataMemberLoaded = true
 
 --==================================================--
 --  HTTP REQUEST AUTO-DETECT
