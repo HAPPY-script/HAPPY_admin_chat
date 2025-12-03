@@ -1,6 +1,3 @@
-
-_G.SystemLoaded = true
-
 local ScriptMapping = {
 
 	-- GameHud --
