@@ -1757,15 +1757,25 @@ wait(0.5)
 --------------------------------------------------
 
 Button.Visible = true
+wait(0.5)
 
 --------------------------------------------------
 
-waitLoad("Load the utility🧩", 0.9)
+waitLoad("Load utility🧩", 0.9)
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua"))() --
+local UserInputService = game:GetService("UserInputService")
+
+local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
+
+if not isMobile then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua"))()
+else
+    print("⏩ Skip utility (Mobile detected)")
+end
 
 print("✅Done utility")
 
 waitLoad("✅COMPLETE✅", 1)
 --------------------------------------------------
+
 print("✅COMPLETE ALL✅")
