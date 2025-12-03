@@ -1749,7 +1749,14 @@ wait(0.5)
 --------------------------------------------------
 waitLoad("🚨Reporting system loading⚙", 0.85)
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
+local UserInputService = game:GetService("UserInputService")
+local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
+
+if not isMobile then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
+else
+    print("⏩ Skip Reporting system (Mobile detected)")
+end
 
 print("✅Done Report System")
 --------------------------------------------------
@@ -1762,8 +1769,6 @@ wait(0.5)
 --------------------------------------------------
 
 waitLoad("Load utility🧩", 0.9)
-
-local UserInputService = game:GetService("UserInputService")
 
 local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
 
