@@ -1706,59 +1706,15 @@ UICorner42.Name = "UICorner"
 UICorner42.CornerRadius = UDim.new(1, 0)
 UICorner42.Parent = ReturnIfn
 
+wait(2)
+
 --========================================================================================================================--
-
---=====================================================
--- SUPER SAFE LOADER (Mobile-friendly)
---=====================================================
-local function SafeRequire(url, flagName, timeout)
-    timeout = timeout or 8 -- timeout mặc định 8s
-    if _G[flagName] then
-        return true
-    end
-
-    -- pcall HttpGet
-    local ok, res = pcall(function()
-        return game:HttpGet(url)
-    end)
-
-    if not ok or not res or #res < 20 then
-        warn("❌ HttpGet fail → retry later:", flagName)
-        return false
-    end
-
-    -- chạy script trong pcall
-    local runOK, err = pcall(function()
-        loadstring(res)()
-    end)
-
-    if not runOK then
-        warn("❌ Loadstring error → retry later:", flagName, err)
-        return false
-    end
-
-    -- chờ phản hồi từ script (không dùng while true vô hạn)
-    local t = 0
-    local step = 0.1
-    while not _G[flagName] and t < timeout do
-        task.wait(step)
-        t = t + step
-    end
-
-    if _G[flagName] then
-        print("✅ Loaded:", flagName)
-        return true
-    else
-        warn("⏳ No response from:", flagName)
-        return false
-    end
-end
 
 --============================================================--
 --  SETTING UI
 --============================================================--
 
-waitLoad("Editing properties🛠", 0.30)
+waitLoad("Editing properties🛠", 0.50)
 
 Version.TextTransparency = 0
 Version.TextStrokeTransparency = 0
@@ -1780,9 +1736,54 @@ TextBox.TextTransparency = 0
 
 print("✅Done UI")
 
---============================================================--
---  LOAD FROM GITHUB
---============================================================--
+--------------------------------------------------
+wait(0.5)
+--------------------------------------------------
+waitLoad("System loading⚙", 0.655)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
+
+print("✅Done System")
+--------------------------------------------------
+wait(0.5)
+--------------------------------------------------
+waitLoad("Reporting system loading⚙", 0.85)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
+
+print("✅Done Report System")
+--------------------------------------------------
+wait(0.5)
+--------------------------------------------------
+
+button.Visible = true
+
+--------------------------------------------------
+
+waitLoad("Load the utility🧩", 0.9)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua"))() --
+
+print("✅Done utility")
+
+waitLoad("✅COMPLETE✅", 1)
+--------------------------------------------------
+print("✅COMPLETE ALL✅")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 waitLoad("Load URL Module🧩", 0.45)
 
