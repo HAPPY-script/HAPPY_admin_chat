@@ -1747,7 +1747,7 @@ print("✅Done System")
 --------------------------------------------------
 wait(0.5)
 --------------------------------------------------
-waitLoad("Reporting system loading⚙", 0.85)
+waitLoad("🚨Reporting system loading⚙", 0.85)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
 
@@ -1756,7 +1756,7 @@ print("✅Done Report System")
 wait(0.5)
 --------------------------------------------------
 
-button.Visible = true
+Button.Visible = true
 
 --------------------------------------------------
 
