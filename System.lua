@@ -115,7 +115,7 @@ end
 -- APPLY FIREBASE SYTEM
 --------------------------------------------------------
 
--- ======= NOTI + FIREBASE SUPPORT (MẪU-TYPE, DÙNG HttpRequest) =======
+-- ======= NOTI + FIREBASE SUPPORT =======
 
 -- ============================
 -- Loading helpers (improved)
@@ -584,7 +584,7 @@ task.spawn(function()
 	end
 end)
 
--- ======= END NOTI + FIREBASE SUPPORT (MẪU-TYPE) =======
+-- ======= END NOTI + FIREBASE SUPPORT =======
 
 --------------------------------------------------------
 -- APPLY BUTTON EFFECTS
