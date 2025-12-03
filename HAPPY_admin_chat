@@ -1781,6 +1781,9 @@ end
 print("✅Done utility")
 
 waitLoad("✅COMPLETE✅", 1)
+
+print("✅COMPLETE ALL✅")
+
 --------------------------------------------------
 
 --================================================================================================--
@@ -1821,4 +1824,4 @@ textBox.PlaceholderText = "Mobile not supported."
 textBox.TextEditable = false
 textBox.Text = ""
 
-print("✅COMPLETE ALL✅")
+print("📵Mobile notification system loaded✅")
