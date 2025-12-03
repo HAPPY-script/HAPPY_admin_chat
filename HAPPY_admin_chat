@@ -1714,7 +1714,7 @@ wait(2)
 --  SETTING UI
 --============================================================--
 
-waitLoad("Editing properties🛠", 0.50)
+waitLoad("Editing properties🛠", 0.45)
 
 Version.TextTransparency = 0
 Version.TextStrokeTransparency = 0
@@ -1739,7 +1739,7 @@ print("✅Done UI")
 --------------------------------------------------
 wait(0.5)
 --------------------------------------------------
-waitLoad("System loading⚙", 0.655)
+waitLoad("System loading⚙", 0.50)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
 
@@ -1747,6 +1747,17 @@ print("✅Done System")
 --------------------------------------------------
 wait(0.5)
 --------------------------------------------------
+
+waitLoad("Particle loading❄", 0.775)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua"))()
+
+print("✅Done Particle")
+
+--------------------------------------------------
+wait(0.5)
+--------------------------------------------------
+
 waitLoad("🚨Reporting system loading⚙", 0.85)
 
 local UserInputService = game:GetService("UserInputService")
@@ -1771,9 +1782,10 @@ wait(0.5)
 waitLoad("Load utility🧩", 0.9)
 
 local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
-
 if not isMobile then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NoelParticeSystem.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua"))()
+    task.wait(0.5)
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"))()
 else
     print("⏩ Skip utility (Mobile detected)")
 end
