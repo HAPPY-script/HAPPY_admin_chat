@@ -47,6 +47,10 @@ local ScriptMapping = {
 		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESP/refs/heads/main/ESP.lua")
 		loadstring(code)()
 	end,
+	CameraViewer = function()
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Camera_Viewer/refs/heads/main/System.lua")
+		loadstring(code)()
+	end,
 }
 
 local TweenService = game:GetService("TweenService")
