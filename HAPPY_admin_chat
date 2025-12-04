@@ -1766,7 +1766,6 @@ wait(0.5)
 
 waitLoad("🚨Reporting system loading⚙", 0.85)
 
-local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
 if not isMobile then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
 else
@@ -1785,7 +1784,6 @@ wait(0.5)
 
 waitLoad("Load utility🧩", 0.9)
 
-local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
 if not isMobile then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua"))()
     task.wait(0.5)
@@ -1812,7 +1810,6 @@ local StarterGui = game:GetService("StarterGui")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
-local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
 if not isMobile then
     return
 end
@@ -1846,8 +1843,6 @@ print("📵Mobile notification system loaded✅")
 
 --EFFECT
 local TweenService = game:GetService("TweenService")
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui"):WaitForChild("HAPPYscript")
 local main = gui:WaitForChild("Main")
 local particleTemplate = main:WaitForChild("Particle")
