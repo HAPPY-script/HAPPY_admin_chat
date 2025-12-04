@@ -909,3 +909,44 @@ applyGradientToFrameButtons(frameVisuals)
 -- APPLY GRADIENT FOR MAIN MENU BUTTON
 --------------------------------------------------------
 applyGradientEffect(toggleButton)
+
+--------------------------------------------------
+
+--================================================================================================--
+--MOBILE NOTIFICATION
+
+--=====================================================
+-- ONLY FOR MOBILE PLAYERS
+--=====================================================
+local StarterGui = game:GetService("StarterGui")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+if not isMobile then
+    return
+end
+
+local gui = player:WaitForChild("PlayerGui"):WaitForChild("HAPPYscript")
+local scrolling = gui:WaitForChild("Main"):WaitForChild("ScrollingFrame")
+local systemFrame = scrolling:WaitForChild("System")
+
+local textBox = systemFrame:WaitForChild("TextBox")
+local sendButton = textBox:WaitForChild("SendButton")
+
+local function Notify(title, text)
+	StarterGui:SetCore("SendNotification", {
+		Title = title,
+		Text = text,
+		Duration = 7,
+	})
+end
+
+sendButton.MouseButton1Click:Connect(function()
+	Notify("🔔Mobile Unsupported📵", "Mobile is not supported for sending Report.")
+end)
+
+textBox.PlaceholderText = "Mobile not supported."
+textBox.TextEditable = false
+textBox.Text = ""
+
+print("📵Mobile notification system loaded✅")
