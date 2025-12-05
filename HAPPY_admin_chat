@@ -115,13 +115,12 @@ print("✅COMPLETE ALL✅")
 --=====================================================
 local StarterGui = game:GetService("StarterGui")
 local Players = game:GetService("Players")
-local player = Players.LocalPlayer
 
 if not isMobile then
     return
 end
 
-local gui = player:WaitForChild("PlayerGui"):WaitForChild("HAPPYscript")
+local gui = HAPPYscript
 local scrolling = gui:WaitForChild("Main"):WaitForChild("ScrollingFrame")
 local systemFrame = scrolling:WaitForChild("System")
 
