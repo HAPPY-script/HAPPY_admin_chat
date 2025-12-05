@@ -1878,9 +1878,11 @@ print("✅Done Report System")
 wait(0.5)
 --------------------------------------------------
 
+--[[
 local player = game.Players.LocalPlayer
 local HAPPYscript = player:WaitForChild("PlayerGui"):WaitForChild("HAPPYscript")
 local Button = HAPPYscript:WaitForChild("Button")
+]]
 
 Button.Visible = true
 
