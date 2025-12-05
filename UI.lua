@@ -1775,3 +1775,26 @@ local UICorner45 = Instance.new("UICorner")
 UICorner45.Name = "UICorner"
 UICorner45.CornerRadius = UDim.new(1, 0)
 UICorner45.Parent = ReturnIfn
+
+--============================================================--
+--  SETTING UI
+--============================================================--
+
+Version.TextTransparency = 0
+Version.TextStrokeTransparency = 0
+Back.TextTransparency = 0
+Done.TextTransparency = 0
+Tip.TextTransparency = 0
+Tip.TextStrokeTransparency = 0.5
+Tip2.TextTransparency = 0
+Name11.TextTransparency = 0
+System2.TextTransparency = 0
+Character2.TextTransparency = 0
+GameHub2.TextTransparency = 0
+Title.TextTransparency = 0
+Name11.TextTransparency = 1
+Name12.TextTransparency = 1
+Name13.TextTransparency = 0
+ReportTitle.TextTransparency = 0
+MaxText.TextTransparency = 0
+TextBox.TextTransparency = 0
