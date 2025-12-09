@@ -27,7 +27,7 @@ game.StarterGui:SetCore("SendNotification", {
 })
 
 waitLoad("Loading UI🖼", 0.075)
---[[
+
 local HAPPYscript = Instance.new("ScreenGui")
 HAPPYscript.Name = "HAPPYscript"
 HAPPYscript.ResetOnSpawn = false
@@ -1805,15 +1805,13 @@ local UICorner45 = Instance.new("UICorner")
 UICorner45.Name = "UICorner"
 UICorner45.CornerRadius = UDim.new(1, 0)
 UICorner45.Parent = ReturnIfn
-]]
+
 --============================================================--
 --  SETTING UI
 --============================================================--
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/UI.lua"))()
-
 waitLoad("Editing properties🛠", 0.45)
---[[
+
 Version.TextTransparency = 0
 Version.TextStrokeTransparency = 0
 Back.TextTransparency = 0
@@ -1832,7 +1830,7 @@ Name13.TextTransparency = 0
 ReportTitle.TextTransparency = 0
 MaxText.TextTransparency = 0
 TextBox.TextTransparency = 0
-]]
+
 wait(2)
 
 print("✅Done UI")
