@@ -58,8 +58,7 @@ end)
 local UserInputService = game:GetService("UserInputService")
 
 local function IsMobile()
-    -- Mobile có TouchEnabled nhưng KHÔNG có keyboard vật lý
-    return UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
+    return UserInputService.TouchEnabled
 end
 
 local function MobileConfirmLoad(name, iconId)
