@@ -55,26 +55,23 @@ ConfirmButton.MouseButton1Click:Connect(function()
     end
 end)
 
-local function IsMobile()
-    local size = workspace.CurrentCamera.ViewportSize
-    return size.X < 1300
-end
-
--- Hàm xác nhận cho Mobile
 local UserInputService = game:GetService("UserInputService")
 
+local function IsMobile()
+    -- Mobile có TouchEnabled nhưng KHÔNG có keyboard vật lý
+    return UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
+end
+
 local function MobileConfirmLoad(name, iconId)
-    -- Nếu là PC thì auto chạy
+    -- Nếu PC → chạy thẳng
     if not IsMobile() then
         return true
     end
 
-    -- Hiện UI
     UI.Visible = true
     TitleLoad.Text = name
     Icon.Image = "rbxassetid://" .. tostring(iconId)
 
-    -- Chuẩn bị confirm
     waitingForConfirm = true
     local confirmed = false
 
@@ -82,12 +79,10 @@ local function MobileConfirmLoad(name, iconId)
         confirmed = true
     end
 
-    -- Chờ user bấm
     while not confirmed do
         task.wait()
     end
 
-    -- Reset trạng thái
     UI.Visible = false
     waitingForConfirm = false
     confirmCallback = nil
@@ -172,7 +167,7 @@ Button.Visible = true
 --========================================================================================================================--
 
 SafeLoadStep(
-    "Load utility🧩",
+    "Load utility🧩(1)",
     126347222554873,
     0.9,
     "https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/ADMIN_system.lua"
@@ -181,7 +176,7 @@ SafeLoadStep(
 --========================================================================================================================--
 
 SafeLoadStep(
-    "Load utility🧩",
+    "Load utility🧩(2)",
     126347222554873,
     0.95,
     "https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"
@@ -189,6 +184,11 @@ SafeLoadStep(
 
 print("✅Done utility")
 
-waitLoad("✅COMPLETE✅", 1)
+SafeLoadStep(
+    "✅COMPLETE✅",
+    126347222554873,
+    1,
+    nil
+)
 
 print("✅COMPLETE ALL✅")
