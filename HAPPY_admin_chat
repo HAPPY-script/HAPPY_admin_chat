@@ -55,33 +55,43 @@ ConfirmButton.MouseButton1Click:Connect(function()
     end
 end)
 
+local function IsMobile()
+    local size = workspace.CurrentCamera.ViewportSize
+    return size.X < 1300
+end
+
 -- Hàm xác nhận cho Mobile
 local UserInputService = game:GetService("UserInputService")
 
 local function MobileConfirmLoad(name, iconId)
-    -- PC → auto confirm (skip)
-    if not UserInputService.TouchEnabled then
+    -- Nếu là PC thì auto chạy
+    if not IsMobile() then
         return true
     end
 
+    -- Hiện UI
     UI.Visible = true
     TitleLoad.Text = name
     Icon.Image = "rbxassetid://" .. tostring(iconId)
 
+    -- Chuẩn bị confirm
     waitingForConfirm = true
-
-    -- Callback khi người dùng bấm nút
     local confirmed = false
+
     confirmCallback = function()
         confirmed = true
     end
 
-    -- Chờ user bấm Confirm
+    -- Chờ user bấm
     while not confirmed do
         task.wait()
     end
 
+    -- Reset trạng thái
     UI.Visible = false
+    waitingForConfirm = false
+    confirmCallback = nil
+
     return true
 end
 
