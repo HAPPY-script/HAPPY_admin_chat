@@ -103,6 +103,11 @@ local function SafeLoadStep(name, iconId, pct, url)
         return
     end
 
+    -- Nếu bước này không có URL → chỉ cần xác nhận mobile
+    if not url then
+        return
+    end
+
     -- Load URL an toàn
     local ok, res = pcall(function()
         return loadstring(game:HttpGet(url))()
