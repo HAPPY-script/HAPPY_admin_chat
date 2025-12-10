@@ -1867,15 +1867,11 @@ wait(0.5)
 
 waitLoad("🚨Reporting system loading⚙", 0.85)
 
---[[
 if not isMobile then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
 else
     print("⏩ Skip Reporting system (Mobile detected)")
 end
-]]
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
 
 print("✅Done Report System")
 --------------------------------------------------
