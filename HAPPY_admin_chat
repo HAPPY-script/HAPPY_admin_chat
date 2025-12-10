@@ -56,29 +56,32 @@ ConfirmButton.MouseButton1Click:Connect(function()
 end)
 
 -- Hàm xác nhận cho Mobile
+local UserInputService = game:GetService("UserInputService")
+
 local function MobileConfirmLoad(name, iconId)
-    -- Nếu đang dùng PC thì bỏ qua
-    if not game:GetService("UserInputService").TouchEnabled then
-        return true  -- PC → auto confirm
+    -- PC → auto confirm (skip)
+    if not UserInputService.TouchEnabled then
+        return true
     end
 
     UI.Visible = true
     TitleLoad.Text = name
-
-    -- Icon Id dạng số → chuyển sang decal Roblox
     Icon.Image = "rbxassetid://" .. tostring(iconId)
 
     waitingForConfirm = true
 
-    -- Chờ xác nhận qua callback
-    local done = false
+    -- Callback khi người dùng bấm nút
+    local confirmed = false
     confirmCallback = function()
-        done = true
+        confirmed = true
     end
 
-    -- Yield đợi user bấm
-    repeat task.wait() until done == true
+    -- Chờ user bấm Confirm
+    while not confirmed do
+        task.wait()
+    end
 
+    UI.Visible = false
     return true
 end
 
@@ -86,13 +89,16 @@ end
 -- HÀM LOAD URL CÓ HỖ TRỢ MOBILE
 ---------------------------------------------------------------------
 local function SafeLoadStep(name, iconId, pct, url)
-    -- Cập nhật thanh Loading
     waitLoad(name, pct)
 
-    -- Mobile phải confirm
-    MobileConfirmLoad(name, iconId)
+    -- BẮT BUỘC: Đợi Mobile confirm
+    local mobileOk = MobileConfirmLoad(name, iconId)
+    if not mobileOk then
+        warn("Mobile confirm failed:", name)
+        return
+    end
 
-    -- Thực thi load
+    -- Load URL an toàn
     local ok, res = pcall(function()
         return loadstring(game:HttpGet(url))()
     end)
