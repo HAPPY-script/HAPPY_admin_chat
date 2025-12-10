@@ -30,12 +30,13 @@ waitLoad("Loading UI🖼", 0.075)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/UI.lua"))()
 
+wait(2)
+
 --============================================================--
 --  SETTING UI
 --============================================================--
 
 waitLoad("Editing properties🛠", 0.45)
-
 
 wait(2)
 
