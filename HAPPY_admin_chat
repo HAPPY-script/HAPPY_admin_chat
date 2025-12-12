@@ -1812,8 +1812,6 @@ UICorner45.Parent = ReturnIfn
 
 waitLoad("Editing properties🛠", 0.45)
 
-wait(2)
-
 Version.TextTransparency = 0
 Version.TextStrokeTransparency = 0
 Back.TextTransparency = 0
