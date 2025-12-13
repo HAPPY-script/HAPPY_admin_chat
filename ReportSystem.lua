@@ -127,6 +127,7 @@ local function SendReport(msg)
     return (res and res.StatusCode == 200)
 end
 
+
 --=====================================================
 -- UI UPDATE
 --=====================================================
@@ -149,6 +150,156 @@ textBox:GetPropertyChangedSignal("Text"):Connect(function()
 
 	maxText.Text = len .. "/" .. MAX_LEN
 end)
+
+-- ============================
+-- SUPPORT STATUS: realtime poll + UI binding
+-- ============================
+local supportFrame = systemFrame:FindFirstChild("SupportStatus")
+if supportFrame then
+    local MyFeedback = supportFrame:WaitForChild("MyFeedback")
+    local AdminFeedback = supportFrame:WaitForChild("AdminFeedback")
+    local OKButton = supportFrame:WaitForChild("OKButton")
+
+    -- default off
+    supportFrame.Visible = false
+
+    -- internal state
+    local polling = true
+    local pollInterval = 3 -- giây giữa mỗi lần GET
+    local dotCoroutine = nil
+    local dotSession = 0
+
+    local function setOKButtonState(isOk)
+        if isOk then
+            OKButton.Text = "OK"
+            OKButton.BackgroundColor3 = Color3.fromRGB(50, 255, 50)
+        else
+            OKButton.Text = "Cancel"
+            OKButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+        end
+    end
+
+    local function stopDotAnimation()
+        dotSession = dotSession + 1 -- invalidate previous session
+        if dotCoroutine then
+            -- allow coroutine to self-exit
+            dotCoroutine = nil
+        end
+        -- restore AdminFeedback alpha/text color if you changed it
+    end
+
+    local function startDotAnimation(baseText)
+        -- ensure previous stopped
+        stopDotAnimation()
+        local mySession = dotSession + 1
+        dotSession = mySession
+        dotCoroutine = task.spawn(function()
+            local i = 0
+            while dotSession == mySession do
+                i = (i % 3) + 1
+                local dots = string.rep(".", i)
+                pcall(function() AdminFeedback.Text = baseText .. dots end)
+                task.wait(0.6) -- speed for dots (adjust if needed)
+            end
+        end)
+    end
+
+    local function deleteReportRequest()
+        -- try DELETE; fallback PUT null if DELETE unsupported
+        local ok, res = pcall(function()
+            return HttpRequest({ Url = USER_URL, Method = "DELETE" })
+        end)
+        if not ok or not res or (res.StatusCode ~= 200 and res.StatusCode ~= 204) then
+            -- fallback: PUT null
+            pcall(function()
+                HttpRequest({
+                    Url = USER_URL,
+                    Method = "PUT",
+                    Headers = { ["Content-Type"] = "application/json" },
+                    Body = "null"
+                })
+            end)
+        end
+    end
+
+    -- khi bấm OK/Cancel
+    OKButton.MouseButton1Click:Connect(function()
+        -- nếu đang visible và có trạng thái Cancel (nghĩa admin chưa phản hồi)
+        if OKButton.Text == "Cancel" then
+            -- xoá report và ẩn UI
+            deleteReportRequest()
+            supportFrame.Visible = false
+            stopDotAnimation()
+            Notify("Report Cancelled", "Your report has been removed.")
+        else
+            -- OK state (admin đã phản hồi) -> xóa report và ẩn
+            deleteReportRequest()
+            supportFrame.Visible = false
+            stopDotAnimation()
+            Notify("Report Closed", "Your report has been cleared.")
+        end
+    end)
+
+    -- Kiểm tra Firebase xem có report hiện tại không
+    local function fetchReport()
+        local ok, res = pcall(function()
+            return HttpRequest({ Url = USER_URL, Method = "GET" })
+        end)
+        if not ok or not res then return nil end
+        if res.StatusCode ~= 200 then return nil end
+        if not res.Body or res.Body == "null" then return nil end
+        local success, data = pcall(function() return HttpService:JSONDecode(res.Body) end)
+        if not success or type(data) ~= "table" then return nil end
+        return data
+    end
+
+    -- Cập nhật UI dựa trên data từ Firebase
+    local function updateSupportUIFromData(data)
+        if not data then
+            -- không có report
+            supportFrame.Visible = false
+            stopDotAnimation()
+            return
+        end
+
+        -- hiển thị frame
+        supportFrame.Visible = true
+
+        -- MyFeedback show message
+        local message = tostring(data.message or "")
+        MyFeedback.Text = message
+
+        -- Admin feedback logic: nếu admin đã phản hồi (responded = true)
+        if data.responded or data.response then
+            stopDotAnimation()
+            local adminText = tostring(data.response or "No response text.")
+            AdminFeedback.Text = adminText
+            setOKButtonState(true) -- OK (xanh)
+        else
+            -- chưa phản hồi -> chạy animation
+            AdminFeedback.Text = "Waiting for a response from the admin"
+            startDotAnimation("Waiting for a response from the admin")
+            setOKButtonState(false) -- Cancel (đỏ)
+        end
+    end
+
+    -- Poll loop (non-blocking)
+    task.spawn(function()
+        while polling do
+            local data = fetchReport()
+            if data then
+                updateSupportUIFromData(data)
+            else
+                -- nếu không có data thì ẩn UI
+                if supportFrame.Visible then
+                    supportFrame.Visible = false
+                end
+                stopDotAnimation()
+            end
+            task.wait(pollInterval)
+        end
+    end)
+end
 
 --=====================================================
 -- SEND BUTTON HANDLER
@@ -176,6 +327,9 @@ sendButton.MouseButton1Click:Connect(function()
 	end
 
 	local success = SendReport(content)
+
+	local newData = fetchReport()
+	updateSupportUIFromData(newData)
 
 	if success then
 		Notify("Report Sent", "Your report has been submitted successfully.")
