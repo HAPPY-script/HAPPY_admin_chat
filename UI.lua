@@ -54,6 +54,7 @@ GameHub.BackgroundColor3 = Color3.new(1, 1, 1)
 GameHub.BackgroundTransparency = 1
 GameHub.BorderSizePixel = 0
 GameHub.BorderColor3 = Color3.new(0, 0, 0)
+GameHub.Visible = false
 GameHub.Transparency = 1
 GameHub.Parent = ScrollingFrame
 
@@ -1305,7 +1306,6 @@ System.BackgroundColor3 = Color3.new(1, 1, 1)
 System.BackgroundTransparency = 1
 System.BorderSizePixel = 0
 System.BorderColor3 = Color3.new(0, 0, 0)
-System.Visible = false
 System.Transparency = 1
 System.Parent = ScrollingFrame
 
@@ -1409,11 +1409,102 @@ Tip.TextScaled = true
 Tip.TextWrapped = true
 Tip.Parent = System
 
+local SupportStatus = Instance.new("Frame")
+SupportStatus.Name = "SupportStatus"
+SupportStatus.Position = UDim2.new(0.5, 0, 0.3, 0)
+SupportStatus.Size = UDim2.new(0.9, 0, 0.3, 0)
+SupportStatus.BackgroundColor3 = Color3.new(0.831373, 0, 1)
+SupportStatus.BorderSizePixel = 0
+SupportStatus.BorderColor3 = Color3.new(0, 0, 0)
+SupportStatus.Visible = false
+SupportStatus.ZIndex = 2
+SupportStatus.AnchorPoint = Vector2.new(0.5, 0.5)
+SupportStatus.Parent = System
+
+local OkButton = Instance.new("TextButton")
+OkButton.Name = "OkButton"
+OkButton.Position = UDim2.new(0.5, 0, 1.125, 0)
+OkButton.Size = UDim2.new(1, 0, 0.25, 0)
+OkButton.BackgroundColor3 = Color3.new(0.196078, 1, 0.196078)
+OkButton.BorderSizePixel = 0
+OkButton.BorderColor3 = Color3.new(0, 0, 0)
+OkButton.AnchorPoint = Vector2.new(0.5, 0.5)
+OkButton.Text = "OK"
+OkButton.TextColor3 = Color3.new(1, 1, 1)
+OkButton.TextSize = 14
+OkButton.FontFace = Font.new("rbxasset://fonts/families/Oswald.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+OkButton.TextScaled = true
+OkButton.TextWrapped = true
+OkButton.Parent = SupportStatus
+
 local UIStroke8 = Instance.new("UIStroke")
 UIStroke8.Name = "UIStroke"
-UIStroke8.Color = Color3.new(1, 0, 0.784314)
+UIStroke8.Color = Color3.new(1, 0, 0.392157)
+UIStroke8.Thickness = 1.25
 UIStroke8.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UIStroke8.Parent = ScrollingFrame
+UIStroke8.Parent = OkButton
+
+local UIStroke9 = Instance.new("UIStroke")
+UIStroke9.Name = "UIStroke"
+UIStroke9.Color = Color3.new(1, 0, 0.392157)
+UIStroke9.Thickness = 1.25
+UIStroke9.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke9.Parent = SupportStatus
+
+local UIGradient25 = Instance.new("UIGradient")
+UIGradient25.Name = "UIGradient"
+UIGradient25.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.117647, 0, 0.156863)), ColorSequenceKeypoint.new(0.5, Color3.new(0.117647, 0, 0.156863)), ColorSequenceKeypoint.new(0.724914, Color3.new(0.172959, 0.0626865, 0.209716)), ColorSequenceKeypoint.new(1, Color3.new(0.588235, 0, 0.686275))})
+UIGradient25.Rotation = 90
+UIGradient25.Parent = SupportStatus
+
+local MyFeedback = Instance.new("TextLabel")
+MyFeedback.Name = "MyFeedback"
+MyFeedback.Size = UDim2.new(0.5, 0, 1, 0)
+MyFeedback.BackgroundColor3 = Color3.new(1, 1, 1)
+MyFeedback.BackgroundTransparency = 1
+MyFeedback.BorderSizePixel = 0
+MyFeedback.BorderColor3 = Color3.new(0, 0, 0)
+MyFeedback.Transparency = 1
+MyFeedback.Text = "..."
+MyFeedback.TextColor3 = Color3.new(1, 1, 1)
+MyFeedback.TextSize = 15
+MyFeedback.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+MyFeedback.TextScaled = true
+MyFeedback.TextWrapped = true
+MyFeedback.Parent = SupportStatus
+
+local AdminFeedback = Instance.new("TextLabel")
+AdminFeedback.Name = "AdminFeedback"
+AdminFeedback.Position = UDim2.new(0.5, 0, 0, 0)
+AdminFeedback.Size = UDim2.new(0.5, 0, 1, 0)
+AdminFeedback.BackgroundColor3 = Color3.new(1, 1, 1)
+AdminFeedback.BackgroundTransparency = 1
+AdminFeedback.BorderSizePixel = 0
+AdminFeedback.BorderColor3 = Color3.new(0, 0, 0)
+AdminFeedback.Transparency = 1
+AdminFeedback.Text = "Waiting for a response from the admin..."
+AdminFeedback.TextColor3 = Color3.new(0.686275, 0, 0.882353)
+AdminFeedback.TextSize = 15
+AdminFeedback.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+AdminFeedback.TextScaled = true
+AdminFeedback.TextWrapped = true
+AdminFeedback.Parent = SupportStatus
+
+local Line = Instance.new("Frame")
+Line.Name = "Line"
+Line.Position = UDim2.new(0.5, 0, 0.5, 0)
+Line.Size = UDim2.new(0.003, 0, 1, 0)
+Line.BackgroundColor3 = Color3.new(1, 0, 0.392157)
+Line.BorderSizePixel = 0
+Line.BorderColor3 = Color3.new(0, 0, 0)
+Line.AnchorPoint = Vector2.new(0.5, 0.5)
+Line.Parent = SupportStatus
+
+local UIStroke10 = Instance.new("UIStroke")
+UIStroke10.Name = "UIStroke"
+UIStroke10.Color = Color3.new(1, 0, 0.784314)
+UIStroke10.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke10.Parent = ScrollingFrame
 
 local UICorner37 = Instance.new("UICorner")
 UICorner37.Name = "UICorner"
@@ -1425,11 +1516,11 @@ UICorner38.Name = "UICorner"
 UICorner38.CornerRadius = UDim.new(0.025, 0)
 UICorner38.Parent = Main
 
-local UIGradient25 = Instance.new("UIGradient")
-UIGradient25.Name = "UIGradient"
-UIGradient25.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.52549, 0.137255, 1)), ColorSequenceKeypoint.new(0.181661, Color3.new(0.535966, 0.713413, 0.989524)), ColorSequenceKeypoint.new(0.5, Color3.new(0.541176, 1, 0.984314)), ColorSequenceKeypoint.new(0.854671, Color3.new(0.523129, 0.539792, 0.991533)), ColorSequenceKeypoint.new(1, Color3.new(0.501961, 0, 1))})
-UIGradient25.Rotation = 95
-UIGradient25.Parent = Main
+local UIGradient26 = Instance.new("UIGradient")
+UIGradient26.Name = "UIGradient"
+UIGradient26.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.52549, 0.137255, 1)), ColorSequenceKeypoint.new(0.181661, Color3.new(0.535966, 0.713413, 0.989524)), ColorSequenceKeypoint.new(0.5, Color3.new(0.541176, 1, 0.984314)), ColorSequenceKeypoint.new(0.854671, Color3.new(0.523129, 0.539792, 0.991533)), ColorSequenceKeypoint.new(1, Color3.new(0.501961, 0, 1))})
+UIGradient26.Rotation = 95
+UIGradient26.Parent = Main
 
 local Title = Instance.new("TextLabel")
 Title.Name = "Title"
@@ -1450,11 +1541,11 @@ Title.TextScaled = true
 Title.TextWrapped = true
 Title.Parent = Main
 
-local UIGradient26 = Instance.new("UIGradient")
-UIGradient26.Name = "UIGradient"
-UIGradient26.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 0, 0.615686)), ColorSequenceKeypoint.new(1, Color3.new(0.8, 0, 1))})
-UIGradient26.Rotation = -45
-UIGradient26.Parent = Title
+local UIGradient27 = Instance.new("UIGradient")
+UIGradient27.Name = "UIGradient"
+UIGradient27.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 0, 0.615686)), ColorSequenceKeypoint.new(1, Color3.new(0.8, 0, 1))})
+UIGradient27.Rotation = -45
+UIGradient27.Parent = Title
 
 local Character2 = Instance.new("TextButton")
 Character2.Name = "Character"
@@ -1608,12 +1699,12 @@ UICorner41.Name = "UICorner"
 UICorner41.CornerRadius = UDim.new(0.1, 0)
 UICorner41.Parent = Effect13
 
-local UIGradient27 = Instance.new("UIGradient")
-UIGradient27.Name = "UIGradient"
-UIGradient27.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.5, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient27.Rotation = -45
-UIGradient27.Offset = Vector2.new(0, 1.5)
-UIGradient27.Parent = Effect13
+local UIGradient28 = Instance.new("UIGradient")
+UIGradient28.Name = "UIGradient"
+UIGradient28.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.5, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient28.Rotation = -45
+UIGradient28.Offset = Vector2.new(0, 1.5)
+UIGradient28.Parent = Effect13
 
 local Noti = Instance.new("Frame")
 Noti.Name = "Noti"
@@ -1632,21 +1723,21 @@ UIAspectRatioConstraint16.Name = "UIAspectRatioConstraint"
 UIAspectRatioConstraint16.AspectRatio = 1.75
 UIAspectRatioConstraint16.Parent = Noti
 
-local UIGradient28 = Instance.new("UIGradient")
-UIGradient28.Name = "UIGradient"
-UIGradient28.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.968627, 0, 1)), ColorSequenceKeypoint.new(1, Color3.new(0.235294, 0, 1))})
-UIGradient28.Rotation = -45
-UIGradient28.Parent = Noti
+local UIGradient29 = Instance.new("UIGradient")
+UIGradient29.Name = "UIGradient"
+UIGradient29.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.968627, 0, 1)), ColorSequenceKeypoint.new(1, Color3.new(0.235294, 0, 1))})
+UIGradient29.Rotation = -45
+UIGradient29.Parent = Noti
 
 local UICorner42 = Instance.new("UICorner")
 UICorner42.Name = "UICorner"
 UICorner42.CornerRadius = UDim.new(0.05, 0)
 UICorner42.Parent = Noti
 
-local UIStroke9 = Instance.new("UIStroke")
-UIStroke9.Name = "UIStroke"
-UIStroke9.Color = Color3.new(0.784314, 0.392157, 1)
-UIStroke9.Parent = Noti
+local UIStroke11 = Instance.new("UIStroke")
+UIStroke11.Name = "UIStroke"
+UIStroke11.Color = Color3.new(0.784314, 0.392157, 1)
+UIStroke11.Parent = Noti
 
 local Back = Instance.new("TextButton")
 Back.Name = "Back"
@@ -1799,3 +1890,6 @@ Name13.TextTransparency = 0
 ReportTitle.TextTransparency = 0
 MaxText.TextTransparency = 0
 TextBox.TextTransparency = 0
+OkButton.TextTransparency = 0
+MyFeedback.TextTransparency = 0
+AdminFeedback.TextTransparency = 0
