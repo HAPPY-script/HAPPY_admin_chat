@@ -1311,13 +1311,14 @@ System.Parent = ScrollingFrame
 
 local ReportTitle = Instance.new("TextLabel")
 ReportTitle.Name = "ReportTitle"
+ReportTitle.Position = UDim2.new(0, 0, 0.025, 0)
 ReportTitle.Size = UDim2.new(0.3, 0, 0.1, 0)
 ReportTitle.BackgroundColor3 = Color3.new(1, 1, 1)
 ReportTitle.BackgroundTransparency = 1
 ReportTitle.BorderSizePixel = 0
 ReportTitle.BorderColor3 = Color3.new(0, 0, 0)
 ReportTitle.Transparency = 1
-ReportTitle.Text = "Report"
+ReportTitle.Text = "Support"
 ReportTitle.TextColor3 = Color3.new(1, 0, 0.392157)
 ReportTitle.TextSize = 14
 ReportTitle.FontFace = Font.new("rbxasset://fonts/families/Oswald.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
@@ -1327,7 +1328,7 @@ ReportTitle.Parent = System
 
 local TextBox = Instance.new("TextBox")
 TextBox.Name = "TextBox"
-TextBox.Position = UDim2.new(0.5, 0, 0.275, 0)
+TextBox.Position = UDim2.new(0.5, 0, 0.3, 0)
 TextBox.Size = UDim2.new(0.9, 0, 0.3, 0)
 TextBox.BackgroundColor3 = Color3.new(0, 0, 0)
 TextBox.BackgroundTransparency = 0.5
@@ -1393,14 +1394,14 @@ UIStroke7.Parent = SendButton
 
 local Tip = Instance.new("TextLabel")
 Tip.Name = "Tip"
-Tip.Position = UDim2.new(0.275, 0, 0, 0)
-Tip.Size = UDim2.new(0.7, 0, 0.12, 0)
+Tip.Position = UDim2.new(0.3, 0, 0, 0)
+Tip.Size = UDim2.new(0.65, 0, 0.15, 0)
 Tip.BackgroundColor3 = Color3.new(1, 1, 1)
 Tip.BackgroundTransparency = 1
 Tip.BorderSizePixel = 0
 Tip.BorderColor3 = Color3.new(0, 0, 0)
 Tip.Transparency = 1
-Tip.Text = "Please make sure your report is satisfactory before submitting, because you will not be able to submit further if Admin has not approved it."
+Tip.Text = "Submit your feedback, suggestions for new features, or bug reports for the admin to review and resolve. All constructive feedback is valued."
 Tip.TextColor3 = Color3.new(1, 0.784314, 0)
 Tip.TextSize = 2
 Tip.FontFace = Font.new("rbxasset://fonts/families/Oswald.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
@@ -1586,7 +1587,7 @@ Version.BorderColor3 = Color3.new(0, 0, 0)
 Version.Rotation = -15
 Version.AnchorPoint = Vector2.new(0.5, 0.5)
 Version.Transparency = 1
-Version.Text = "v0.06"
+Version.Text = "v0.05"
 Version.TextColor3 = Color3.new(0.513726, 1, 0.945098)
 Version.TextSize = 14
 Version.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
@@ -1776,9 +1777,9 @@ UICorner45.Name = "UICorner"
 UICorner45.CornerRadius = UDim.new(1, 0)
 UICorner45.Parent = ReturnIfn
 
---============================================================--
---  SETTING UI
---============================================================--
+wait(2)
+
+--========================================================================================================================--
 
 Version.TextTransparency = 0
 Version.TextStrokeTransparency = 0
