@@ -60,7 +60,7 @@ print("✅Done Particle")
 wait(0.5)
 --------------------------------------------------
 
-waitLoad("🚨Reporting system loading⚙", 0.85)
+waitLoad("🚨Support system loading⚙", 0.85)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
 
