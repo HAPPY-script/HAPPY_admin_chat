@@ -158,7 +158,7 @@ local supportFrame = systemFrame:FindFirstChild("SupportStatus")
 if supportFrame then
     local MyFeedback = supportFrame:WaitForChild("MyFeedback")
     local AdminFeedback = supportFrame:WaitForChild("AdminFeedback")
-    local OKButton = supportFrame:WaitForChild("OKButton")
+    local OKButton = supportFrame:WaitForChild("OkButton")
 
     -- default off
     supportFrame.Visible = false
