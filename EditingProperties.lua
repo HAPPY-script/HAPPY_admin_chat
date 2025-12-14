@@ -1,6 +1,6 @@
 local UI = shared.UI
 
-local function safeset(name, prop, value)
+local function safeSet(name, prop, value)
     local inst = UI.Get(name)
     if inst then
         pcall(function()
