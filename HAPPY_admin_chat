@@ -28,7 +28,7 @@ game.StarterGui:SetCore("SendNotification", {
 
 waitLoad("Loading UI🖼", 0.075)
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/UI.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/MainLoader.lua"))()
 
 waitLoad("Editing properties🛠", 0.45)
 
