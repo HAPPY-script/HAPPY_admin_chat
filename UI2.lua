@@ -1,7 +1,11 @@
-local HAPPYscript = shared.HAPPYscript
-if not HAPPYscript then
-    error("HAPPYscript not found. UI1 must be loaded first.")
+local root = shared.UIRoot
+if not root then
+    error("UIRoot missing. UI1 must be loaded first.")
 end
+
+-- LẤY CONTAINER ĐÃ TỒN TẠI
+local Noti = root:FindFirstChild("Noti")
+assert(Noti, "Noti frame missing")
 
 local Tip2 = Instance.new("TextLabel")
 Tip2.Name = "Tip"
