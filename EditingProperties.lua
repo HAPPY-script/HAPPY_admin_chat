@@ -1,17 +1,12 @@
--- EditingProperties.lua
 local UI = shared.UI
-if not UI or not UI.Get then
-    warn("UI Registry not ready")
-    return
-end
 
-local function safeSet(name, prop, value)
+local function safeset(name, prop, value)
     local inst = UI.Get(name)
-    if not inst then return false end
-    local ok = pcall(function()
-        inst[prop] = value
-    end)
-    return ok
+    if inst then
+        pcall(function()
+            inst[prop] = value
+        end)
+    end
 end
 
 safeSet("Version", "TextTransparency", 0)
