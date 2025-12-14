@@ -32,7 +32,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_ad
 
 waitLoad("Editing properties🛠", 0.45)
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/EditingProperties.lua"))()
+wait(1)
 
 print("✅Done UI")
 
