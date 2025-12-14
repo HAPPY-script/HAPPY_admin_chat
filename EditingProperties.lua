@@ -1,11 +1,12 @@
-local UI = shared.__UI_REGISTRY__
-if not UI then return warn("UIRegistry missing") end
+local UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/UIRegistry.lua"))()
+-- hoặc lấy từ shared nếu đã load trước
+UI = shared.UI or UI
 
-local function set(name, prop, value)
-	local obj = UI[name]
-	if obj then
-		obj[prop] = value
-	end
+local function safeSet(name, prop, value)
+    local inst = UI.Get(name)
+    if not inst then return false end
+    pcall(function() inst[prop] = value end)
+    return true
 end
 
 set("Version", "TextTransparency", 0)
