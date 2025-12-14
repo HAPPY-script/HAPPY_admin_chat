@@ -1858,4 +1858,28 @@ Done.TextScaled = true
 Done.TextWrapped = true
 Done.Parent = Noti
 
+-- SETTING =======================================================================================================================--
+
+Version.TextTransparency = 0
+Version.TextStrokeTransparency = 0
+Back.TextTransparency = 0
+Done.TextTransparency = 0
+Tip.TextTransparency = 0
+Tip.TextStrokeTransparency = 0.5
+System2.TextTransparency = 0
+Character2.TextTransparency = 0
+GameHub2.TextTransparency = 0
+Title.TextTransparency = 0
+Name11.TextTransparency = 1
+Name12.TextTransparency = 1
+Name13.TextTransparency = 0
+ReportTitle.TextTransparency = 0
+MaxText.TextTransparency = 0
+TextBox.TextTransparency = 0
+OkButton.TextTransparency = 0
+MyFeedback.TextTransparency = 0
+AdminFeedback.TextTransparency = 0
+MyTitle.TextTransparency = 0
+AdminTitle.TextTransparency = 0
+
 shared.UIRoot = HAPPYscript
