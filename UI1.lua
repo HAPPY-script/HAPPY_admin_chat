@@ -1857,3 +1857,5 @@ Done.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight
 Done.TextScaled = true
 Done.TextWrapped = true
 Done.Parent = Noti
+
+shared.HAPPYscript = HAPPYscript
