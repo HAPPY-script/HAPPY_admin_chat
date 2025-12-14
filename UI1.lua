@@ -1858,3 +1858,8 @@ Done.TextScaled = true
 Done.TextWrapped = true
 Done.Parent = Noti
 
+--==============================================================================================--
+
+UI.RegisterTree(HAPPYscript)
+
+shared.__UI_REGISTRY__ = UI
