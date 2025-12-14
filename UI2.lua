@@ -1,3 +1,8 @@
+local HAPPYscript = shared.HAPPYscript
+if not HAPPYscript then
+    error("HAPPYscript not found. UI1 must be loaded first.")
+end
+
 local Tip2 = Instance.new("TextLabel")
 Tip2.Name = "Tip"
 Tip2.Position = UDim2.new(0.625, 0, 0.25, 0)
