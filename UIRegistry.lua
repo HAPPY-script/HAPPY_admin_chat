@@ -1,13 +1,9 @@
 local UI = shared.UI or {}
 
-function UI.Register(name, inst)
-    if not name or not inst then return end
-    if UI[name] and UI[name] ~= inst then
-        local i = 2
-        while UI[name .. "_" .. i] do i += 1 end
-        UI[name .. "_" .. i] = inst
-    else
-        UI[name] = inst
+function UI.Register(name, instance)
+    if not name or not instance then return end
+    if not UI[name] then
+        UI[name] = instance
     end
 end
 
@@ -15,24 +11,25 @@ function UI.Get(name)
     return UI[name]
 end
 
+function UI.Wait(name, timeout)
+    timeout = timeout or 10
+    local t = 0
+    while t < timeout do
+        if UI[name] then
+            return UI[name]
+        end
+        task.wait(0.1)
+        t += 0.1
+    end
+    return nil
+end
+
 function UI.RegisterAll(root)
-    if not root then return end
     for _, inst in ipairs(root:GetDescendants()) do
-        if inst:IsA("GuiObject") or inst:IsA("ScreenGui") then
+        if inst:IsA("GuiObject") or inst:IsA("GuiButton") then
             UI.Register(inst.Name, inst)
         end
     end
-end
-
-function UI.List()
-    local t = {}
-    for k,v in pairs(UI) do
-        if typeof(v) == "Instance" then
-            table.insert(t, k)
-        end
-    end
-    table.sort(t)
-    return t
 end
 
 shared.UI = UI
