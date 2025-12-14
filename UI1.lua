@@ -1857,10 +1857,3 @@ Done.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight
 Done.TextScaled = true
 Done.TextWrapped = true
 Done.Parent = Noti
-
---==============================================================================================--
-local UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/UIRegistry.lua"))()
-
--- đăng ký toàn bộ descendants của HAPPYscript
-local root = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("HAPPYscript")
-UI.RegisterAll(root)
