@@ -1,14 +1,19 @@
 local UI = shared.UI
+if not UI or type(UI.Get) ~= "function" then
+    warn("[EditingProperties] UI Registry not ready")
+    return
+end
 
 local function safeSet(name, prop, value)
     local inst = UI.Get(name)
-    if inst then
-        pcall(function()
-            inst[prop] = value
-        end)
-    end
+    if not inst then return end
+
+    pcall(function()
+        inst[prop] = value
+    end)
 end
 
+-- APPLY
 safeSet("Version", "TextTransparency", 0)
 safeSet("Version", "TextStrokeTransparency", 0)
 
