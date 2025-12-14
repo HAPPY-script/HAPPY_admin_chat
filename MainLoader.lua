@@ -2,40 +2,38 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
 --=====================================================
--- 1. Load UI Registry (shared.UI)
+-- 1. Load UI Registry
 --=====================================================
 loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/main/UIRegistry.lua"
+    "https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/UIRegistry.lua"
 ))()
 
--- đảm bảo registry tồn tại
 local UI = shared.UI
 if not UI then
-    error("UIRegistry failed to load")
+    warn("UIRegistry failed to load")
+    return
 end
 
 --=====================================================
 -- 2. Load UI creation files
 --=====================================================
 loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/main/UI1.lua"
+    "https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/UI1.lua"
 ))()
 
 loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/main/UI2.lua"
+    "https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/UI2.lua"
 ))()
 
--- nếu còn UI3, UI4 thì thêm ở đây
-
 --=====================================================
--- 3. Register ALL UI instances (1 lần duy nhất)
+-- 3. Register ALL UI instances
 --=====================================================
 local gui = player:WaitForChild("PlayerGui"):WaitForChild("HAPPYscript")
 UI.RegisterAll(gui)
 
 --=====================================================
--- 4. Apply UI properties / settings
+-- 4. Apply UI properties
 --=====================================================
 loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/main/EditingProperties.lua"
+    "https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/EditingProperties.lua"
 ))()
