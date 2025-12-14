@@ -1,11 +1,11 @@
 local UI = shared.__UI_REGISTRY__
-if not UI then return warn("UIRegistry not ready") end
+if not UI then return warn("UIRegistry missing") end
 
 local function set(name, prop, value)
-    local obj = UI[name]
-    if obj then
-        obj[prop] = value
-    end
+	local obj = UI[name]
+	if obj then
+		obj[prop] = value
+	end
 end
 
 set("Version", "TextTransparency", 0)
