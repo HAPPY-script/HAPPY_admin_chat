@@ -29,25 +29,21 @@ local RULES = {
         TextTransparency = 0,
     },
 
-    System2 = {
-        TextTransparency = 0,
-    },
-
     Title = {
         TextTransparency = 0,
     },
 
-    Character2 = {
-        TextTransparency = 0,
-    },
+    System2 = { TextTransparency = 0 },
+    Character2 = { TextTransparency = 0 },
+    GameHub2 = { TextTransparency = 0 },
 
-    GameHub2 = {
-        TextTransparency = 0,
-    },
+    System = { TextTransparency = 0 },
+    Character = { TextTransparency = 0 },
+    GameHub = { TextTransparency = 0 },
 
     Name11 = { TextTransparency = 1 },
     Name12 = { TextTransparency = 1 },
-    Name13 = { TextTransparency = 1 },
+    Name13 = { TextTransparency = 0 },
 
     ReportTitle = { TextTransparency = 0 },
     MaxText     = { TextTransparency = 0 },
