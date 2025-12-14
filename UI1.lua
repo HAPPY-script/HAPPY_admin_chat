@@ -1858,4 +1858,4 @@ Done.TextScaled = true
 Done.TextWrapped = true
 Done.Parent = Noti
 
-shared.HAPPYscript = HAPPYscript
+shared.UIRoot = HAPPYscript
