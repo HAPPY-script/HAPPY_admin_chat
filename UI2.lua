@@ -64,3 +64,7 @@ local UICorner45 = Instance.new("UICorner")
 UICorner45.Name = "UICorner"
 UICorner45.CornerRadius = UDim.new(1, 0)
 UICorner45.Parent = ReturnIfn
+
+-- SETTING ======================================================================================
+
+Tip2.TextTransparency = 0
