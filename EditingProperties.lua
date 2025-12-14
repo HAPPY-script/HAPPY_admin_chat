@@ -1,4 +1,4 @@
-local UI = loadstring(game:HttpGet("RAW_GITHUB_URL/UIRegistry.lua"))()
+local UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/UIRegistry.lua"))()
 
 local function set(name, prop, value)
     local obj = UI[name]
