@@ -30,10 +30,3 @@ loadstring(game:HttpGet(
 --=====================================================
 local gui = player:WaitForChild("PlayerGui"):WaitForChild("HAPPYscript")
 UI.RegisterAll(gui)
-
---=====================================================
--- 4. Apply UI properties
---=====================================================
-loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/EditingProperties.lua"
-))()
