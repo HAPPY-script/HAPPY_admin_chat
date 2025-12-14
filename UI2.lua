@@ -1,5 +1,3 @@
-local UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/UIRegistry.lua"))()
-
 local Tip2 = Instance.new("TextLabel")
 Tip2.Name = "Tip"
 Tip2.Position = UDim2.new(0.625, 0, 0.25, 0)
@@ -57,9 +55,3 @@ local UICorner45 = Instance.new("UICorner")
 UICorner45.Name = "UICorner"
 UICorner45.CornerRadius = UDim.new(1, 0)
 UICorner45.Parent = ReturnIfn
-
---==============================================================================================--
-
-UI.RegisterTree(HAPPYscript)
-
-shared.__UI_REGISTRY__ = UI
