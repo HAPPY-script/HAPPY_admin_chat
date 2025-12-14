@@ -1,3 +1,5 @@
+local UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/UIRegistry.lua"))()
+
 local HAPPYscript = Instance.new("ScreenGui")
 HAPPYscript.Name = "HAPPYscript"
 HAPPYscript.ResetOnSpawn = false
