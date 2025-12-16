@@ -47,25 +47,44 @@ local maxText = textBox:WaitForChild("MaxText")
 local MAX_LEN = 222
 
 --=====================================================
--- CLEAN MESSAGE (FILTER INVALID FIREBASE CHARACTERS)
+-- CLEAN MESSAGE (SAFE + REVERSIBLE FOR FIREBASE)
 --=====================================================
+local FIREBASE_ESCAPE_MAP = {
+	["."]  = "{DOT}",
+	["#"]  = "{HASH}",
+	["$"]  = "{DOLLAR}",
+	["["]  = "{LBRACKET}",
+	["]"]  = "{RBRACKET}",
+	["/"]  = "{SLASH}",
+	["\\"] = "{BACKSLASH}",
+}
+
 local function CleanMessage(str)
-	-- Firebase KHÔNG cho phép: . # $ [ ]
-	local forbidden = "[%.#%$%[%]/\\]"
+	if type(str) ~= "string" then
+		return ""
+	end
 
-	-- xoá ký tự cấm
-	str = str:gsub(forbidden, "")
+	local out = {}
 
-	-- xoá ký tự không thể JSON encode
-	local safe = {}
 	for i = 1, #str do
-		local byte = str:byte(i)
-		if byte >= 32 and byte <= 126 then
-			table.insert(safe, string.char(byte))
+		local ch = str:sub(i, i)
+		local byte = string.byte(ch)
+
+		-- Firebase forbidden characters
+		if FIREBASE_ESCAPE_MAP[ch] then
+			table.insert(out, FIREBASE_ESCAPE_MAP[ch])
+
+		-- Control characters (non-printable)
+		elseif byte < 32 or byte == 127 then
+			table.insert(out, string.format("{0x%02X}", byte))
+
+		-- Safe character
+		else
+			table.insert(out, ch)
 		end
 	end
 
-	return table.concat(safe)
+	return table.concat(out)
 end
 
 --=====================================================
