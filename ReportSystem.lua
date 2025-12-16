@@ -296,6 +296,7 @@ end
 --=====================================================
 -- SEND BUTTON HANDLER
 --=====================================================
+-- REPLACE the existing sendButton.MouseButton1Click handler with this block
 sendButton.MouseButton1Click:Connect(function()
 	local content = textBox.Text or ""
 	local length = #content
@@ -310,27 +311,47 @@ sendButton.MouseButton1Click:Connect(function()
 		return
 	end
 
-	-- check existence safely
+	-- Safe existence check (do GET directly, avoid calling CheckExistReport to prevent nil-call)
 	local exists = false
-	pcall(function() exists = CheckExistReport() end)
+	do
+		local ok, res = pcall(function()
+			return HttpRequest({ Url = USER_URL, Method = "GET" })
+		end)
+		if ok and res and res.StatusCode == 200 and res.Body and res.Body ~= "null" then
+			local s, d = pcall(function() return HttpService:JSONDecode(res.Body) end)
+			if s and type(d) == "table" and d.message then
+				exists = true
+			end
+		end
+	end
+
 	if exists then
 		Notify("Report Locked", "You already have a pending report. Wait for admin approval.")
 		return
 	end
 
+	-- Send (CleanMessage is called inside SendReport)
 	local success = SendReport(content)
 
-	-- fetch & update UI (if present)
-	local ok, res = pcall(function() return HttpRequest({ Url = USER_URL, Method = "GET" }) end)
-	if ok and res and res.Body and res.Body ~= "null" then
-		local s, d = pcall(function() return HttpService:JSONDecode(res.Body) end)
-		if s and type(d) == "table" and supportFrame then
-			pcall(function()
-				MyFeedback.Text = DecodeMessage(tostring(d.message or ""))
-				if d.responded or d.response then
-					AdminFeedback.Text = DecodeMessage(tostring(d.response or ""))
-				end
-			end)
+	-- Fetch updated data and update UI if supportFrame present
+	do
+		local ok, res = pcall(function() return HttpRequest({ Url = USER_URL, Method = "GET" }) end)
+		if ok and res and res.StatusCode == 200 and res.Body and res.Body ~= "null" then
+			local s, d = pcall(function() return HttpService:JSONDecode(res.Body) end)
+			if s and type(d) == "table" and supportFrame then
+				pcall(function()
+					-- decode before display
+					MyFeedback.Text = DecodeMessage(tostring(d.message or ""))
+					if d.responded or d.response then
+						AdminFeedback.Text = DecodeMessage(tostring(d.response or ""))
+						-- set OK button state if you want:
+						if OKButton then
+							OKButton.Text = "OK"
+							OKButton.BackgroundColor3 = Color3.fromRGB(50, 255, 50)
+						end
+					end
+				end)
+			end
 		end
 	end
 
