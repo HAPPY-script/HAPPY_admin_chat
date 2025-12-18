@@ -1,6 +1,3 @@
--- System.lua (refactor)
--- Giữ nguyên logic gốc, chỉ tái cấu trúc để dễ bảo trì
-
 --------------------------------------------------------
 -- SERVICES & UTILITIES
 --------------------------------------------------------
@@ -769,7 +766,3 @@ applyGradientToFrameButtons(frameCharacter)
 applyGradientToFrameButtons(frameGameHub)
 applyGradientToFrameButtons(frameVisuals)
 applyGradientEffect(toggleButton)
-
---------------------------------------------------------
--- END OF FILE
---------------------------------------------------------
