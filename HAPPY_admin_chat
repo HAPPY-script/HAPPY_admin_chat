@@ -60,7 +60,7 @@ print("✅Done Particle")
 wait(0.5)
 --------------------------------------------------
 
-waitLoad("🚨Support system loading⚙", 0.85)
+waitLoad("🚨Support system loading⚙", 0.8)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/ReportSystem.lua"))()
 
@@ -79,11 +79,21 @@ wait(0.5)
 
 --------------------------------------------------
 
-waitLoad("Load utility🧩", 0.9)
+waitLoad("Load utility🧩 (0/2)", 0.85)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"))()
 
+waitLoad("Load utility🧩 (1/2)", 0.9)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/DataMember.lua"))()
+
+waitLoad("Load utility🧩 (2/2)", 0.95)
+
 print("✅Done utility")
+
+--------------------------------------------------
+
+wait(0.5)
 
 waitLoad("✅COMPLETE✅", 1)
 
