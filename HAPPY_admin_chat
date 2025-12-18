@@ -41,9 +41,9 @@ print("✅Done UI")
 --------------------------------------------------
 wait(0.5)
 --------------------------------------------------
-waitLoad("System loading⚙", 0.50)
+waitLoad("System loading⚙ (TEST)", 0.50)
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System_test.lua"))()
 
 print("✅Done System")
 --------------------------------------------------
