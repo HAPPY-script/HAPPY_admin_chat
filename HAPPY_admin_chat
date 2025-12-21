@@ -1,6 +1,6 @@
 getgenv().RestFireBase = true
 
-local Players = game:GetService("Players")
+--[[ local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
 local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
 local ADMIN_ID = 7326395533
@@ -15,7 +15,7 @@ if player.UserId ~= ADMIN_ID then
 	end)
 	return
 end
-
+]]
 print([[
 
 ██╗░░██╗░█████╗░██████╗░██████╗░██╗░░░██╗  ░██████╗░█████╗░██████╗░██╗██████╗░████████╗
@@ -39,7 +39,7 @@ local function waitLoad(name, pct)
 end
 
 game.StarterGui:SetCore("SendNotification", {
-    Title = "⚜️HAPPY script v0.06⚜️";
+    Title = "⚜️HAPPY script v0.07⚜️";
     Text = "Good Luck🍀";
     Duration = 5;
 })
