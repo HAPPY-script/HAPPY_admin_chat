@@ -1662,14 +1662,15 @@ Particle.BorderSizePixel = 0
 Particle.BorderColor3 = Color3.new(0, 0, 0)
 Particle.AnchorPoint = Vector2.new(0.5, 0.5)
 Particle.Transparency = 1
-Particle.Image = "rbxassetid://137831468"
+Particle.Image = "rbxassetid://81834701835654"
+Particle.ImageColor3 = Color3.new(0, 1, 0.717647)
 Particle.ImageTransparency = 0.25
 Particle.Parent = Main
 
-local UIAspectRatioConstraint14 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint14.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint14.Parent = Particle
+UIAspectRatioConstraint.Parent = Particle
 
 local BackGround = Instance.new("ImageLabel")
 BackGround.Name = "BackGround"
