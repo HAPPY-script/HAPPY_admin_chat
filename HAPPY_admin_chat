@@ -1,3 +1,6 @@
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
 local ADMIN_ID = 7326395533
 if player.UserId ~= ADMIN_ID then
 	task.wait(0.5)
