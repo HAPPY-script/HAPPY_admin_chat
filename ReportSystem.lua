@@ -1,3 +1,12 @@
+local REST_DATA = (_G.RestFireBase == true)
+
+local function NotifyMaintenance()
+	Notify(
+		"System Maintenance",
+		"The data system is temporarily under maintenance. Please try again later."
+	)
+end
+
 --=====================================================
 -- AUTO DETECT HTTP REQUEST
 --=====================================================
@@ -45,6 +54,28 @@ local sendButton = textBox:WaitForChild("SendButton")
 local maxText = textBox:WaitForChild("MaxText")
 
 local MAX_LEN = 222
+
+if REST_DATA then
+	-- Disable input
+	pcall(function()
+		sendButton.Active = false
+		sendButton.AutoButtonColor = false
+		sendButton.Text = "Maintenance"
+	end)
+
+	-- Hiển thị trạng thái rõ ràng
+	if supportFrame then
+		supportFrame.Visible = true
+		MyFeedback.Text = ""
+		AdminFeedback.Text = "The system is currently under maintenance."
+		if OKButton then
+			OKButton.Visible = false
+		end
+	end
+
+	NotifyMaintenance()
+	return
+end
 
 --=====================================================
 -- CLEAN / DECODE MESSAGE (SAFE + REVERSIBLE FOR FIREBASE)
@@ -278,6 +309,7 @@ if supportFrame then
 	end
 
 	task.spawn(function()
+		if REST_DATA then return end
 		while true do
 			local data = fetchReport()
 			if data then
@@ -298,6 +330,11 @@ end
 --=====================================================
 -- REPLACE the existing sendButton.MouseButton1Click handler with this block
 sendButton.MouseButton1Click:Connect(function()
+		if REST_DATA then
+		NotifyMaintenance()
+		return
+	end
+
 	local content = textBox.Text or ""
 	local length = #content
 
