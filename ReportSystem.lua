@@ -1,4 +1,4 @@
-local REST_DATA = (_G.RestFireBase == true)
+local REST_DATA = getgenv().RestFireBase == true
 
 --=====================================================
 -- AUTO DETECT HTTP REQUEST
