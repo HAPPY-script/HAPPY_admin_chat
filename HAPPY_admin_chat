@@ -1,24 +1,15 @@
---==========================
--- HAPPYscript Maintenance Guard (Client Only)
---==========================
-local Players = game:GetService("Players")
-local StarterGui = game:GetService("StarterGui")
-
-local player = Players.LocalPlayer
-
 local ADMIN_ID = 7326395533
-if player.UserId == ADMIN_ID then
+if player.UserId ~= ADMIN_ID then
+	task.wait(0.5)
+	pcall(function()
+		StarterGui:SetCore("SendNotification", {
+			Title = "HAPPYscript Maintenance",
+			Text = "HAPPYscript is currently under system improvement.\nPlease try again later.",
+			Duration = 30,
+		})
+	end)
 	return
 end
-
-task.wait(0.5)
-pcall(function()
-	StarterGui:SetCore("SendNotification", {
-		Title = "HAPPYscript Maintenance",
-		Text = "HAPPYscript is currently under system improvement.\nWe sincerely apologize for the inconvenience.\n\nPlease wait a moment or close this notification.\nIt will automatically close in 30 seconds.",
-		Duration = 30,
-	})
-end)
 
 return
 
