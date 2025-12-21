@@ -8,12 +8,12 @@ local particleTemplate = main:WaitForChild("Particle")
 
 local SETTINGS = {
 	SpawnRate = 0.5,
-	MinSize = 10,
-	MaxSize = 20,
+	MinSize = 5,
+	MaxSize = 15,
 	MinFallTime = 17,
 	MaxFallTime = 25,
-	MinRotation = -10,
-	MaxRotation = 10,
+	MinRotation = -250,
+	MaxRotation = 250,
 }
 
 local function createParticle()
