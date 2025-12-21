@@ -1550,7 +1550,7 @@ LineX.Parent = SupportStatus
 
 local UIStroke10 = Instance.new("UIStroke")
 UIStroke10.Name = "UIStroke"
-UIStroke10.Color = Color3.new(1, 0, 0.784314)
+UIStroke10.Color = Color3.new(0, 176, 88)
 UIStroke10.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UIStroke10.Parent = ScrollingFrame
 
@@ -1681,8 +1681,8 @@ BackGround.BorderSizePixel = 0
 BackGround.BorderColor3 = Color3.new(0, 0, 0)
 BackGround.AnchorPoint = Vector2.new(0.5, 0.5)
 BackGround.Transparency = 1
-BackGround.Image = "rbxassetid://127394633690099"
-BackGround.ImageTransparency = 0.5
+BackGround.Image = "rbxassetid://119108485777858"
+BackGround.ImageTransparency = 0
 BackGround.Parent = Main
 
 local UICorner39 = Instance.new("UICorner")
