@@ -125,7 +125,9 @@ if REST_DATA then
 	pcall(function()
 		sendButton.Active = false
 		sendButton.AutoButtonColor = false
-		textBox.Text = "The Reporting system is undergoing maintenance due to data overload."
+		textBox.TextEditable = false
+		textBox.PlaceholderText = "The Reporting system is undergoing maintenance due to data overload."
+		textBox.PlaceholderColor3 = Color3.fromRGB(255, 0, 0)
 	end)
 
 	NotifyMaintenance()
