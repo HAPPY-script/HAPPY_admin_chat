@@ -116,7 +116,7 @@ end
 
 local function NotifyMaintenance()
 	Notify(
-		"System Maintenance",
+		"⚙Report System⚠",
 		"The data system is temporarily under maintenance. Please try again later."
 	)
 end
@@ -125,7 +125,7 @@ if REST_DATA then
 	pcall(function()
 		sendButton.Active = false
 		sendButton.AutoButtonColor = false
-		sendButton.Text = "Maintenance"
+		textBox.Text = "The Reporting system is undergoing maintenance due to data overload."
 	end)
 
 	NotifyMaintenance()
