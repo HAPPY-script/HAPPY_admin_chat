@@ -1,3 +1,5 @@
+_G.RestFireBase = true
+
 local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
 local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
