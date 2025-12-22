@@ -109,7 +109,11 @@ waitLoad("Load utility🧩 (2/3)", 0.9)
 
 --loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ADMIN/refs/heads/main/CheckUsing.lua"))()
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NotificationBloxFruit.lua"))()
+task.spawn(function()
+	loadstring(game:HttpGet(
+		"https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NotificationBloxFruit.lua"
+	))()
+end)
 
 waitLoad("Load utility🧩 (3/3)", 0.95)
 
