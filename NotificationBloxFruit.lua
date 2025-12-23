@@ -298,12 +298,27 @@ local monthMap = {
 	Jul = 7, Aug = 8, Sep = 9, Oct = 10, Nov = 11, Dec = 12
 }
 
-local function parseTargetString(s)
+-- PARSE + TIMEZONE-SUPPORT
+-- returns table: {month, day, hour, min, tz} where tz = "ET" | "UTC" | "LOCAL" or nil (default -> "ET")
+local function parseTargetStringWithTZ(s)
 	if type(s) ~= "string" then return nil end
 	s = s:gsub("^%s*(.-)%s*$", "%1")
-	local datePart, timePart = s:match("^([^,]+),%s*(.+)$")
+
+	-- accept optional suffix after AM/PM like "Dec 23, 11:00 PM ET" or "Dec 23, 11:00 PM LOCAL"
+	-- pattern: datePart, timePart, optional tz
+	local datePart, timePart, tz = s:match("^([^,]+),%s*(.+)%s+([A-Za-z_]+)%s*$")
 	if not datePart then
-		datePart, timePart = s:match("^([^%d]+%s%d+)%s+(.+)$")
+		-- try without explicit tz
+		datePart, timePart = s:match("^([^,]+),%s*(.+)$")
+		tz = nil
+	end
+	if not datePart or not timePart then
+		-- fallback: try alternate spacing without comma
+		datePart, timePart, tz = s:match("^([^%d]+%s%d+)%s+(.+)%s+([A-Za-z_]+)%s*$")
+		if not datePart then
+			datePart, timePart = s:match("^([^%d]+%s%d+)%s+(.+)$")
+			tz = nil
+		end
 	end
 	if not datePart or not timePart then return nil end
 
@@ -312,7 +327,11 @@ local function parseTargetString(s)
 	local day = tonumber(dayStr)
 	if not month or not day then return nil end
 
-	local hour, min, ampm = timePart:match("^(%d+):(%d+)%s*([AaPp][Mm])$")
+	-- capture optional TZ after AM/PM if not already captured
+	local hour, min, ampm, tz2 = timePart:match("^(%d+):(%d+)%s*([AaPp][Mm])%s*([A-Za-z_]*)$")
+	if not hour then
+		hour, min, ampm = timePart:match("^(%d+):(%d+)%s*([AaPp][Mm])$")
+	end
 	if not hour then return nil end
 	hour = tonumber(hour)
 	min = tonumber(min)
@@ -320,8 +339,54 @@ local function parseTargetString(s)
 	if ampm == "PM" and hour < 12 then hour = hour + 12 end
 	if ampm == "AM" and hour == 12 then hour = 0 end
 
-	return {month = month, day = day, hour = hour, min = min}
+	-- determine tz: explicit tz (tz or tz2) else default nil (we will treat nil => "ET" for backward compatibility)
+	local tzFinal = nil
+	if (tz and tz ~= "") then tzFinal = tz:upper() end
+	if (not tzFinal and tz2 and tz2 ~= "") then tzFinal = tz2:upper() end
+
+	-- normalize common tokens
+	if tzFinal == "ET" or tzFinal == "EASTERN" or tzFinal == "EST" or tzFinal == "EDT" then tzFinal = "ET" end
+	if tzFinal == "UTC" then tzFinal = "UTC" end
+	if tzFinal == "LOCAL" or tzFinal == "LOCALTIME" then tzFinal = "LOCAL" end
+
+	return {month = month, day = day, hour = hour, min = min, tz = tzFinal}
 end
+
+-- Convert a target (year, month, day, hour, min) with tz tag into UTC unix seconds
+local function targetToUTCunix(year, month, day, hour, min, tz)
+	-- tz == "UTC" : direct (no adjust)
+	if tz == "UTC" then
+		return dateToUnixUTC(year, month, day, hour, min, 0)
+	end
+
+	-- tz == "LOCAL" : interpret the given time as client's local time -> convert to UTC
+	if tz == "LOCAL" then
+		-- compute client's local-to-UTC offset in seconds
+		local localNowTable = os.date("*t")
+		local utcNowTable = os.date("!*t")
+		local localEpoch = os.time(localNowTable)
+		local utcEpochAsLocal = os.time(utcNowTable) -- os.time interprets table as local, so this gives epoch shifted
+		local offsetSeconds = localEpoch - utcEpochAsLocal
+		-- build local target epoch (os.time expects local table)
+		local targetLocalTable = {year = year, month = month, day = day, hour = hour, min = min, sec = 0}
+		local targetLocalEpoch = os.time(targetLocalTable)
+		-- convert to UTC unix: subtract offset
+		return targetLocalEpoch - offsetSeconds
+	end
+
+	-- otherwise treat as ET (default)
+	-- keep existing ET->UTC logic (handles DST)
+	return targetETtoUTCunix(year, month, day, hour, min)
+end
+
+-- usage: replace previous parse + targetUTCunix logic with:
+local parsed = parseTargetStringWithTZ(TARGET_STR)
+if not parsed then return end
+
+local yearNow = os.date("!*t").year
+-- if the parsed date is earlier in calendar than now and you want to support cross-year (e.g. target next year),
+-- you may want to add logic to advance yearNow by 1 when target month/day already passed.
+local targetUTCunix = targetToUTCunix(yearNow, parsed.month, parsed.day, parsed.hour, parsed.min, parsed.tz)
 
 -- nth weekday of month (weekday: 1=Sunday..7=Saturday)
 local function nthWeekdayOfMonth(year, month, weekday, n)
