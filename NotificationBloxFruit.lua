@@ -33,7 +33,7 @@ Effect.BackgroundColor3 = Color3.new(1, 1, 1)
 Effect.BorderSizePixel = 0
 Effect.BorderColor3 = Color3.new(0, 0, 0)
 Effect.AnchorPoint = Vector2.new(0.5, 0.5)
-Effect.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+Effect.Parent = NotificationBloxFruit
 
 local UIGradient = Instance.new("UIGradient")
 UIGradient.Name = "UIGradient"
