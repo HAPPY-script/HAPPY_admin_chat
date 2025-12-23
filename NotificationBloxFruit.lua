@@ -23,7 +23,22 @@ NotificationBloxFruit.Name = "NotificationBloxFruit"
 NotificationBloxFruit.ResetOnSpawn = false
 NotificationBloxFruit.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 NotificationBloxFruit.DisplayOrder = 999999999
-NotificationBloxFruit.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+NotificationBloxFruit.Parent = NotificationBloxFruit
+
+local Effect = Instance.new("Frame")
+Effect.Name = "Effect"
+Effect.Position = UDim2.new(0.5, 0, 0.5, 0)
+Effect.Size = UDim2.new(1, 0, 10, 0)
+Effect.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect.BorderSizePixel = 0
+Effect.BorderColor3 = Color3.new(0, 0, 0)
+Effect.AnchorPoint = Vector2.new(0.5, 0.5)
+Effect.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local UIGradient = Instance.new("UIGradient")
+UIGradient.Name = "UIGradient"
+UIGradient.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.5, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient.Parent = Effect
 
 local ImageLabel = Instance.new("ImageLabel")
 ImageLabel.Name = "ImageLabel"
@@ -262,10 +277,10 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- ==== CONFIG: CHỈ THAY DÒNG TARGET_STR ====
--- Định dạng ví dụ: "Dec 23, 11:00 PM" -> hiểu là giờ Việt Nam (UTC+7)
-local TARGET_STR = "Dec 23, 11:00 PM"
--- =========================================
+-- ========== CONFIG ==========
+local TARGET_STR = "Dec 23, 11:00 PM" -- định dạng: "Mon D, HH:MM AM/PM" (hiểu là giờ VN)
+local TEST_MODE = true              -- bật để test: đặt true => time = 75s (1m15s)
+-- ============================
 
 -- ===== GUI refs =====
 local screenGui = playerGui:FindFirstChild("NotificationBloxFruit")
@@ -286,8 +301,11 @@ local labelH = timeFrame:FindFirstChild("H")
 if not (labelS and labelM and labelH) then return end
 
 local whiteGradient = white:FindFirstChildOfClass("UIGradient")
+-- Effect frame (may be nil => effect disabled)
+local effectFrame = screenGui:FindFirstChild("Effect")
+local effectGradient = effectFrame and effectFrame:FindFirstChildOfClass("UIGradient")
 
--- ===== date parsing & UTC helper (adjusted for VN) =====
+-- ===== date parsing & UTC helper (VN) =====
 local monthMap = {
 	Jan = 1, Feb = 2, Mar = 3, Apr = 4, May = 5, Jun = 6,
 	Jul = 7, Aug = 8, Sep = 9, Oct = 10, Nov = 11, Dec = 12
@@ -318,36 +336,6 @@ local function parseTargetString(s)
 	return {month = month, day = day, hour = hour, min = min}
 end
 
--- nth weekday helper (kept from before in case needed)
-local function nthWeekdayOfMonth(year, month, weekday, n)
-	local t = os.time({year = year, month = month, day = 1, hour = 0, min = 0, sec = 0})
-	local utcTable = os.date("!*t", t)
-	local firstWday = utcTable.wday -- 1=Sunday .. 7=Saturday
-	local day = 1 + ((weekday - firstWday) % 7)
-	day = day + (n - 1) * 7
-	return day
-end
-
--- (kept if you want to support ET later)
-local function isDST_US(year, month, day, hour, min)
-	local startDay = nthWeekdayOfMonth(year, 3, 1, 2)
-	local endDay   = nthWeekdayOfMonth(year, 11, 1, 1)
-	if month < 3 or month > 11 then return false end
-	if month > 3 and month < 11 then return true end
-	if month == 3 then
-		if day > startDay then return true end
-		if day < startDay then return false end
-		return hour >= 2
-	end
-	if month == 11 then
-		if day < endDay then return true end
-		if day > endDay then return false end
-		return hour < 2
-	end
-	return false
-end
-
--- Convert (year,month,day,hour,min,sec) to Unix UTC seconds using Julian formula (as before)
 local function dateToUnixUTC(y, m, d, hh, mm, ss)
 	if m <= 2 then y = y - 1; m = m + 12 end
 	local A = math.floor(y / 100)
@@ -363,11 +351,10 @@ local function nowUnixUTC()
 	return dateToUnixUTC(t.year, t.month, t.day, t.hour, t.min, t.sec)
 end
 
--- NEW: interpret TARGET_STR as Vietnam time (UTC+7)
-local VN_OFFSET = 7 * 3600 -- seconds
+-- VN offset seconds
+local VN_OFFSET = 7 * 3600
 
 local function targetVNtoUTCunix(year, month, day, hourVN, minVN)
-	-- treat (year,month,day,hourVN,minVN) as VN-local, convert to UTC by subtracting 7h
 	local vn_asIfUTC = dateToUnixUTC(year, month, day, hourVN, minVN, 0)
 	local targetUTC = vn_asIfUTC - VN_OFFSET
 	return targetUTC
@@ -375,32 +362,32 @@ end
 
 -- ===== parse target and early exit if in past (silent) =====
 local parsed = parseTargetString(TARGET_STR)
-if not parsed then
-	-- invalid format -> do nothing silently
-	return
-end
+if not parsed then return end
 
--- IMPORTANT: determine YEAR according to VN local date (so Dec 31 edge cases are correct)
 local currentUTC = nowUnixUTC()
-local vnNowTable = os.date("!*t", currentUTC + VN_OFFSET) -- using UTC representation shifted by VN_OFFSET -> VN local datetime
+local vnNowTable = os.date("!*t", currentUTC + VN_OFFSET)
 local yearNowVN = vnNowTable.year
 
 local targetUTCunix = targetVNtoUTCunix(yearNowVN, parsed.month, parsed.day, parsed.hour, parsed.min)
 local nowUTC = currentUTC
 local initialDelta = targetUTCunix - nowUTC
-if initialDelta <= 0 then
-	-- time already passed in VN -> do nothing silently
-	return
+
+-- Test mode: override target to now + 75s
+if TEST_MODE then
+	targetUTCunix = nowUnixUTC() + 75
+	initialDelta = targetUTCunix - nowUnixUTC()
 end
 
--- ===== Tween helper =====
+if initialDelta <= 0 then return end
+
+-- ===== helper tween =====
 local function playTween(obj, info, props)
 	local tw = TweenService:Create(obj, info, props)
 	tw:Play()
 	return tw
 end
 
--- ===== Size pop for S/M/H =====
+-- ===== size pop labels =====
 local BASE_SIZE = UDim2.fromScale(0.33, 1)
 local POP_SIZE  = UDim2.fromScale(0.36, 1.08)
 labelS.Size = BASE_SIZE
@@ -408,112 +395,219 @@ labelM.Size = BASE_SIZE
 labelH.Size = BASE_SIZE
 
 local sizeTweens = {}
-
-local function safeCancelTween(t)
-	if t and t.Cancel then
-		pcall(function() t:Cancel() end)
-	end
-end
+local function safeCancelTween(t) if t and t.Cancel then pcall(function() t:Cancel() end) end end
 
 local function popLabel(label)
 	if not label then return end
 	local cur = sizeTweens[label]
 	if cur then safeCancelTween(cur); sizeTweens[label] = nil end
-
 	label.Size = BASE_SIZE
-
 	local up = TweenService:Create(label, TweenInfo.new(0.08, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = POP_SIZE})
 	local down = TweenService:Create(label, TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = BASE_SIZE})
-
 	sizeTweens[label] = up
 	up:Play()
 	up.Completed:Connect(function()
 		sizeTweens[label] = down
 		down:Play()
-		down.Completed:Connect(function()
-			sizeTweens[label] = nil
-		end)
+		down.Completed:Connect(function() sizeTweens[label] = nil end)
 	end)
 end
 
--- ===== Close sequence (re-usable) =====
+-- ===== Close sequence for ImageLabel (reuse existing behavior) =====
 local closing = false
-local function closeSequence()
+local function closeImageLabelSequence()
 	if closing then return end
 	closing = true
 
-	-- cancel pending size tweens
+	-- cancel size tweens
 	for lbl, t in pairs(sizeTweens) do
 		safeCancelTween(t)
 		sizeTweens[lbl] = nil
 	end
 
-	-- remove drag detector if any
+	-- remove drag detector
 	local drag = imageLabel:FindFirstChildOfClass("UIDragDetector")
 	if drag then drag:Destroy() end
 
-	-- set White to position of ImageLabel and reset transparency/gradient
+	-- White position + reset gradient
 	white.Position = imageLabel.Position
 	white.BackgroundTransparency = 1
+	if whiteGradient then whiteGradient.Offset = Vector2.new(0, -2.5) end
 
-	if whiteGradient then
-		whiteGradient.Offset = Vector2.new(0, -2.5)
-	end
-
-	-- Fade In White (1 -> 0) in 0.5s
+	-- Fade in White
 	local fadeIn = playTween(white, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0})
 	fadeIn.Completed:Wait()
 
 	-- hide ImageLabel
 	imageLabel.Visible = false
 
-	-- Sweep Gradient if present
+	-- sweep gradient
 	if whiteGradient then
 		local sweep = playTween(whiteGradient, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Offset = Vector2.new(0, 2.5)})
 		sweep.Completed:Wait()
 	end
-
-	-- destroy GUI
-	if screenGui and screenGui.Parent then
-		screenGui:Destroy()
-	end
 end
 
--- ===== Attach Close button handler =====
+-- ===== Attach Close button =====
 local closeConn
 closeConn = closeBtn.MouseButton1Click:Connect(function()
-	closeSequence()
+	closeImageLabelSequence()
 	if closeConn then closeConn:Disconnect() end
 end)
 
--- ===== STARTUP ANIMATION (chỉ chạy nếu thời gian tương lai) =====
+-- ===== STARTUP ANIMATION (only if target in future) =====
 black.BackgroundTransparency = 1
 white.BackgroundTransparency = 1
 imageLabel.Visible = false
-if whiteGradient then
-	whiteGradient.Offset = Vector2.new(0, -2.5)
-end
+if whiteGradient then whiteGradient.Offset = Vector2.new(0, -2.5) end
 
--- 1) Black fade in 1s (1->0)
 playTween(black, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0}).Completed:Wait()
--- 2) wait 0.5s
 task.wait(0.5)
--- 3) White fade in 0.5s
 playTween(white, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0}).Completed:Wait()
--- 4) Show ImageLabel
 imageLabel.Visible = true
 task.wait(1)
--- 5) Gradient sweep 0.5s
-if whiteGradient then
-	playTween(whiteGradient, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Offset = Vector2.new(0, 2.5)}).Completed:Wait()
-end
--- 6) Add UIDragDetector
-if not imageLabel:FindFirstChildOfClass("UIDragDetector") then
-	local drag = Instance.new("UIDragDetector")
-	drag.Parent = imageLabel
-end
--- 7) Black fade out 0.5s (0->1)
+if whiteGradient then playTween(whiteGradient, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Offset = Vector2.new(0, 2.5)}).Completed:Wait() end
+if not imageLabel:FindFirstChildOfClass("UIDragDetector") then Instance.new("UIDragDetector", imageLabel) end
 playTween(black, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {BackgroundTransparency = 1})
+
+-- ===== EFFECT SYSTEM (FIXED) =====
+-- EFFECT RUN CONTROL FLAGS (ensure these exist once)
+effectRunning = effectRunning or false
+rainbowRunning = rainbowRunning or false
+rainbowStop = rainbowStop or false
+
+-- ====== Smooth Rainbow (slower & Sine InOut) ======
+local function startRainbow(frame)
+	if not frame then return end
+	if rainbowRunning then return end
+	rainbowRunning = true
+	rainbowStop = false
+
+	local colors = {
+		Color3.fromRGB(255, 0, 0),
+		Color3.fromRGB(255, 127, 0),
+		Color3.fromRGB(255, 255, 0),
+		Color3.fromRGB(0, 255, 0),
+		Color3.fromRGB(0, 255, 255),
+		Color3.fromRGB(0, 0, 255),
+		Color3.fromRGB(255, 0, 255),
+	}
+	local idx = 1
+	coroutine.wrap(function()
+		while not rainbowStop do
+			local nextIdx = (idx % #colors) + 1
+			local c2 = colors[nextIdx]
+			-- slower, smooth tween
+			local tw = TweenService:Create(frame, TweenInfo.new(2.0, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {BackgroundColor3 = c2})
+			tw:Play()
+			tw.Completed:Wait()
+			idx = nextIdx
+			-- tiny pause so transition looks continuous but smooth
+			task.wait(0.02)
+		end
+		rainbowRunning = false
+	end)()
+end
+
+local function stopRainbow()
+	-- signal to stop; let ongoing tween finish the cycle
+	rainbowStop = true
+end
+
+-- helper clamp & lerp
+local function clamp(v, a, b) if v < a then return a elseif v > b then return b else return v end end
+local function lerp(a, b, t) return a + (b - a) * t end
+
+-- startEffectLoop:
+-- WILL NOT use TweenService on effectGradient.Transparency (not tweenable).
+-- Instead we'll set effectGradient.Transparency = NumberSequence.new({kp0,kp0_5,kp1}) each step.
+local effectCoroutine
+local function startEffectLoop()
+	if effectRunning then return end
+	if not effectFrame or not effectGradient then return end
+	effectRunning = true
+
+	local startClock = os.clock()
+	local period = 1.0      -- pulse every 1 second (as requested)
+	local updateRate = 0.06 -- how often we update (lower => smoother; ~60ms recommended)
+
+	-- helper pulse shape (0..1)
+	local function pulseShape(phase)
+		-- smooth peak at phase=0.5, zero at 0 and 1
+		-- using sin(pi*phase)^2 gives gentle rise/fall
+		local s = math.sin(math.pi * phase)
+		return s * s
+	end
+
+	effectCoroutine = coroutine.wrap(function()
+		while true do
+			local nowU = nowUnixUTC()
+			local delta = targetUTCunix - nowU
+			if delta <= 0 then break end
+			local secs = delta
+
+			-- default transparencies
+			local v0, v05, v1 = 1, 1, 1
+
+			-- compute elapsed phase [0..1] for pulse
+			local elapsed = os.clock() - startClock
+			local phase = (elapsed % period) / period
+			local shape = pulseShape(phase) -- 0..1
+
+			if secs > 60 then
+				-- no effect
+				v0, v05, v1 = 1, 1, 1
+
+			elseif secs > 15 then
+				-- 60 -> 15: Time0 & Time1 pulse; center stays 1.
+				-- progress t from 0 (at 60s) -> 1 (at 15s)
+				local t = (60 - secs) / 45
+				t = clamp(t, 0, 1)
+
+				-- base transparency falls linearly 1 -> 0 as t goes 0->1
+				local base = 1 - t -- 1 -> 0
+
+				-- amplitude grows smoothly from small -> larger
+				local amp = lerp(0.08, math.min(0.9, base + 0.08), t) 
+				-- v0 and v1 = base - amp * pulseShape
+				-- give slight phase offset to v1 for visual variety
+				local phase1 = ((elapsed + period * 0.22) % period) / period
+				local shape1 = pulseShape(phase1)
+				v0 = clamp(base - amp * shape, 0, 1)
+				v1 = clamp(base - (amp * 0.85) * shape1, 0, 1)
+				v05 = 1 -- center static during this phase
+
+			else
+				-- secs <= 15: Time0 & Time1 = 0; Time0.5 pulses from 1->0
+				v0, v1 = 0, 0
+				local t2 = clamp((15 - secs) / 15, 0, 1) -- 0 at 15s, 1 at 0s
+				-- center base reduces 1->0
+				local baseMid = 1 - t2
+				-- amplitude increases as time goes down
+				local ampMid = lerp(0.06, 0.95, t2)
+				-- use pulseShape on same period (smooth)
+				local shapeMid = pulseShape(phase)
+				v05 = clamp(baseMid - ampMid * shapeMid, 0, 1)
+			end
+
+			-- apply NumberSequence directly (no Tween)
+			local seq = NumberSequence.new({
+				NumberSequenceKeypoint.new(0, v0),
+				NumberSequenceKeypoint.new(0.5, v05),
+				NumberSequenceKeypoint.new(1, v1),
+			})
+			effectGradient.Transparency = seq
+
+			-- ensure rainbow running (slower & smooth)
+			if effectFrame and not rainbowRunning then
+				startRainbow(effectFrame)
+			end
+
+			task.wait(updateRate)
+		end
+	end)
+	effectCoroutine()
+end
 
 -- ===== START COUNTDOWN LOOP =====
 local function formatTwo(n) return string.format("%02d", math.max(0, math.floor(n))) end
@@ -525,15 +619,67 @@ while running do
 	local nowU = nowUnixUTC()
 	local delta = targetUTCunix - nowU
 	if delta <= 0 then
-		-- reached -> run closeSequence and break
-		closeSequence()
+		-- reached -> first run ImageLabel close sequence
+		closeImageLabelSequence()
+
+		-- stop effect loop updating (it will naturally exit because delta<=0)
+		-- Wait 3s (as you requested)
+		task.wait(3)
+
+		-- stop rainbow
+		stopRainbow()
+
+		-- Now fade effectGradient transparency to all 1 over 10s
+		if effectGradient then
+			-- read current keypoints values
+			local curSeq = effectGradient.Transparency
+			-- We'll interpolate each keypoint value toward 1 over duration
+			local duration = 10
+			local step = 0.08
+			local steps = math.max(1, math.floor(duration / step))
+			for i = 1, steps do
+				local t = i / steps
+				-- compute interpolated values
+				-- If current sequence has 3 keypoints, map them; otherwise sample fallback.
+				local k0 = curSeq.Keypoints[1] and curSeq.Keypoints[1].Value or 1
+				local k05 = curSeq.Keypoints[2] and curSeq.Keypoints[2].Value or 1
+				local k1 = curSeq.Keypoints[3] and curSeq.Keypoints[3].Value or 1
+				local nv0 = lerp(k0, 1, t)
+				local nv05 = lerp(k05, 1, t)
+				local nv1 = lerp(k1, 1, t)
+				effectGradient.Transparency = NumberSequence.new({
+					NumberSequenceKeypoint.new(0, nv0),
+					NumberSequenceKeypoint.new(0.5, nv05),
+					NumberSequenceKeypoint.new(1, nv1),
+				})
+				-- also fade frame background transparency toward 1 if exists
+				if effectFrame then
+					local cur = effectFrame.BackgroundTransparency
+					local target = 1
+					local nt = lerp(cur, target, t)
+					effectFrame.BackgroundTransparency = nt
+				end
+				task.wait(step)
+			end
+			-- ensure final = fully transparent
+			effectGradient.Transparency = NumberSequence.new({
+				NumberSequenceKeypoint.new(0, 1),
+				NumberSequenceKeypoint.new(0.5, 1),
+				NumberSequenceKeypoint.new(1, 1),
+			})
+		end
+
+		-- wait small buffer then destroy GUI
+		task.wait(0.2)
+		if screenGui and screenGui.Parent then screenGui:Destroy() end
+
 		break
 	end
 
+	-- update labels
 	local hours = math.floor(delta / 3600)
 	local mins = math.floor((delta % 3600) / 60)
 	local secs = math.floor(delta % 60)
-
 	local displayH = hours
 	if displayH > 99 then displayH = 99 end
 
@@ -557,6 +703,12 @@ while running do
 		popLabel(labelH)
 	end
 
+	-- Start effect when <= 60s (and only if Effect+UIGradient present)
+	if delta <= 60 and effectFrame and effectGradient and not effectRunning then
+		startEffectLoop()
+	end
+
+	-- short wait
 	task.wait(0.2)
 end
 
@@ -565,3 +717,6 @@ if closeConn then
 	pcall(function() closeConn:Disconnect() end)
 	closeConn = nil
 end
+
+-- ensure rainbow stopped
+stopRainbow()
