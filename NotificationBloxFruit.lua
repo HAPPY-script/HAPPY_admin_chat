@@ -279,7 +279,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 -- ========== CONFIG ==========
 local TARGET_STR = "Dec 23, 11:00 PM" -- định dạng: "Mon D, HH:MM AM/PM" (hiểu là giờ VN)
-local TEST_MODE = true              -- bật để test: đặt true => time = 75s (1m15s)
+local TEST_MODE = false              -- bật để test: đặt true => time = 75s (1m15s)
 -- ============================
 
 -- ===== GUI refs =====
