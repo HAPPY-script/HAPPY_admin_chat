@@ -262,24 +262,18 @@ local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
 -- ==== CONFIG: CHỈ THAY DÒNG TARGET_STR ====
--- Định dạng ví dụ: "Dec 23, 11:00 PM"
+-- Định dạng ví dụ: "Dec 23, 11:00 PM" -> hiểu là giờ Việt Nam (UTC+7)
 local TARGET_STR = "Dec 23, 11:00 PM"
 -- =========================================
 
 -- ===== GUI refs =====
 local screenGui = playerGui:FindFirstChild("NotificationBloxFruit")
-if not screenGui then
-	-- không tồn tại GUI -> không làm gì
-	return
-end
+if not screenGui then return end
 
 local black = screenGui:FindFirstChild("Black")
 local white = screenGui:FindFirstChild("White")
 local imageLabel = screenGui:FindFirstChild("ImageLabel")
-if not (black and white and imageLabel) then
-	-- nếu cấu trúc GUI không đầy đủ thì không làm gì
-	return
-end
+if not (black and white and imageLabel) then return end
 
 local closeBtn = imageLabel:FindFirstChild("Close")
 local timeFrame = imageLabel:FindFirstChild("Time")
@@ -292,33 +286,18 @@ if not (labelS and labelM and labelH) then return end
 
 local whiteGradient = white:FindFirstChildOfClass("UIGradient")
 
--- ===== date parsing & UTC helper (keeps previous logic) =====
+-- ===== date parsing & UTC helper (adjusted for VN) =====
 local monthMap = {
 	Jan = 1, Feb = 2, Mar = 3, Apr = 4, May = 5, Jun = 6,
 	Jul = 7, Aug = 8, Sep = 9, Oct = 10, Nov = 11, Dec = 12
 }
 
--- PARSE + TIMEZONE-SUPPORT
--- returns table: {month, day, hour, min, tz} where tz = "ET" | "UTC" | "LOCAL" or nil (default -> "ET")
-local function parseTargetStringWithTZ(s)
+local function parseTargetString(s)
 	if type(s) ~= "string" then return nil end
 	s = s:gsub("^%s*(.-)%s*$", "%1")
-
-	-- accept optional suffix after AM/PM like "Dec 23, 11:00 PM ET" or "Dec 23, 11:00 PM LOCAL"
-	-- pattern: datePart, timePart, optional tz
-	local datePart, timePart, tz = s:match("^([^,]+),%s*(.+)%s+([A-Za-z_]+)%s*$")
+	local datePart, timePart = s:match("^([^,]+),%s*(.+)$")
 	if not datePart then
-		-- try without explicit tz
-		datePart, timePart = s:match("^([^,]+),%s*(.+)$")
-		tz = nil
-	end
-	if not datePart or not timePart then
-		-- fallback: try alternate spacing without comma
-		datePart, timePart, tz = s:match("^([^%d]+%s%d+)%s+(.+)%s+([A-Za-z_]+)%s*$")
-		if not datePart then
-			datePart, timePart = s:match("^([^%d]+%s%d+)%s+(.+)$")
-			tz = nil
-		end
+		datePart, timePart = s:match("^([^%d]+%s%d+)%s+(.+)$")
 	end
 	if not datePart or not timePart then return nil end
 
@@ -327,11 +306,7 @@ local function parseTargetStringWithTZ(s)
 	local day = tonumber(dayStr)
 	if not month or not day then return nil end
 
-	-- capture optional TZ after AM/PM if not already captured
-	local hour, min, ampm, tz2 = timePart:match("^(%d+):(%d+)%s*([AaPp][Mm])%s*([A-Za-z_]*)$")
-	if not hour then
-		hour, min, ampm = timePart:match("^(%d+):(%d+)%s*([AaPp][Mm])$")
-	end
+	local hour, min, ampm = timePart:match("^(%d+):(%d+)%s*([AaPp][Mm])$")
 	if not hour then return nil end
 	hour = tonumber(hour)
 	min = tonumber(min)
@@ -339,56 +314,10 @@ local function parseTargetStringWithTZ(s)
 	if ampm == "PM" and hour < 12 then hour = hour + 12 end
 	if ampm == "AM" and hour == 12 then hour = 0 end
 
-	-- determine tz: explicit tz (tz or tz2) else default nil (we will treat nil => "ET" for backward compatibility)
-	local tzFinal = nil
-	if (tz and tz ~= "") then tzFinal = tz:upper() end
-	if (not tzFinal and tz2 and tz2 ~= "") then tzFinal = tz2:upper() end
-
-	-- normalize common tokens
-	if tzFinal == "ET" or tzFinal == "EASTERN" or tzFinal == "EST" or tzFinal == "EDT" then tzFinal = "ET" end
-	if tzFinal == "UTC" then tzFinal = "UTC" end
-	if tzFinal == "LOCAL" or tzFinal == "LOCALTIME" then tzFinal = "LOCAL" end
-
-	return {month = month, day = day, hour = hour, min = min, tz = tzFinal}
+	return {month = month, day = day, hour = hour, min = min}
 end
 
--- Convert a target (year, month, day, hour, min) with tz tag into UTC unix seconds
-local function targetToUTCunix(year, month, day, hour, min, tz)
-	-- tz == "UTC" : direct (no adjust)
-	if tz == "UTC" then
-		return dateToUnixUTC(year, month, day, hour, min, 0)
-	end
-
-	-- tz == "LOCAL" : interpret the given time as client's local time -> convert to UTC
-	if tz == "LOCAL" then
-		-- compute client's local-to-UTC offset in seconds
-		local localNowTable = os.date("*t")
-		local utcNowTable = os.date("!*t")
-		local localEpoch = os.time(localNowTable)
-		local utcEpochAsLocal = os.time(utcNowTable) -- os.time interprets table as local, so this gives epoch shifted
-		local offsetSeconds = localEpoch - utcEpochAsLocal
-		-- build local target epoch (os.time expects local table)
-		local targetLocalTable = {year = year, month = month, day = day, hour = hour, min = min, sec = 0}
-		local targetLocalEpoch = os.time(targetLocalTable)
-		-- convert to UTC unix: subtract offset
-		return targetLocalEpoch - offsetSeconds
-	end
-
-	-- otherwise treat as ET (default)
-	-- keep existing ET->UTC logic (handles DST)
-	return targetETtoUTCunix(year, month, day, hour, min)
-end
-
--- usage: replace previous parse + targetUTCunix logic with:
-local parsed = parseTargetStringWithTZ(TARGET_STR)
-if not parsed then return end
-
-local yearNow = os.date("!*t").year
--- if the parsed date is earlier in calendar than now and you want to support cross-year (e.g. target next year),
--- you may want to add logic to advance yearNow by 1 when target month/day already passed.
-local targetUTCunix = targetToUTCunix(yearNow, parsed.month, parsed.day, parsed.hour, parsed.min, parsed.tz)
-
--- nth weekday of month (weekday: 1=Sunday..7=Saturday)
+-- nth weekday helper (kept from before in case needed)
 local function nthWeekdayOfMonth(year, month, weekday, n)
 	local t = os.time({year = year, month = month, day = 1, hour = 0, min = 0, sec = 0})
 	local utcTable = os.date("!*t", t)
@@ -398,9 +327,10 @@ local function nthWeekdayOfMonth(year, month, weekday, n)
 	return day
 end
 
+-- (kept if you want to support ET later)
 local function isDST_US(year, month, day, hour, min)
-	local startDay = nthWeekdayOfMonth(year, 3, 1, 2) -- second Sunday March
-	local endDay   = nthWeekdayOfMonth(year, 11, 1, 1) -- first Sunday November
+	local startDay = nthWeekdayOfMonth(year, 3, 1, 2)
+	local endDay   = nthWeekdayOfMonth(year, 11, 1, 1)
 	if month < 3 or month > 11 then return false end
 	if month > 3 and month < 11 then return true end
 	if month == 3 then
@@ -416,6 +346,7 @@ local function isDST_US(year, month, day, hour, min)
 	return false
 end
 
+-- Convert (year,month,day,hour,min,sec) to Unix UTC seconds using Julian formula (as before)
 local function dateToUnixUTC(y, m, d, hh, mm, ss)
 	if m <= 2 then y = y - 1; m = m + 12 end
 	local A = math.floor(y / 100)
@@ -431,11 +362,13 @@ local function nowUnixUTC()
 	return dateToUnixUTC(t.year, t.month, t.day, t.hour, t.min, t.sec)
 end
 
-local function targetETtoUTCunix(year, month, day, hourET, minET)
-	local dst = isDST_US(year, month, day, hourET, minET)
-	local offsetHours = dst and 4 or 5 -- ET -> UTC offset (EDT=UTC-4, EST=UTC-5)
-	local etUnix_asIfUTC = dateToUnixUTC(year, month, day, hourET, minET, 0)
-	local targetUTC = etUnix_asIfUTC + offsetHours * 3600
+-- NEW: interpret TARGET_STR as Vietnam time (UTC+7)
+local VN_OFFSET = 7 * 3600 -- seconds
+
+local function targetVNtoUTCunix(year, month, day, hourVN, minVN)
+	-- treat (year,month,day,hourVN,minVN) as VN-local, convert to UTC by subtracting 7h
+	local vn_asIfUTC = dateToUnixUTC(year, month, day, hourVN, minVN, 0)
+	local targetUTC = vn_asIfUTC - VN_OFFSET
 	return targetUTC
 end
 
@@ -446,12 +379,16 @@ if not parsed then
 	return
 end
 
-local yearNow = os.date("!*t").year
-local targetUTCunix = targetETtoUTCunix(yearNow, parsed.month, parsed.day, parsed.hour, parsed.min)
-local nowUTC = nowUnixUTC()
+-- IMPORTANT: determine YEAR according to VN local date (so Dec 31 edge cases are correct)
+local currentUTC = nowUnixUTC()
+local vnNowTable = os.date("!*t", currentUTC + VN_OFFSET) -- using UTC representation shifted by VN_OFFSET -> VN local datetime
+local yearNowVN = vnNowTable.year
+
+local targetUTCunix = targetVNtoUTCunix(yearNowVN, parsed.month, parsed.day, parsed.hour, parsed.min)
+local nowUTC = currentUTC
 local initialDelta = targetUTCunix - nowUTC
 if initialDelta <= 0 then
-	-- thời gian đã trôi qua -> không hoạt động (im lặng)
+	-- time already passed in VN -> do nothing silently
 	return
 end
 
@@ -479,11 +416,9 @@ end
 
 local function popLabel(label)
 	if not label then return end
-	-- cancel existing
 	local cur = sizeTweens[label]
 	if cur then safeCancelTween(cur); sizeTweens[label] = nil end
 
-	-- ensure base size
 	label.Size = BASE_SIZE
 
 	local up = TweenService:Create(label, TweenInfo.new(0.08, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = POP_SIZE})
@@ -492,7 +427,6 @@ local function popLabel(label)
 	sizeTweens[label] = up
 	up:Play()
 	up.Completed:Connect(function()
-		-- start down
 		sizeTweens[label] = down
 		down:Play()
 		down.Completed:Connect(function()
@@ -507,7 +441,6 @@ local function closeSequence()
 	if closing then return end
 	closing = true
 
-	-- stop countdown loop by setting a flag (running variable set below)
 	-- cancel pending size tweens
 	for lbl, t in pairs(sizeTweens) do
 		safeCancelTween(t)
@@ -520,7 +453,7 @@ local function closeSequence()
 
 	-- set White to position of ImageLabel and reset transparency/gradient
 	white.Position = imageLabel.Position
-	white.BackgroundTransparency = 1 -- start from transparent (1)
+	white.BackgroundTransparency = 1
 
 	if whiteGradient then
 		whiteGradient.Offset = Vector2.new(0, -2.5)
@@ -548,14 +481,11 @@ end
 -- ===== Attach Close button handler =====
 local closeConn
 closeConn = closeBtn.MouseButton1Click:Connect(function()
-	-- call close sequence
 	closeSequence()
-	-- disconnect to avoid duplicate
 	if closeConn then closeConn:Disconnect() end
 end)
 
 -- ===== STARTUP ANIMATION (chỉ chạy nếu thời gian tương lai) =====
--- Initial state
 black.BackgroundTransparency = 1
 white.BackgroundTransparency = 1
 imageLabel.Visible = false
@@ -564,29 +494,23 @@ if whiteGradient then
 end
 
 -- 1) Black fade in 1s (1->0)
-playTween(black, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0}).Completed:Wait(0.5)
-
+playTween(black, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0}).Completed:Wait()
 -- 2) wait 0.5s
 task.wait(0.5)
-
 -- 3) White fade in 0.5s
 playTween(white, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0}).Completed:Wait()
-
 -- 4) Show ImageLabel
 imageLabel.Visible = true
 task.wait(1)
-
 -- 5) Gradient sweep 0.5s
 if whiteGradient then
 	playTween(whiteGradient, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Offset = Vector2.new(0, 2.5)}).Completed:Wait()
 end
-
 -- 6) Add UIDragDetector
 if not imageLabel:FindFirstChildOfClass("UIDragDetector") then
 	local drag = Instance.new("UIDragDetector")
 	drag.Parent = imageLabel
 end
-
 -- 7) Black fade out 0.5s (0->1)
 playTween(black, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {BackgroundTransparency = 1})
 
@@ -597,7 +521,6 @@ local running = true
 local lastS, lastM, lastH = nil, nil, nil
 
 while running do
-	-- compute delta
 	local nowU = nowUnixUTC()
 	local delta = targetUTCunix - nowU
 	if delta <= 0 then
@@ -633,7 +556,6 @@ while running do
 		popLabel(labelH)
 	end
 
-	-- short wait to update near-real-time
 	task.wait(0.2)
 end
 
