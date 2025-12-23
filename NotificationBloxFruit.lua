@@ -188,8 +188,9 @@ UIStroke2.Parent = Time
 
 local Close = Instance.new("TextButton")
 Close.Name = "Close"
-Close.Position = UDim2.new(0, 0, 0.815378, 0)
-Close.Size = UDim2.new(0, 200, 0, 50)
+Close.AnchorPoint = Vector2.new(0.5, 0.5)
+Close.Position = UDim2.new(0.043, 0, 0.925, 0)
+Close.Size = UDim2.new(0.15, 0, 0.15, 0)
 Close.BackgroundColor3 = Color3.new(0.882353, 0, 0)
 Close.BorderSizePixel = 0
 Close.BorderColor3 = Color3.new(0, 0, 0)
