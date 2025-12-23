@@ -23,7 +23,7 @@ NotificationBloxFruit.Name = "NotificationBloxFruit"
 NotificationBloxFruit.ResetOnSpawn = false
 NotificationBloxFruit.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 NotificationBloxFruit.DisplayOrder = 999999999
-NotificationBloxFruit.Parent = NotificationBloxFruit
+NotificationBloxFruit.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 local Effect = Instance.new("Frame")
 Effect.Name = "Effect"
