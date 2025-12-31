@@ -1566,7 +1566,7 @@ UICorner38.Parent = Main
 
 local UIGradient26 = Instance.new("UIGradient")
 UIGradient26.Name = "UIGradient"
-UIGradient26.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.52549, 0.137255, 1)), ColorSequenceKeypoint.new(0.181661, Color3.new(0.535966, 0.713413, 0.989524)), ColorSequenceKeypoint.new(0.5, Color3.new(0.541176, 1, 0.984314)), ColorSequenceKeypoint.new(0.854671, Color3.new(0.523129, 0.539792, 0.991533)), ColorSequenceKeypoint.new(1, Color3.new(0.501961, 0, 1))})
+UIGradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.270588, 0, 0.541176)), ColorSequenceKeypoint.new(0.181661, Color3.new(0, 0.0156863, 0.988235)), ColorSequenceKeypoint.new(0.5, Color3.new(0.172549, 0, 0.470588)), ColorSequenceKeypoint.new(0.854671, Color3.new(0, 0.976471, 0.992157)), ColorSequenceKeypoint.new(1, Color3.new(0.270588, 0, 0.541176))})
 UIGradient26.Rotation = 95
 UIGradient26.Parent = Main
 
@@ -1682,8 +1682,8 @@ BackGround.BorderSizePixel = 0
 BackGround.BorderColor3 = Color3.new(0, 0, 0)
 BackGround.AnchorPoint = Vector2.new(0.5, 0.5)
 BackGround.Transparency = 1
-BackGround.Image = "rbxassetid://119108485777858"
-BackGround.ImageTransparency = 0
+BackGround.Image = "rbxassetid://74082653315786"
+BackGround.ImageTransparency = 0.15
 BackGround.Parent = Main
 
 local UICorner39 = Instance.new("UICorner")
