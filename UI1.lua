@@ -16,7 +16,7 @@ Main.BorderColor3 = Color3.new(0, 0, 0)
 Main.Visible = false
 Main.ZIndex = 9996
 Main.AnchorPoint = Vector2.new(0.5, 0.5)
-Main.Transparency = 0.05000000074505806
+Main.Transparency = 0
 Main.Parent = HAPPYscript
 
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -1683,7 +1683,7 @@ BackGround.BorderColor3 = Color3.new(0, 0, 0)
 BackGround.AnchorPoint = Vector2.new(0.5, 0.5)
 BackGround.Transparency = 1
 BackGround.Image = "rbxassetid://74082653315786"
-BackGround.ImageTransparency = 0.15
+BackGround.ImageTransparency = 0.1
 BackGround.Parent = Main
 
 local UICorner39 = Instance.new("UICorner")
