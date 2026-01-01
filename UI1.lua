@@ -1566,7 +1566,7 @@ UICorner38.Parent = Main
 
 local UIGradient26 = Instance.new("UIGradient")
 UIGradient26.Name = "UIGradient"
-UIGradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.270588, 0, 0.541176)), ColorSequenceKeypoint.new(0.181661, Color3.new(0, 0.0156863, 0.988235)), ColorSequenceKeypoint.new(0.5, Color3.new(0.172549, 0, 0.470588)), ColorSequenceKeypoint.new(0.854671, Color3.new(0, 0.976471, 0.992157)), ColorSequenceKeypoint.new(1, Color3.new(0.270588, 0, 0.541176))})
+UIGradient26.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.270588, 0, 0.541176)), ColorSequenceKeypoint.new(0.181661, Color3.new(0, 0.0156863, 0.988235)), ColorSequenceKeypoint.new(0.5, Color3.new(0.172549, 0, 0.470588)), ColorSequenceKeypoint.new(0.854671, Color3.new(0, 0.976471, 0.992157)), ColorSequenceKeypoint.new(1, Color3.new(0.270588, 0, 0.541176))})
 UIGradient26.Rotation = 95
 UIGradient26.Parent = Main
 
