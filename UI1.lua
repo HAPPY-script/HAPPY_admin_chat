@@ -68,7 +68,7 @@ BloxFruit.BorderSizePixel = 0
 BloxFruit.BorderColor3 = Color3.new(0, 0, 0)
 BloxFruit.AnchorPoint = Vector2.new(0.5, 0.5)
 BloxFruit.Transparency = 1
-BloxFruit.Image = "rbxassetid://96592437333894"
+BloxFruit.Image = "rbxassetid://134538084411628"
 BloxFruit.Parent = GameHub
 
 local UIAspectRatioConstraint2 = Instance.new("UIAspectRatioConstraint")
