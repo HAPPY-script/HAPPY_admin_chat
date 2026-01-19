@@ -45,9 +45,25 @@ game.StarterGui:SetCore("SendNotification", {
     Duration = 5;
 })
 
-waitLoad("Loading UI🖼", 0.075)
+waitLoad("Loading UI🖼 0/4", 0.075)
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/MainLoader.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/Main_UI.lua"))()
+
+waitLoad("Loading UI🖼 1/4", 0.076)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/GameHub_UI.lua"))()
+
+waitLoad("Loading UI🖼 2/4", 0.077)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/Character_UI.lua"))()
+
+waitLoad("Loading UI🖼 3/4", 0.078)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/System_UI.lua"))()
+
+waitLoad("Loading UI🖼 4/4", 0.079)
+
+wait(0.5)
 
 waitLoad("Editing properties🛠", 0.45)
 
