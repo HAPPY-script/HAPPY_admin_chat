@@ -5,7 +5,7 @@ HAPPYscript.Name = "HAPPYscript"
 HAPPYscript.ResetOnSpawn = false
 HAPPYscript.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 HAPPYscript.DisplayOrder = 9999
-HAPPYscript.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+HAPPYscript.Parent = PGUI
 
 local Main = Instance.new("Frame")
 Main.Name = "Main"
@@ -49,7 +49,7 @@ ScrollingFrame.Parent = Main
 
 local UIStroke = Instance.new("UIStroke")
 UIStroke.Name = "UIStroke"
-UIStroke.Color = Color3.new(0, 0.690196, 0.345098)
+UIStroke.Color = Color3.new(1, 0, 0.470588)
 UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UIStroke.Parent = ScrollingFrame
 
@@ -98,7 +98,7 @@ Character.BorderSizePixel = 0
 Character.BorderColor3 = Color3.new(0, 0, 0)
 Character.ZIndex = 2
 Character.Transparency = 1
-Character.Text = "Character"
+Character.Text = "Utilities"
 Character.TextColor3 = Color3.new(0, 1, 0.588235)
 Character.TextSize = 14
 Character.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
@@ -175,8 +175,7 @@ BackGround.BorderSizePixel = 0
 BackGround.BorderColor3 = Color3.new(0, 0, 0)
 BackGround.AnchorPoint = Vector2.new(0.5, 0.5)
 BackGround.Transparency = 1
-BackGround.Image = "rbxassetid://74082653315786"
-BackGround.ImageTransparency = 0.10000000149011612
+BackGround.Image = "rbxassetid://110000264938069"
 BackGround.Parent = Main
 
 local UICorner3 = Instance.new("UICorner")
@@ -186,9 +185,15 @@ UICorner3.Parent = BackGround
 
 local UIGradient2 = Instance.new("UIGradient")
 UIGradient2.Name = "UIGradient"
-UIGradient2.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.270588, 0, 0.541176)), ColorSequenceKeypoint.new(0.181661, Color3.new(0, 0.0156863, 0.988235)), ColorSequenceKeypoint.new(0.5, Color3.new(0.172549, 0, 0.470588)), ColorSequenceKeypoint.new(0.854671, Color3.new(0, 0.976471, 0.992157)), ColorSequenceKeypoint.new(1, Color3.new(0.270588, 0, 0.541176))})
-UIGradient2.Rotation = 95
-UIGradient2.Parent = Main
+UIGradient2.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.75, 0), NumberSequenceKeypoint.new(0.4, 0, 0), NumberSequenceKeypoint.new(1, 0, 0)})
+UIGradient2.Rotation = 50
+UIGradient2.Parent = BackGround
+
+local UIGradient3 = Instance.new("UIGradient")
+UIGradient3.Name = "UIGradient"
+UIGradient3.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.25098, 0, 0.541176)), ColorSequenceKeypoint.new(1, Color3.new(0.384314, 0, 0.00784314))})
+UIGradient3.Rotation = 95
+UIGradient3.Parent = Main
 
 local Button = Instance.new("ImageButton")
 Button.Name = "Button"
@@ -198,6 +203,7 @@ Button.BackgroundColor3 = Color3.new(1, 1, 1)
 Button.BackgroundTransparency = 1
 Button.BorderSizePixel = 0
 Button.BorderColor3 = Color3.new(0, 0, 0)
+Button.Visible = false
 Button.ZIndex = 9999
 Button.AnchorPoint = Vector2.new(0.5, 0.5)
 Button.Transparency = 1
@@ -225,9 +231,9 @@ Version.BorderColor3 = Color3.new(0, 0, 0)
 Version.Rotation = -15
 Version.AnchorPoint = Vector2.new(0.5, 0.5)
 Version.TextStrokeTransparency = 0
-Version.TextStrokeColor3 = Color3.fromRGB(255, 65, 120)
+Version.TextStrokeColor3 = Color3.fromRGB(145, 0, 0)
 Version.Text = "v0.07"
-Version.TextColor3 = Color3.new(255, 255, 0)
+Version.TextColor3 = Color3.new(1, 0.933333, 0)
 Version.TextSize = 14
 Version.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 Version.TextScaled = true
@@ -247,12 +253,12 @@ UICorner5.Name = "UICorner"
 UICorner5.CornerRadius = UDim.new(0.1, 0)
 UICorner5.Parent = Effect
 
-local UIGradient3 = Instance.new("UIGradient")
-UIGradient3.Name = "UIGradient"
-UIGradient3.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.5, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
-UIGradient3.Rotation = -45
-UIGradient3.Offset = Vector2.new(0, 1.5)
-UIGradient3.Parent = Effect
+local UIGradient4 = Instance.new("UIGradient")
+UIGradient4.Name = "UIGradient"
+UIGradient4.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.5, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient4.Rotation = -45
+UIGradient4.Offset = Vector2.new(0, 1.5)
+UIGradient4.Parent = Effect
 
 local Noti = Instance.new("Frame")
 Noti.Name = "Noti"
@@ -271,11 +277,11 @@ UIAspectRatioConstraint4.Name = "UIAspectRatioConstraint"
 UIAspectRatioConstraint4.AspectRatio = 1.75
 UIAspectRatioConstraint4.Parent = Noti
 
-local UIGradient4 = Instance.new("UIGradient")
-UIGradient4.Name = "UIGradient"
-UIGradient4.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.968627, 0, 1)), ColorSequenceKeypoint.new(1, Color3.new(0.235294, 0, 1))})
-UIGradient4.Rotation = -45
-UIGradient4.Parent = Noti
+local UIGradient5 = Instance.new("UIGradient")
+UIGradient5.Name = "UIGradient"
+UIGradient5.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.968627, 0, 1)), ColorSequenceKeypoint.new(1, Color3.new(0.235294, 0, 1))})
+UIGradient5.Rotation = -45
+UIGradient5.Parent = Noti
 
 local UICorner6 = Instance.new("UICorner")
 UICorner6.Name = "UICorner"
