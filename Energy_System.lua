@@ -67,50 +67,51 @@ do
     end
 end
 
-local function cacheLink()
+-- cacheLink (now supports force to always fetch fresh link)
+local function cacheLink(force)
     local now = fOsTime()
-    if cachedTime + (10 * 60) < now then
-        local bodyTbl = { service = service, identifier = lDigest(fGetHwid()) }
-        local req = {
-            Url = host .. "/public/start",
-            Method = "POST",
-            Body = lEncode(bodyTbl),
-            Headers = { ["Content-Type"] = "application/json" }
-        }
-
-        local ok, response = pcall(function() return fRequest(req) end)
-        if not ok or not response then
-            onMessage("Failed to contact platoboost (request failed).")
-            return false, "Failed to contact server"
-        end
-
-        if response.StatusCode == 200 then
-            local success, decoded = pcall(function() return lDecode(response.Body) end)
-            if not success or type(decoded) ~= "table" then
-                onMessage("Invalid response from platoboost.")
-                return false, "Invalid response"
-            end
-
-            if decoded.success == true and decoded.data and decoded.data.url then
-                cachedLink = decoded.data.url
-                cachedTime = fOsTime()
-                return true, cachedLink
-            else
-                onMessage(tostring(decoded.message or "Unknown response"))
-                return false, tostring(decoded.message or "Unknown response")
-            end
-
-        elseif response.StatusCode == 429 then
-            local msg = "you are being rate limited, please wait 20 seconds and try again."
-            onMessage(msg)
-            return false, msg
-        else
-            local msg = "Failed to cache link."
-            onMessage(msg)
-            return false, msg
-        end
-    else
+    -- if not forced and we still within cache window, return cached
+    if (not force) and (cachedTime + (10 * 60) >= now) and cachedLink ~= "" then
         return true, cachedLink
+    end
+
+    local bodyTbl = { service = service, identifier = lDigest(fGetHwid()) }
+    local req = {
+        Url = host .. "/public/start",
+        Method = "POST",
+        Body = lEncode(bodyTbl),
+        Headers = { ["Content-Type"] = "application/json" }
+    }
+
+    local ok, response = pcall(function() return fRequest(req) end)
+    if not ok or not response then
+        onMessage("Failed to contact platoboost (request failed).")
+        return false, "Failed to contact server"
+    end
+
+    if response.StatusCode == 200 then
+        local success, decoded = pcall(function() return lDecode(response.Body) end)
+        if not success or type(decoded) ~= "table" then
+            onMessage("Invalid response from platoboost.")
+            return false, "Invalid response"
+        end
+
+        if decoded.success == true and decoded.data and decoded.data.url then
+            cachedLink = decoded.data.url
+            cachedTime = fOsTime()
+            return true, cachedLink
+        else
+            onMessage(tostring(decoded.message or "Unknown response"))
+            return false, tostring(decoded.message or "Unknown response")
+        end
+    elseif response.StatusCode == 429 then
+        local msg = "you are being rate limited, please wait 20 seconds and try again."
+        onMessage(msg)
+        return false, msg
+    else
+        local msg = "Failed to cache link."
+        onMessage(msg)
+        return false, msg
     end
 end
 
@@ -131,8 +132,10 @@ for _ = 1, 5 do
     end
 end
 
+-- copyLink: will request a fresh link each time (force=true)
 local function copyLink()
-    local ok, linkOrMsg = cacheLink()
+    -- force = true to ensure we get a fresh link instead of reuse cachedLink
+    local ok, linkOrMsg = cacheLink(true)
     if not ok then
         return false, tostring(linkOrMsg or "Failed to get link")
     end
@@ -142,6 +145,7 @@ local function copyLink()
     if okCopy then
         return true, link
     else
+        -- copy to clipboard failed (executor prevented it), but return link anyway
         return false, link
     end
 end
@@ -638,6 +642,32 @@ end
 task.spawn(function() resolveServices(3) end)
 
 -- Ensure EnergyValueLabel shows reasonable default (no firebase calls)
+
+-- Initial one-shot energy refresh (on startup)
+task.spawn(function()
+    if not EnergyValueLabel then return end
+
+    -- Try to use resolved function first, otherwise attempt a quick resolve
+    local GetEnergyF = serviceFuncs.GetEnergy or _G.GetEnergy
+    if type(GetEnergyF) ~= "function" then
+        pcall(function() resolveServices(0.6) end)
+        GetEnergyF = serviceFuncs.GetEnergy or _G.GetEnergy
+    end
+
+    if type(GetEnergyF) == "function" then
+        local ok, val = pcall(GetEnergyF)
+        if ok and tonumber(val) then
+            local n = math.clamp(tonumber(val), 0, ENERGY_MAX)
+            pcall(function()
+                EnergyValueLabel.Text = tostring(n) .. "/" .. tostring(ENERGY_MAX)
+            end)
+            return
+        end
+    end
+
+    -- fallback stays as default (already set to 0/ENERGY_MAX)
+end)
+
 if EnergyValueLabel then
     EnergyValueLabel.Text = "0/" .. tostring(ENERGY_MAX)
 end
@@ -717,7 +747,7 @@ if GetCodeButton and GetCodeButton:IsA("GuiButton") then
     end)
 end
 
--- CHECK KEY: minimal Firebase usage, only on-demand
+-- CHECK KEY: minimal Firebase usage, only on-demand (updated: atomic update + rollback)
 if CheckButton and CheckButton:IsA("GuiButton") then
     CheckButton.MouseButton1Click:Connect(function()
         task.spawn(function()
@@ -760,12 +790,10 @@ if CheckButton and CheckButton:IsA("GuiButton") then
             end
 
             -- Now perform minimal firebase steps (on-demand only)
-            -- Ensure user exists (will create if missing)
             pcall(function() EnsureUser() end)
             pcall(function() CleanupExpiredKeys() end)
 
             -- check usedKeys (single read)
-            local usedNow = false
             local okUsed, usedRes = pcall(IsKeyCurrentlyUsed, key)
             if okUsed and usedRes == true then
                 uiNotify("Key", "Key was used within the last hour.", 3)
@@ -773,7 +801,7 @@ if CheckButton and CheckButton:IsA("GuiButton") then
                 return
             end
 
-            -- mark key used
+            -- mark key used (so concurrent redeems from others are prevented)
             local okMark, resMark = pcall(MarkKeyUsed, key)
             if not okMark or not resMark then
                 uiNotify("Key", "Failed to mark key as used.", 3)
@@ -794,16 +822,24 @@ if CheckButton and CheckButton:IsA("GuiButton") then
 
             local allowed = math.min(REWARD_ENERGY, ENERGY_MAX - curEnergy)
             local addOk, newVal = false, curEnergy
-            if type(AddEnergy) == "function" then
-                local okA, retA = pcall(AddEnergy, allowed)
+
+            -- prefer serviceFuncs.AddEnergy if available (resolved earlier), fallback to global AddEnergy
+            local addFunc = serviceFuncs.AddEnergy or (type(_G)=="table" and _G.AddEnergy) or AddEnergy
+
+            if type(addFunc) == "function" then
+                local okA, retA = pcall(addFunc, allowed)
                 if okA and retA then addOk = true; newVal = retA else addOk = false end
+            else
+                addOk = false
             end
 
             if addOk then
+                -- update UI label only after successful DB update
                 if EnergyValueLabel then
                     EnergyValueLabel.Text = tostring(math.clamp(tonumber(newVal) or newVal, 0, ENERGY_MAX)) .. "/" .. tostring(ENERGY_MAX)
                 end
 
+                -- play effects if present
                 local prototype = CheckButton:FindFirstChild("EnergyEffect") or (System and System:FindFirstChild("EnergyEffect"))
                 if prototype and prototype:IsA("GuiObject") then
                     prototype.Visible = false
@@ -816,7 +852,6 @@ if CheckButton and CheckButton:IsA("GuiButton") then
                         local size = prototype.Size
                         return UDim2.new(pos.X.Scale, pos.X.Offset + (size.X.Offset * 0.5), pos.Y.Scale, pos.Y.Offset + (size.Y.Offset * 0.5))
                     end)()
-                    -- spawnEnergyEffects kept as before if present
                     if spawnEnergyEffects then
                         spawnEnergyEffects(prototype, 10, targetUDim2)
                     end
@@ -824,7 +859,13 @@ if CheckButton and CheckButton:IsA("GuiButton") then
 
                 uiNotify("Key", "Key redeemed! +"..tostring(allowed).." Energy", 3)
             else
-                uiNotify("Key", "Failed to update Energy.", 3)
+                -- add failed: attempt rollback of used mark so key can be retried
+                uiNotify("Key", "Failed to update Energy. Rolling back key usage...", 3)
+                pcall(function()
+                    if type(RemoveUsedKey) == "function" then
+                        RemoveUsedKey(key)
+                    end
+                end)
             end
 
             CheckButton.Active = true
