@@ -307,6 +307,11 @@ UIStroke5.Thickness = 2
 UIStroke5.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 UIStroke5.Parent = GetCodeButton
 
+local UIAspectRatioConstraint2 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint2.Name = "UIAspectRatioConstraint"
+UIAspectRatioConstraint2.AspectRatio = 3
+UIAspectRatioConstraint2.Parent = GetCodeButton
+
 local CodeBox = Instance.new("TextBox")
 CodeBox.Name = "CodeBox"
 CodeBox.Position = UDim2.new(0.35, 0, 0.575, 0)
@@ -363,10 +368,10 @@ CheckButton.Transparency = 0.5
 CheckButton.Image = "rbxassetid://12690727184"
 CheckButton.Parent = CodeBox
 
-local UIAspectRatioConstraint2 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint2.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint3 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint3.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint2.Parent = CheckButton
+UIAspectRatioConstraint3.Parent = CheckButton
 
 local UIStroke7 = Instance.new("UIStroke")
 UIStroke7.Name = "UIStroke"
@@ -389,10 +394,10 @@ EnergyEffect.Image = "rbxassetid://542310892"
 EnergyEffect.ImageColor3 = Color3.new(1, 1, 0)
 EnergyEffect.Parent = CheckButton
 
-local UIAspectRatioConstraint3 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint3.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint4 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint4.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint3.Parent = EnergyEffect
+UIAspectRatioConstraint4.Parent = EnergyEffect
 
 local gui = System
 if gui then
