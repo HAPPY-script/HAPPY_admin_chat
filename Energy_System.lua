@@ -5,759 +5,342 @@ local a=2^32;local b=a-1;local function c(d,e)local f,g=0,1;while d~=0 or e~=0 d
 local lEncode, lDecode, lDigest = a3, aw, Z;
 -------------------------------------------------------------------------------
 
--- ==========================
--- Platoboost client + helpers (kept from your working copy)
--- ==========================
-
--- CONFIG (set your service + secret)
-local service = 19439 -- <-- giữ hoặc thay id của bạn
-local secret = "d7b9fc40-28ee-4df9-a4be-a7d9abf2a2c2" -- <-- giữ hoặc thay secret của bạn
-local useNonce = true
-
--- default onMessage
-local onMessage = function(message)
-    local ok, _ = pcall(function()
-        game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", { Text = tostring(message) })
-    end)
-    if not ok then
-        print("Platoboost:", tostring(message))
-    end
-end
-
--- wait for player presence (client)
-repeat task.wait(0.1) until game:IsLoaded() and game.Players.LocalPlayer
-
--- helpers & wrappers
-local HttpService = game:GetService("HttpService")
+-- ==== UI hookup & enhanced effects (thay thế phần makeGui cũ) ====
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
-
-local function defaultGetHwid()
-    local pl = Players.LocalPlayer
-    if pl then return pl.UserId end
-    return "unknown"
-end
-
-local fSetClipboard = setclipboard or toclipboard or function(_) end
-
--- pick request function (fRequest) for platoboost
-local fRequest = request or http_request or syn_request or http and http.request or function(req)
-    local ok, res = pcall(function()
-        return HttpService:RequestAsync({
-            Url = req.Url,
-            Method = req.Method or "GET",
-            Headers = req.Headers or {},
-            Body = req.Body or ""
-        })
-    end)
-    if not ok or not res then return nil end
-    return { StatusCode = res.StatusCode, Body = res.Body }
-end
-
-local fStringChar, fToString, fStringSub, fOsTime, fMathRandom, fMathFloor, fGetHwid =
-    string.char, tostring, string.sub, os.time, math.random, math.floor, (gethwid or defaultGetHwid)
-
--- check crypto/json exist (they do from block above)
-if type(lEncode) ~= "function" or type(lDecode) ~= "function" or type(lDigest) ~= "function" then
-    warn("Platoboost: lEncode/lDecode/lDigest not found; crypto block missing")
-    lEncode = function(t) return HttpService:JSONEncode(t) end
-    lDecode = function(s) return HttpService:JSONDecode(s) end
-    lDigest = function(s)
-        local str = tostring(s)
-        local out = {}
-        for i = 1, #str do table.insert(out, string.format("%02x", string.byte(str, i))) end
-        return table.concat(out)
-    end
-end
-
--- state
-local cachedLink, cachedTime = "", 0
-local requestSending = false
-
--- pick host (try .com then .net fallback)
-local host = "https://api.platoboost.com"
-do
-    local ok, hostResponse = pcall(function()
-        return fRequest({ Url = host .. "/public/connectivity", Method = "GET" })
-    end)
-    if not ok or hostResponse == nil or (hostResponse.StatusCode ~= 200 and hostResponse.StatusCode ~= 429) then
-        host = "https://api.platoboost.net"
-    end
-end
-
--- cacheLink
-local function cacheLink()
-    local now = fOsTime()
-    if cachedTime + (10 * 60) < now then
-        local bodyTbl = { service = service, identifier = lDigest(fGetHwid()) }
-        local req = {
-            Url = host .. "/public/start",
-            Method = "POST",
-            Body = lEncode(bodyTbl),
-            Headers = { ["Content-Type"] = "application/json" }
-        }
-
-        local ok, response = pcall(function() return fRequest(req) end)
-        if not ok or not response then
-            onMessage("Failed to contact platoboost (request failed).")
-            return false, "Failed to contact server"
-        end
-
-        if response.StatusCode == 200 then
-            local success, decoded = pcall(function() return lDecode(response.Body) end)
-            if not success or type(decoded) ~= "table" then
-                onMessage("Invalid response from platoboost.")
-                return false, "Invalid response"
-            end
-
-            if decoded.success == true and decoded.data and decoded.data.url then
-                cachedLink = decoded.data.url
-                cachedTime = fOsTime()
-                return true, cachedLink
-            else
-                onMessage(tostring(decoded.message or "Unknown response"))
-                return false, tostring(decoded.message or "Unknown response")
-            end
-
-        elseif response.StatusCode == 429 then
-            local msg = "you are being rate limited, please wait 20 seconds and try again."
-            onMessage(msg)
-            return false, msg
-        else
-            local msg = "Failed to cache link."
-            onMessage(msg)
-            return false, msg
-        end
-    else
-        return true, cachedLink
-    end
-end
-
--- nonce generator
-local function generateNonce()
-    local str = ""
-    for _ = 1, 16 do
-        str = str .. fStringChar(fMathFloor(fMathRandom() * (122 - 97 + 1)) + 97)
-    end
-    return str
-end
-
--- nonce sanity
-for _ = 1, 5 do
-    local oNonce = generateNonce()
-    task.wait(0.12)
-    if generateNonce() == oNonce then
-        onMessage("platoboost nonce error.")
-        error("platoboost nonce error.")
-    end
-end
-
--- copyLink: returns (true, link) if clipboard set, or (false, link) fallback
-local function copyLink()
-    local ok, linkOrMsg = cacheLink()
-    if not ok then
-        return false, tostring(linkOrMsg or "Failed to get link")
-    end
-
-    local link = linkOrMsg
-    local okCopy, err = pcall(function() fSetClipboard(link) end)
-    if okCopy then
-        return true, link
-    else
-        return false, link
-    end
-end
-
--- redeemKey
-local function redeemKey(key)
-    local nonce = generateNonce()
-    local endpoint = host .. "/public/redeem/" .. fToString(service)
-    local body = { identifier = lDigest(fGetHwid()), key = key }
-    if useNonce then body.nonce = nonce end
-
-    local req = {
-        Url = endpoint,
-        Method = "POST",
-        Body = lEncode(body),
-        Headers = { ["Content-Type"] = "application/json" }
-    }
-
-    local ok, response = pcall(function() return fRequest(req) end)
-    if not ok or not response then
-        onMessage("Failed to send redeem request.")
-        return false
-    end
-
-    if response.StatusCode == 200 then
-        local success, decoded = pcall(function() return lDecode(response.Body) end)
-        if not success or type(decoded) ~= "table" then
-            onMessage("Invalid redeem response.")
-            return false
-        end
-
-        if decoded.success == true then
-            if decoded.data and decoded.data.valid == true then
-                if useNonce then
-                    if decoded.data.hash == lDigest("true" .. "-" .. nonce .. "-" .. secret) then
-                        return true
-                    else
-                        onMessage("failed to verify integrity.")
-                        return false
-                    end
-                else
-                    return true
-                end
-            else
-                onMessage("key is invalid.")
-                return false
-            end
-        else
-            if type(decoded.message) == "string" and fStringSub(decoded.message, 1, 27) == "unique constraint violation" then
-                onMessage("you already have an active key, please wait for it to expire before redeeming it.")
-                return false
-            else
-                onMessage(decoded.message or "Redeem failed.")
-                return false
-            end
-        end
-    elseif response.StatusCode == 429 then
-        onMessage("you are being rate limited, please wait 20 seconds and try again.")
-        return false
-    else
-        onMessage("server returned an invalid status code, please try again later.")
-        return false
-    end
-end
-
--- verifyKey
-local function verifyKey(key)
-    if requestSending == true then
-        onMessage("a request is already being sent, please slow down.")
-        return false
-    else
-        requestSending = true
-    end
-
-    local nonce = generateNonce()
-    local endpoint = host .. "/public/whitelist/" .. fToString(service) .. "?identifier=" .. lDigest(fGetHwid()) .. "&key=" .. key
-    if useNonce then endpoint = endpoint .. "&nonce=" .. nonce end
-
-    local req = { Url = endpoint, Method = "GET" }
-    local ok, response = pcall(function() return fRequest(req) end)
-    requestSending = false
-
-    if not ok or not response then
-        onMessage("Failed to contact server for verification.")
-        return false
-    end
-
-    if response.StatusCode == 200 then
-        local success, decoded = pcall(function() return lDecode(response.Body) end)
-        if not success or type(decoded) ~= "table" then
-            onMessage("Invalid verify response.")
-            return false
-        end
-
-        if decoded.success == true then
-            if decoded.data and decoded.data.valid == true then
-                if useNonce then
-                    if decoded.data.hash == lDigest("true" .. "-" .. nonce .. "-" .. secret) then
-                        return true
-                    else
-                        onMessage("failed to verify integrity.")
-                        return false
-                    end
-                else
-                    return true
-                end
-            else
-                if type(key) == "string" and fStringSub(key, 1, 5) == "FREE_" then
-                    return redeemKey(key)
-                else
-                    onMessage("key is invalid.")
-                    return false
-                end
-            end
-        else
-            onMessage(decoded.message or "verify failed.")
-            return false
-        end
-    elseif response.StatusCode == 429 then
-        onMessage("you are being rate limited, please wait 20 seconds and try again.")
-        return false
-    else
-        onMessage("server returned an invalid status code, please try again later.")
-        return false
-    end
-end
-
--- getFlag
-local function getFlag(name)
-    local nonce = generateNonce()
-    local endpoint = host .. "/public/flag/" .. fToString(service) .. "?name=" .. name
-    if useNonce then endpoint = endpoint .. "&nonce=" .. nonce end
-
-    local req = { Url = endpoint, Method = "GET" }
-    local ok, response = pcall(function() return fRequest(req) end)
-    if not ok or not response then return nil end
-
-    if response.StatusCode == 200 then
-        local success, decoded = pcall(function() return lDecode(response.Body) end)
-        if not success or type(decoded) ~= "table" then
-            onMessage("Invalid flag response.")
-            return nil
-        end
-
-        if decoded.success == true then
-            if useNonce then
-                if decoded.data and decoded.data.hash == lDigest(fToString(decoded.data.value) .. "-" .. nonce .. "-" .. secret) then
-                    return decoded.data.value
-                else
-                    onMessage("failed to verify integrity.")
-                    return nil
-                end
-            else
-                return decoded.data.value
-            end
-        else
-            onMessage(decoded.message)
-            return nil
-        end
-    else
-        return nil
-    end
-end
-
--- expose (optional)
-_G.Platoboost = { copyLink = copyLink, verifyKey = verifyKey, getFlag = getFlag }
-
--- hook onMessage to also show notifications (preserve original behavior)
-do
-    local original_onMessage = onMessage
-    onMessage = function(msg)
-        pcall(function()
-            game:GetService("StarterGui"):SetCore("SendNotification", { Title = "Platoboost", Text = tostring(msg), Duration = 4 })
-        end)
-        pcall(original_onMessage, msg)
-    end
-end
-
--------------------------------------------------------------------------------
--- Firebase/Data storage + UI (uses Platoboost's copyLink & verifyKey)
--------------------------------------------------------------------------------
-
---==========================
---  AUTO DETECT HTTP REQUEST (for Firebase)
---==========================
-local function HttpRequest(data)
-    if syn and syn.request then
-        return syn.request(data)
-    elseif http and http.request then
-        return http.request(data)
-    elseif http_request then
-        return http_request(data)
-    elseif request then
-        return request(data)
-    elseif fluxus and fluxus.request then
-        return fluxus.request(data)
-    else
-        error("Executor không hỗ trợ http request!")
-    end
-end
-
--- CONFIG for Firebase
-local Players = game:GetService("Players")
-local StarterGui = game:GetService("StarterGui")
 local player = Players.LocalPlayer
-repeat task.wait(0.05) until player
-local userId = player.UserId
+repeat task.wait(0.05) until player and player:FindFirstChild("PlayerGui")
+local PlayerGui = player:WaitForChild("PlayerGui")
 
--- Replace this root with your Firebase Realtime DB root (ensure ends with /users/)
-local PROJECT_URL = "https://coin-system-efb92-default-rtdb.asia-southeast1.firebasedatabase.app/users/"
-local URL = PROJECT_URL .. userId .. ".json"
-
-local EXPIRE_SECONDS = 3600 -- 1 hour
-local REWARD_ENERGY = 10
-
--- Helpers: notify
-local function notify(title, text, duration)
-    duration = duration or 3
-    local ok, _ = pcall(function()
-        StarterGui:SetCore("SendNotification", {
-            Title = title or "Notification",
-            Text = text or "",
-            Duration = duration
-        })
-    end)
-    if not ok then warn(title .. ": " .. tostring(text)) end
-end
-
--- DATABASE FUNCTIONS
-local function GetUserData()
-    local ok, res = pcall(function() return HttpRequest({ Url = URL, Method = "GET" }) end)
-    if not ok or not res then
-        warn("[GetUserData] Request error")
-        return nil
+-- wait for the exact path: PlayerGui > HAPPYscript > Main > ScrollingFrame > System
+local function waitPath(root, ...)
+    local node = root
+    for i = 1, select("#", ...) do
+        local name = select(i, ...)
+        node = node:WaitForChild(name)
     end
-    local body = res.Body or "{}"
-    local success, data = pcall(function() return HttpService:JSONDecode(body) end)
-    if not success or type(data) ~= "table" then
-        return nil
-    end
-    return data
+    return node
 end
 
-local function CreateUser()
-    local payload = { energy = 0, usedKeys = {} }
-    local ok, res = pcall(function()
-        return HttpRequest({
-            Url = URL,
-            Method = "PUT",
-            Headers = { ["Content-Type"] = "application/json" },
-            Body = HttpService:JSONEncode(payload)
-        })
-    end)
-    if not ok or not res then
-        warn("[CreateUser] Request failed")
-        return false
-    end
-    if res.StatusCode == 200 then return true end
-    warn("[CreateUser] Status:", res.StatusCode)
-    return false
+local ok, SystemFrame = pcall(function()
+    return waitPath(PlayerGui, "HAPPYscript", "Main", "ScrollingFrame", "System")
+end)
+if not ok or not SystemFrame then
+    warn("[EnergyUI] Không tìm thấy System UI theo đường dẫn PlayerGui > HAPPYscript > Main > ScrollingFrame > System")
+    return
 end
 
-local function PatchUserData(tbl)
-    local ok, res = pcall(function()
-        return HttpRequest({
-            Url = URL,
-            Method = "PATCH",
-            Headers = { ["Content-Type"] = "application/json" },
-            Body = HttpService:JSONEncode(tbl)
-        })
-    end)
-    if not ok or not res then
-        warn("[PatchUserData] Request failed")
-        return false
-    end
-    if res.StatusCode == 200 then return true end
-    warn("[PatchUserData] Status:", res.StatusCode)
-    return false
+-- Elements (the user specified structure)
+local CodeBox = SystemFrame:FindFirstChild("CodeBox")
+if not CodeBox then
+    warn("[EnergyUI] CodeBox không tồn tại trong System")
+    return
+end
+local GetCodeButton = SystemFrame:FindFirstChild("GetCodeButton")
+local CheckButton = CodeBox:FindFirstChild("CheckButton")
+
+if not GetCodeButton or not CheckButton then
+    warn("[EnergyUI] Thiếu GetCodeButton hoặc CheckButton (CheckButton phải nằm trong CodeBox).")
+    return
 end
 
-local function EnsureUser()
-    local data = GetUserData()
-    if not data then
-        local create_ok = CreateUser()
-        return create_ok
-    end
-    local changed = false
-    local patch = {}
-    if data.energy == nil then patch.energy = 0; changed = true end
-    if data.usedKeys == nil then patch.usedKeys = {}; changed = true end
-    if changed then PatchUserData(patch) end
-    return true
+-- Optional elements for status/energy label if present
+local energyLabel = SystemFrame:FindFirstChild("EnergyLabel") or SystemFrame:FindFirstChild("energyLabel")
+local statusLabel = SystemFrame:FindFirstChild("StatusLabel") or SystemFrame:FindFirstChild("statusLabel")
+
+-- find EnergyEffect template inside CheckButton
+local energyTemplate = CheckButton:FindFirstChild("EnergyEffect")
+if energyTemplate then
+    energyTemplate.Visible = false
+else
+    warn("[EnergyUI] Không tìm thấy EnergyEffect inside CheckButton. Hãy thêm một ImageLabel tên 'EnergyEffect' (Visible=false) làm mẫu.")
 end
 
-local function GetEnergy()
-    local data = GetUserData()
-    if not data then return nil end
-    return tonumber(data.energy) or 0
-end
+-- helper: trim
+local function trim(s) return tostring(s):gsub("^%s*(.-)%s*$", "%1") end
 
-local function AddEnergy(amount)
-    local data = GetUserData()
-    if not data then
-        CreateUser()
-        data = GetUserData()
-        if not data then warn("[AddEnergy] Could not get/create user data"); return false end
-    end
-    local current = tonumber(data.energy) or 0
-    local newVal = current + tonumber(amount)
-    local ok = PatchUserData({ energy = newVal })
-    return ok, newVal
-end
-
-local function RemoveUsedKey(key)
-    -- manual PATCH body: {"usedKeys": {"KEY": null}}
-    local manualBody = '{"usedKeys": {"' .. tostring(key) .. '": null}}'
-    local ok2, res2 = pcall(function()
-        return HttpRequest({ Url = URL, Method = "PATCH", Headers = { ["Content-Type"] = "application/json" }, Body = manualBody })
-    end)
-    if ok2 and res2 and res2.StatusCode == 200 then return true end
-    local cur = GetUserData()
-    if cur and cur.usedKeys then
-        cur.usedKeys[tostring(key)] = nil
-        return PatchUserData({ usedKeys = cur.usedKeys })
-    end
-    return false
-end
-
-local function MarkKeyUsed(key)
-    local now = os.time()
-    local ok, res = pcall(function()
-        return HttpRequest({
-            Url = URL,
-            Method = "PATCH",
-            Headers = { ["Content-Type"] = "application/json" },
-            Body = HttpService:JSONEncode({ usedKeys = { [key] = now } })
-        })
-    end)
-    if ok and res and res.StatusCode == 200 then return true end
-    local cur = GetUserData() or { usedKeys = {} }
-    cur.usedKeys = cur.usedKeys or {}
-    cur.usedKeys[key] = now
-    return PatchUserData({ usedKeys = cur.usedKeys })
-end
-
-local function IsKeyCurrentlyUsed(key)
-    local data = GetUserData()
-    if not data then return false end
-    local used = data.usedKeys or {}
-    local ts = used[key]
-    if not ts then return false end
-    local now = os.time()
-    if tonumber(ts) == nil then
-        RemoveUsedKey(key); return false
-    end
-    if now - tonumber(ts) < EXPIRE_SECONDS then
+-- helper: simple debounce
+local function makeDebounce()
+    local busy = false
+    return function(fn)
+        if busy then return false end
+        busy = true
+        task.spawn(function()
+            fn()
+            busy = false
+        end)
         return true
+    end
+end
+
+-- ===========================
+-- GetCodeButton behavior (copy + tween feedback)
+-- ===========================
+local getBtnBusy = false
+local getBtnDebounce = makeDebounce()
+
+GetCodeButton.AutoButtonColor = true
+GetCodeButton.MouseButton1Click:Connect(function()
+    if getBtnBusy then return end
+    getBtnBusy = true
+
+    -- Attempt to copy link (uses copyLink function defined earlier)
+    statusLabel and pcall(function() statusLabel.Text = "Trạng thái: Lấy link..." end)
+
+    local okCopy, linkOrMsg = pcall(function() return copyLink() end)
+    if not okCopy then
+        -- copyLink raised error
+        CodeBox.Text = "Lỗi khi lấy link"
+        statusLabel and pcall(function() statusLabel.Text = "Trạng thái: Lỗi lấy link" end)
+        getBtnBusy = false
+        return
+    end
+
+    -- if copyLink returns (true, link) or false + link or string
+    local success, payload = linkOrMsg, nil
+    -- note: earlier copyLink returns true/link or false/link
+    -- pcall returned (okCopy, returnValue) where returnValue could be tuple. We called copyLink in pcall wrapper, but our pcall returns the first return only.
+    -- To be robust, call copyLink again without pcall for actual return values (wrapped safely).
+    local ok2, a, b = pcall(function() return copyLink() end)
+    if ok2 and type(a) == "boolean" then
+        success = a
+        payload = b
+    elseif ok2 and type(a) == "string" then
+        success = false
+        payload = a
     else
-        pcall(RemoveUsedKey, key)
-        return false
+        success = false
+        payload = "Không lấy được link"
+    end
+
+    -- Disable button interaction visually
+    GetCodeButton.Active = false
+    GetCodeButton.AutoButtonColor = false
+
+    -- prepare tweens
+    local fadeOutInfo = TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local fadeInInfo = TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+    local colorInfo = TweenInfo.new(0.45, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
+
+    local origBg = GetCodeButton.BackgroundColor3
+    local origText = GetCodeButton.Text
+
+    -- color targets per your branding
+    local colorA = Color3.fromRGB(255, 0, 100) -- from
+    local colorB = Color3.fromRGB(0, 200, 100) -- to
+
+    -- run tweens: text fade out -> change text -> fade in; concurrently bg color to B then back
+    local txtProp = { TextTransparency = 1 } -- will be applied later
+    -- fade out current text
+    local tFadeOut = TweenService:Create(GetCodeButton, fadeOutInfo, { TextTransparency = 1 })
+    local tColorTo = TweenService:Create(GetCodeButton, colorInfo, { BackgroundColor3 = colorB })
+    local tColorBack = TweenService:Create(GetCodeButton, colorInfo, { BackgroundColor3 = colorA })
+    local tFadeIn = TweenService:Create(GetCodeButton, fadeInInfo, { TextTransparency = 0 })
+
+    -- ensure initial text transparency = 0
+    GetCodeButton.TextTransparency = 0
+    -- set initial bg to colorA for consistent animation
+    GetCodeButton.BackgroundColor3 = colorA
+
+    tFadeOut:Play()
+    tColorTo:Play()
+    tFadeOut.Completed:Wait()
+
+    -- change text depending on success
+    if success == true and type(payload) == "string" then
+        GetCodeButton.Text = "Copied"
+        -- also put link into CodeBox for user
+        pcall(function() CodeBox.Text = payload end)
+    else
+        GetCodeButton.Text = "Copied" -- still show copied for UX, but put payload into CodeBox as fallback
+        pcall(function() CodeBox.Text = tostring(payload or "No link") end)
+    end
+
+    -- fade in
+    tFadeIn:Play()
+    -- then color back
+    tColorBack:Play()
+    -- wait both
+    tFadeIn.Completed:Wait()
+    tColorBack.Completed:Wait()
+
+    -- restore after short delay
+    task.wait(0.35)
+    GetCodeButton.Text = origText
+    GetCodeButton.BackgroundColor3 = origBg
+    GetCodeButton.TextTransparency = 0
+
+    GetCodeButton.Active = true
+    GetCodeButton.AutoButtonColor = true
+    getBtnBusy = false
+end)
+
+-- ===========================
+-- CheckButton behavior + messages + EnergyEffect spawn
+-- ===========================
+local function flashCodeBoxMessage(message, color, duration)
+    duration = duration or 2
+    color = color or Color3.fromRGB(255, 120, 120)
+    local prevText = CodeBox.Text
+    local prevColor = CodeBox.TextColor3
+    CodeBox.Text = message
+    CodeBox.TextColor3 = color
+    task.delay(duration, function()
+        -- only clear if still showing the same message to avoid overwriting user input
+        if CodeBox.Text == message then
+            CodeBox.Text = ""
+        else
+            -- leave user input intact
+        end
+        CodeBox.TextColor3 = prevColor or Color3.fromRGB(255,255,255)
+    end)
+end
+
+-- spawn energy effects (clone energyTemplate 10 times and animate)
+local function spawnEnergyEffects()
+    if not energyTemplate then return end
+    if not SystemFrame then return end
+
+    local parentForClones = SystemFrame -- place clones in same container so AbsolutePosition math consistent
+    local startAbs = energyTemplate.AbsolutePosition
+    local frameAbs = parentForClones.AbsolutePosition
+
+    for i = 1, 10 do
+        task.delay(0.06 * (i-1), function()
+            local clone = energyTemplate:Clone()
+            clone.Visible = true
+            clone.Parent = parentForClones
+
+            -- place clone at same absolute position inside parent
+            local sPos = clone.AbsolutePosition -- not yet accurate until parent updated, so compute from template
+            -- compute start pixel relative to parent
+            local startPixel = Vector2.new(energyTemplate.AbsolutePosition.X, energyTemplate.AbsolutePosition.Y)
+            local startRel = startPixel - parentForClones.AbsolutePosition
+
+            clone.AnchorPoint = energyTemplate.AnchorPoint
+            clone.Position = UDim2.new(0, math.floor(startRel.X), 0, math.floor(startRel.Y))
+
+            -- compute a target pixel (slightly randomized for variety)
+            local horiz = -112 + math.random(-30,30) -- left bias; adjust if you want
+            local vert = -120 + math.random(-40,40)  -- upward arc
+            local targetPixel = startPixel + Vector2.new(horiz, vert)
+
+            -- animation params
+            local duration = 0.9 + (math.random() * 0.25) -- seconds
+            local arcHeight = vert -- negative means upward
+            local elapsed = 0
+
+            -- optionally scale / rotation effect
+            local rotSign = (i % 2 == 0) and 8 or -8
+            local initialSize = clone.Size
+            -- animate on Heartbeat
+            local conn
+            conn = RunService.Heartbeat:Connect(function(dt)
+                elapsed = elapsed + dt
+                local t = math.min(elapsed / duration, 1)
+                -- linear move between start & target
+                local linear = startPixel:Lerp(targetPixel, t)
+                -- parabolic vertical offset: yOffset = 4*h*(t*(1-t))
+                local yOffset = 4 * arcHeight * (t * (1 - t))
+                local curPixel = Vector2.new(linear.X, linear.Y + yOffset)
+                -- convert to relative inside parent
+                local rel = curPixel - parentForClones.AbsolutePosition
+                clone.Position = UDim2.new(0, math.floor(rel.X), 0, math.floor(rel.Y))
+
+                -- simple rotation and scale
+                clone.Rotation = rotSign * t * 3
+                clone.Size = initialSize + UDim2.new(0, math.floor(6 * t), 0, math.floor(6 * t))
+
+                -- when near end, fade ImageTransparency on any ImageLabels inside clone
+                if t >= 0.84 then
+                    -- tween transparency of all ImageLabels inside clone to 1
+                    for _, v in ipairs(clone:GetDescendants()) do
+                        if v:IsA("ImageLabel") or v:IsA("ImageButton") then
+                            local tw = TweenService:Create(v, TweenInfo.new(0.14), { ImageTransparency = 1 })
+                            pcall(function() tw:Play() end)
+                        elseif v:IsA("TextLabel") or v:IsA("TextButton") then
+                            local tw2 = TweenService:Create(v, TweenInfo.new(0.14), { TextTransparency = 1 })
+                            pcall(function() tw2:Play() end)
+                        end
+                    end
+                end
+
+                if t >= 1 then
+                    conn:Disconnect()
+                    -- final cleanup
+                    task.delay(0.05, function()
+                        if clone and clone.Parent then
+                            clone:Destroy()
+                        end
+                    end)
+                end
+            end)
+        end)
     end
 end
 
-local function CleanupExpiredKeys()
-    local data = GetUserData()
-    if not data then return false end
-    local used = data.usedKeys or {}
-    local now = os.time()
-    local changed = false
-    for k, v in pairs(used) do
-        if tonumber(v) and now - tonumber(v) >= EXPIRE_SECONDS then
-            used[k] = nil; changed = true
-        elseif not tonumber(v) then
-            used[k] = nil; changed = true
-        end
-    end
-    if changed then return PatchUserData({ usedKeys = used }) end
-    return true
-end
-
--- Ensure user on load
-print("====================================")
-print(" KIỂM TRA DATA USER:", userId)
-print("====================================")
-local okEnsure = EnsureUser()
-if not okEnsure then warn("[SYSTEM] Không thể đảm bảo user data.") else print("[SYSTEM] User data có sẵn.") end
-print("====================================")
-print("   HỆ THỐNG SẴN SÀNG TEST")
-print("====================================")
-
--- UI: one-shot GET energy on init, update only when AddEnergy returns new value
-task.spawn(function()
-    local PlayerGui = player:WaitForChild("PlayerGui")
-
-    local function makeGui()
-        local screen = Instance.new("ScreenGui")
-        screen.Name = "EnergyKeyUI"
-        screen.ResetOnSpawn = false
-        screen.Parent = PlayerGui
-
-        local frame = Instance.new("Frame", screen)
-        frame.AnchorPoint = Vector2.new(0.5, 0.5)
-        frame.Position = UDim2.new(0.5, 0, 0.15, 0)
-        frame.Size = UDim2.new(0, 420, 0, 140)
-        frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-        frame.BorderSizePixel = 0
-        frame.Active = true
-        frame.Draggable = true
-
-        local title = Instance.new("TextLabel", frame)
-        title.Size = UDim2.new(1, 0, 0, 28)
-        title.Position = UDim2.new(0, 0, 0, 0)
-        title.BackgroundTransparency = 1
-        title.Font = Enum.Font.GothamBold
-        title.Text = "Energy & Key"
-        title.TextSize = 18
-        title.TextColor3 = Color3.fromRGB(255,255,255)
-
-        local energyLabel = Instance.new("TextLabel", frame)
-        energyLabel.Size = UDim2.new(0.45, 0, 0, 28)
-        energyLabel.Position = UDim2.new(0.03, 0, 0.28, 0)
-        energyLabel.BackgroundTransparency = 1
-        energyLabel.Font = Enum.Font.Gotham
-        energyLabel.TextSize = 16
-        energyLabel.TextColor3 = Color3.fromRGB(200,200,200)
-        energyLabel.Text = "Energy: ..."
-
-        local keyBox = Instance.new("TextBox", frame)
-        keyBox.Size = UDim2.new(0.9, 0, 0, 34)
-        keyBox.Position = UDim2.new(0.05, 0, 0.45, 0)
-        keyBox.PlaceholderText = "Nhập key tại đây..."
-        keyBox.Font = Enum.Font.Gotham
-        keyBox.TextSize = 16
-        keyBox.ClearTextOnFocus = false
-        keyBox.Text = ""
-
-        local getBtn = Instance.new("TextButton", frame)
-        getBtn.Size = UDim2.new(0.36, 0, 0, 30)
-        getBtn.Position = UDim2.new(0.05, 0, 0.75, 0)
-        getBtn.Text = "Get Key"
-        getBtn.Font = Enum.Font.GothamBold
-        getBtn.TextSize = 14
-        getBtn.BackgroundColor3 = Color3.fromRGB(0,120,215)
-        getBtn.TextColor3 = Color3.fromRGB(255,255,255)
-
-        local checkBtn = Instance.new("TextButton", frame)
-        checkBtn.Size = UDim2.new(0.36, 0, 0, 30)
-        checkBtn.Position = UDim2.new(0.59, 0, 0.75, 0)
-        checkBtn.Text = "Check Key"
-        checkBtn.Font = Enum.Font.GothamBold
-        checkBtn.TextSize = 14
-        checkBtn.BackgroundColor3 = Color3.fromRGB(0,150,80)
-        checkBtn.TextColor3 = Color3.fromRGB(255,255,255)
-
-        local statusLabel = Instance.new("TextLabel", frame)
-        statusLabel.Size = UDim2.new(0.9, 0, 0, 20)
-        statusLabel.Position = UDim2.new(0.05, 0, 0.92, 0)
-        statusLabel.BackgroundTransparency = 1
-        statusLabel.Font = Enum.Font.Gotham
-        statusLabel.TextSize = 14
-        statusLabel.TextColor3 = Color3.fromRGB(200,200,200)
-        statusLabel.Text = "Trạng thái: sẵn sàng"
-
-        local cachedEnergy = nil
-
-        local function refreshEnergyLabelInitial()
-            local energy = GetEnergy()
-            if energy == nil then
-                energyLabel.Text = "Energy: (lấy lỗi)"
-                cachedEnergy = nil
-            else
-                cachedEnergy = energy
-                energyLabel.Text = "Energy: " .. tostring(energy)
-            end
-        end
-
-        -- initial single fetch
-        refreshEnergyLabelInitial()
-
-        -- Get Key behavior
-        getBtn.MouseButton1Click:Connect(function()
-            statusLabel.Text = "Trạng thái: Lấy link..."
-            if type(copyLink) == "function" then
-                local ok, a, b = pcall(function() return copyLink() end)
-                if not ok then
-                    notify("Get Key", "Lỗi khi gọi copyLink: " .. tostring(a), 4)
-                    statusLabel.Text = "Trạng thái: Lỗi lấy link"
-                    return
-                end
-                if a == true and type(b) == "string" then
-                    notify("Get Key", "Đã copy link vào clipboard.", 3)
-                    statusLabel.Text = "Trạng thái: Link đã copy"
-                    keyBox.Text = b
-                    return
-                elseif a == false and type(b) == "string" then
-                    keyBox.Text = b
-                    notify("Get Key", "Không thể copy; link đặt vào ô nhập.", 4)
-                    statusLabel.Text = "Trạng thái: Link trả về (xem ô nhập)"
-                    return
-                elseif type(a) == "string" then
-                    keyBox.Text = a
-                    notify("Get Key", "Link trả về (vui lòng copy).", 4)
-                    statusLabel.Text = "Trạng thái: Link trả về (xem ô nhập)"
-                    return
-                else
-                    notify("Get Key", "copyLink trả về giá trị không rõ.", 4)
-                    statusLabel.Text = "Trạng thái: Lỗi lấy link"
-                    return
-                end
-            elseif type(cacheLink) == "function" then
-                local ok2, r1, r2 = pcall(function() return cacheLink() end)
-                if not ok2 then
-                    notify("Get Key", "Lỗi khi gọi cacheLink: " .. tostring(r1), 4)
-                    statusLabel.Text = "Trạng thái: Lỗi lấy link"
-                    return
-                end
-                local success = r1
-                local linkOrMsg = r2
-                if success and type(linkOrMsg) == "string" then
-                    keyBox.Text = linkOrMsg
-                    notify("Get Key", "Link trả về, đặt vào ô nhập.", 4)
-                    statusLabel.Text = "Trạng thái: Link trả về (xem ô nhập)"
-                    return
-                else
-                    notify("Get Key", tostring(linkOrMsg or "Không lấy được link"), 4)
-                    statusLabel.Text = "Trạng thái: Lỗi lấy link"
-                    return
-                end
-            else
-                notify("Get Key", "Hàm copyLink/cacheLink không tồn tại trong script.", 4)
-                statusLabel.Text = "Trạng thái: copyLink không khả dụng"
-                return
-            end
-        end)
-
-        -- Check Key behavior (calls verifyKey then Firebase logic)
-        checkBtn.MouseButton1Click:Connect(function()
-            local key = tostring(keyBox.Text or ""):gsub("^%s*(.-)%s*$", "%1")
-            if key == "" then
-                notify("Key", "Vui lòng nhập key trước khi kiểm tra.", 3)
-                statusLabel.Text = "Trạng thái: chưa nhập key"
-                return
-            end
-            if type(verifyKey) ~= "function" then
-                notify("Key", "Hàm verifyKey(key) không tồn tại. Không thể xác thực key.", 4)
-                statusLabel.Text = "Trạng thái: verifyKey không khả dụng"
-                return
-            end
-
-            statusLabel.Text = "Trạng thái: Đang kiểm tra key..."
-            local okVerify, verifyRes = pcall(function() return verifyKey(key) end)
-            if not okVerify then
-                notify("Key", "Lỗi khi gọi verifyKey: " .. tostring(verifyRes), 4)
-                statusLabel.Text = "Trạng thái: Lỗi verify"
-                return
-            end
-
-            if verifyRes ~= true then
-                notify("Key", "Key không hợp lệ.", 3)
-                statusLabel.Text = "Trạng thái: Key không hợp lệ"
-                return
-            end
-
-            -- Key valid remotely -> apply Firebase checks
-            EnsureUser()
-            pcall(CleanupExpiredKeys)
-
-            if IsKeyCurrentlyUsed(key) then
-                notify("Key", "Key đã được dùng trong vòng 1 giờ. Không có hiệu lực.", 4)
-                statusLabel.Text = "Trạng thái: Key đã dùng (chưa đủ 1 giờ)"
-                return
-            end
-
-            local markOk = MarkKeyUsed(key)
-            if not markOk then
-                notify("Key", "Lỗi lưu thông tin key đã dùng.", 4)
-                statusLabel.Text = "Trạng thái: Lỗi lưu key"
-                return
-            end
-
-            local addOk, newEnergy = AddEnergy(REWARD_ENERGY)
-            if addOk then
-                cachedEnergy = newEnergy
-                energyLabel.Text = "Energy: " .. tostring(newEnergy)
-                notify("Key", "Key hợp lệ! Bạn được +" .. tostring(REWARD_ENERGY) .. " Energy.", 4)
-                statusLabel.Text = "Trạng thái: Nhận +" .. tostring(REWARD_ENERGY) .. " Energy"
-            else
-                notify("Key", "Lỗi cập nhật Energy.", 4)
-                statusLabel.Text = "Trạng thái: Lỗi cập nhật Energy"
-            end
-        end)
-
-        return screen, refreshEnergyLabelInitial
+-- CheckButton main logic: uses verifyKey + firebase logic from above
+CheckButton.MouseButton1Click:Connect(function()
+    local key = trim(CodeBox.Text or "")
+    if key == "" then
+        -- empty: put temporary message and return
+        flashCodeBoxMessage("Vui lòng nhập key trước khi kiểm tra.", Color3.fromRGB(255,120,120), 2)
+        statusLabel and pcall(function() statusLabel.Text = "Trạng thái: chưa nhập key" end)
+        return
     end
 
-    local screen, refreshFunc = makeGui()
-    -- no periodic refresh: UI fetched energy once at init; updates occur only on successful AddEnergy
+    if type(verifyKey) ~= "function" then
+        flashCodeBoxMessage("Hàm verifyKey không tồn tại.", Color3.fromRGB(255,180,60), 2)
+        statusLabel and pcall(function() statusLabel.Text = "Trạng thái: verifyKey không khả dụng" end)
+        return
+    end
+
+    statusLabel and pcall(function() statusLabel.Text = "Trạng thái: Đang kiểm tra key..." end)
+
+    -- call verifyKey safely (verifyKey may call remote)
+    local okVerify, verifyRes = pcall(function() return verifyKey(key) end)
+    if not okVerify then
+        flashCodeBoxMessage("Lỗi khi gọi verifyKey.", Color3.fromRGB(255,120,120), 2)
+        statusLabel and pcall(function() statusLabel.Text = "Trạng thái: Lỗi verify" end)
+        return
+    end
+
+    if verifyRes ~= true then
+        flashCodeBoxMessage("Key không hợp lệ.", Color3.fromRGB(255,120,120), 2)
+        statusLabel and pcall(function() statusLabel.Text = "Trạng thái: Key không hợp lệ" end)
+        return
+    end
+
+    -- Key valid remotely -> apply Firebase checks (reuse existing EnsureUser/CleanupExpiredKeys/IsKeyCurrentlyUsed/MarkKeyUsed/AddEnergy)
+    EnsureUser()
+    pcall(CleanupExpiredKeys)
+
+    if IsKeyCurrentlyUsed(key) then
+        flashCodeBoxMessage("Key đã được dùng trong vòng 1 giờ.", Color3.fromRGB(255,180,60), 2)
+        statusLabel and pcall(function() statusLabel.Text = "Trạng thái: Key đã dùng (chưa đủ 1 giờ)" end)
+        return
+    end
+
+    local markOk = MarkKeyUsed(key)
+    if not markOk then
+        flashCodeBoxMessage("Lỗi lưu thông tin key đã dùng.", Color3.fromRGB(255,120,120), 2)
+        statusLabel and pcall(function() statusLabel.Text = "Trạng thái: Lỗi lưu key" end)
+        return
+    end
+
+    local addOk, newEnergy = AddEnergy(REWARD_ENERGY)
+    if addOk then
+        pcall(function()
+            if energyLabel then energyLabel.Text = "Energy: " .. tostring(newEnergy) end
+            statusLabel.Text = "Trạng thái: Nhận +" .. tostring(REWARD_ENERGY) .. " Energy"
+            -- spawn special energy visual effect clones
+            spawnEnergyEffects()
+        end)
+        -- success message in CodeBox briefly
+        flashCodeBoxMessage("Nhận +" .. tostring(REWARD_ENERGY) .. " Energy!", Color3.fromRGB(120,255,150), 2)
+    else
+        flashCodeBoxMessage("Lỗi cập nhật Energy.", Color3.fromRGB(255,120,120), 2)
+        statusLabel and pcall(function() statusLabel.Text = "Trạng thái: Lỗi cập nhật Energy" end)
+    end
 end)
