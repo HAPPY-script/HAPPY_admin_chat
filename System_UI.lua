@@ -7,7 +7,6 @@ System.BackgroundColor3 = Color3.new(1, 1, 1)
 System.BackgroundTransparency = 1
 System.BorderSizePixel = 0
 System.BorderColor3 = Color3.new(0, 0, 0)
-System.Visible = false
 System.Transparency = 1
 System.Parent = sf
 
@@ -249,6 +248,151 @@ LineX.BorderSizePixel = 0
 LineX.BorderColor3 = Color3.new(0, 0, 0)
 LineX.AnchorPoint = Vector2.new(0.5, 0.5)
 LineX.Parent = SupportStatus
+
+local EnergyIcon = Instance.new("ImageLabel")
+EnergyIcon.Name = "EnergyIcon"
+EnergyIcon.Position = UDim2.new(0.05, 0, 0.55, 0)
+EnergyIcon.Size = UDim2.new(0.125, 0, 0.125, 0)
+EnergyIcon.BackgroundColor3 = Color3.new(1, 1, 1)
+EnergyIcon.BackgroundTransparency = 1
+EnergyIcon.BorderSizePixel = 0
+EnergyIcon.BorderColor3 = Color3.new(0, 0, 0)
+EnergyIcon.Transparency = 1
+EnergyIcon.Image = "rbxassetid://542310892"
+EnergyIcon.ImageColor3 = Color3.new(0.882353, 1, 0)
+EnergyIcon.Parent = System
+
+local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint.Parent = EnergyIcon
+
+local Value = Instance.new("TextLabel")
+Value.Name = "Value"
+Value.Position = UDim2.new(1.6, 0, 0.5, 0)
+Value.Size = UDim2.new(1.15, 0, 0.75, 0)
+Value.BackgroundColor3 = Color3.new(1, 1, 1)
+Value.BackgroundTransparency = 1
+Value.BorderSizePixel = 0
+Value.BorderColor3 = Color3.new(0, 0, 0)
+Value.AnchorPoint = Vector2.new(0.5, 0.5)
+Value.Transparency = 1
+Value.Text = "0/100"
+Value.TextColor3 = Color3.new(1, 0.882353, 0)
+Value.TextSize = 14
+Value.FontFace = Font.new("rbxasset://fonts/families/RobotoCondensed.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Value.TextScaled = true
+Value.TextWrapped = true
+Value.Parent = EnergyIcon
+
+local GetCodeButton = Instance.new("TextButton")
+GetCodeButton.Name = "GetCodeButton"
+GetCodeButton.Position = UDim2.new(0.5, 0, 0.66, 0)
+GetCodeButton.Size = UDim2.new(0.25, 0, 0.075, 0)
+GetCodeButton.BackgroundColor3 = Color3.new(1, 0, 0.392157)
+GetCodeButton.BorderSizePixel = 0
+GetCodeButton.BorderColor3 = Color3.new(0, 0, 0)
+GetCodeButton.Text = "Get code"
+GetCodeButton.TextColor3 = Color3.new(1, 1, 1)
+GetCodeButton.TextSize = 14
+GetCodeButton.FontFace = Font.new("rbxasset://fonts/families/PatrickHand.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+GetCodeButton.TextScaled = true
+GetCodeButton.TextWrapped = true
+GetCodeButton.Parent = System
+
+local UIStroke5 = Instance.new("UIStroke")
+UIStroke5.Name = "UIStroke"
+UIStroke5.Color = Color3.new(1, 1, 1)
+UIStroke5.Thickness = 2
+UIStroke5.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke5.Parent = GetCodeButton
+
+local CodeBox = Instance.new("TextBox")
+CodeBox.Name = "CodeBox"
+CodeBox.Position = UDim2.new(0.35, 0, 0.575, 0)
+CodeBox.Size = UDim2.new(0.5, 0, 0.06, 0)
+CodeBox.BackgroundColor3 = Color3.new(0.588235, 0, 0.588235)
+CodeBox.BackgroundTransparency = 0.5
+CodeBox.BorderSizePixel = 0
+CodeBox.BorderColor3 = Color3.new(0, 0, 0)
+CodeBox.Transparency = 0.5
+CodeBox.Text = ""
+CodeBox.TextColor3 = Color3.new(1, 1, 1)
+CodeBox.TextSize = 14
+CodeBox.FontFace = Font.new("rbxasset://fonts/families/RobotoMono.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+CodeBox.TextScaled = true
+CodeBox.TextWrapped = true
+CodeBox.PlaceholderText = "Paste the code here."
+CodeBox.PlaceholderColor3 = Color3.new(1, 0.85098, 1)
+CodeBox.Parent = System
+
+local UIStroke6 = Instance.new("UIStroke")
+UIStroke6.Name = "UIStroke"
+UIStroke6.Color = Color3.new(1, 0, 1)
+UIStroke6.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke6.Parent = CodeBox
+
+local TextTip = Instance.new("TextLabel")
+TextTip.Name = "TextTip"
+TextTip.Position = UDim2.new(0.5, 0, -0.4, 0)
+TextTip.Size = UDim2.new(1, 0, 0.75, 0)
+TextTip.BackgroundColor3 = Color3.new(1, 1, 1)
+TextTip.BackgroundTransparency = 1
+TextTip.BorderSizePixel = 0
+TextTip.BorderColor3 = Color3.new(0, 0, 0)
+TextTip.AnchorPoint = Vector2.new(0.5, 0.5)
+TextTip.Transparency = 1
+TextTip.Text = "Enter the code to receive extra Energy (+10)"
+TextTip.TextColor3 = Color3.new(1, 0, 0.392157)
+TextTip.TextSize = 14
+TextTip.FontFace = Font.new("rbxasset://fonts/families/HighwayGothic.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+TextTip.TextScaled = true
+TextTip.TextWrapped = true
+TextTip.Parent = CodeBox
+
+local CheckButton = Instance.new("ImageButton")
+CheckButton.Name = "CheckButton"
+CheckButton.Position = UDim2.new(1.075, 0, 0.5, 0)
+CheckButton.Size = UDim2.new(1, 0, 1, 0)
+CheckButton.BackgroundColor3 = Color3.new(0, 1, 0)
+CheckButton.BackgroundTransparency = 0.5
+CheckButton.BorderSizePixel = 0
+CheckButton.BorderColor3 = Color3.new(0, 0, 0)
+CheckButton.AnchorPoint = Vector2.new(0.5, 0.5)
+CheckButton.Transparency = 0.5
+CheckButton.Image = "rbxassetid://12690727184"
+CheckButton.Parent = CodeBox
+
+local UIAspectRatioConstraint2 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint2.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint2.Parent = CheckButton
+
+local UIStroke7 = Instance.new("UIStroke")
+UIStroke7.Name = "UIStroke"
+UIStroke7.Color = Color3.new(1, 0, 1)
+UIStroke7.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke7.Parent = CheckButton
+
+local EnergyEffect = Instance.new("ImageLabel")
+EnergyEffect.Name = "EnergyEffect"
+EnergyEffect.Position = UDim2.new(0.5, 0, 0.5, 0)
+EnergyEffect.Size = UDim2.new(1, 0, 1, 0)
+EnergyEffect.BackgroundColor3 = Color3.new(1, 1, 1)
+EnergyEffect.BackgroundTransparency = 1
+EnergyEffect.BorderSizePixel = 0
+EnergyEffect.BorderColor3 = Color3.new(0, 0, 0)
+EnergyEffect.Visible = false
+EnergyEffect.AnchorPoint = Vector2.new(0.5, 0.5)
+EnergyEffect.Transparency = 1
+EnergyEffect.Image = "rbxassetid://542310892"
+EnergyEffect.ImageColor3 = Color3.new(1, 1, 0)
+EnergyEffect.Parent = CheckButton
+
+local UIAspectRatioConstraint3 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint3.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint3.Parent = EnergyEffect
 
 local gui = System
 if gui then
