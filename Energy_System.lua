@@ -5,7 +5,7 @@ local a=2^32;local b=a-1;local function c(d,e)local f,g=0,1;while d~=0 or e~=0 d
 local lEncode, lDecode, lDigest = a3, aw, Z;
 -------------------------------------------------------------------------------
 
--- LocalScript (place inside System)
+-- LocalScript: UI connector (no built UI, no GetCode button tweens, no CodeBox inline messages)
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
@@ -14,13 +14,11 @@ local player = Players.LocalPlayer
 if not player then repeat task.wait() until Players.LocalPlayer; player = Players.LocalPlayer end
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Wait path (no timeout)
+-- connect to existing UI
 local System = playerGui:WaitForChild("HAPPYscript"):WaitForChild("Main"):WaitForChild("ScrollingFrame"):WaitForChild("System")
 
--- UI refs (use WaitForChild to guarantee presence)
 local CodeBox = System:WaitForChild("CodeBox")
 local GetCodeButton = System:WaitForChild("GetCodeButton")
--- CheckButton is described as inside CodeBox; fallback to System child
 local CheckButton = (CodeBox:FindFirstChild("CheckButton") or System:FindFirstChild("CheckButton"))
 local EnergyIcon = System:FindFirstChild("EnergyIcon")
 local EnergyValueLabel = EnergyIcon and (EnergyIcon:FindFirstChild("Value") or EnergyIcon:FindFirstChildWhichIsA("TextLabel"))
@@ -29,23 +27,14 @@ local EnergyValueLabel = EnergyIcon and (EnergyIcon:FindFirstChild("Value") or E
 local REWARD_ENERGY = 10
 local ENERGY_MAX = 100
 
--- safe notify
+-- unified notification (system notification)
 local function uiNotify(title, text, duration)
     pcall(function()
         StarterGui:SetCore("SendNotification", { Title = title or "Notice", Text = text or "", Duration = duration or 3 })
     end)
 end
 
--- safe wrappers for optional functions
-local function safeCall(fn, ...)
-    if type(fn) ~= "function" then return false, "fn_missing" end
-    local ok, a, b = pcall(fn, ...)
-    if not ok then return false, a end
-    -- return true and returned values (if any)
-    return true, a, b
-end
-
--- refresh energy display from GetEnergy()
+-- refresh energy label from server function GetEnergy()
 local function refreshEnergyLabel()
     if not EnergyValueLabel then return end
     if type(GetEnergy) == "function" then
@@ -60,24 +49,8 @@ local function refreshEnergyLabel()
 end
 refreshEnergyLabel()
 
--- helper: show temporary message inside CodeBox and restore color/text
-local function showTempMessageInBox(text, color3, duration)
-    duration = duration or 2
-    if not CodeBox or not CodeBox:IsA("TextBox") then return end
-    local origText = CodeBox.Text
-    local origColor = CodeBox.TextColor3
-    CodeBox.Text = tostring(text)
-    if color3 then CodeBox.TextColor3 = color3 end
-    task.delay(duration, function()
-        if CodeBox and CodeBox:IsA("TextBox") then
-            CodeBox.Text = ""
-            CodeBox.TextColor3 = origColor or Color3.fromRGB(255,255,255)
-        end
-    end)
-end
-
--- ========== GetCodeButton upgraded behavior ==========
-if GetCodeButton then
+-- ---------- GET CODE: no visual tweens, simple behavior ----------
+if GetCodeButton and GetCodeButton:IsA("GuiButton") then
     local locked = false
     GetCodeButton.MouseButton1Click:Connect(function()
         if locked then return end
@@ -85,131 +58,77 @@ if GetCodeButton then
         GetCodeButton.Active = false
         GetCodeButton.Selectable = false
 
-        -- store originals
-        local origText = tostring(GetCodeButton.Text or "Get code")
-        local origBg = GetCodeButton.BackgroundColor3
-        local origTextTransparency = GetCodeButton.TextTransparency or 0
-
-        -- target colors per your request: flash start and alt
-        local flashColor = Color3.fromRGB(255, 0, 100)
-        local altColor = Color3.fromRGB(0, 200, 100)
-
-        -- immediately start copy in background so we don't block the animation
-        local copyResult = nil
+        -- perform copy in background, update CodeBox only when link available
         task.spawn(function()
+            local result, a, b
             -- prefer copyLink, fallback cacheLink
             if type(copyLink) == "function" then
-                local ok, a, b = pcall(copyLink)
-                copyResult = { ok = ok, a = a, b = b }
+                local ok, r1, r2 = pcall(copyLink)
+                result, a, b = ok, r1, r2
             elseif type(cacheLink) == "function" then
-                local ok2, a2, b2 = pcall(cacheLink)
-                copyResult = { ok = ok2, a = a2, b = b2 }
+                local ok2, r1, r2 = pcall(cacheLink)
+                result, a, b = ok2, r1, r2
             else
-                copyResult = { ok = false, a = "no_copy_fn" }
+                result, a, b = false, "no_copy_function"
             end
-        end)
 
-        -- Animation sequence:
-        -- 1) Fade text out + tween BG to flashColor
-        local tOut = TweenService:Create(GetCodeButton, TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { TextTransparency = 1 })
-        local tBgToAlt = TweenService:Create(GetCodeButton, TweenInfo.new(0.22, Enum.EasingStyle.Quad), { BackgroundColor3 = altColor })
-        tOut:Play(); tBgToAlt:Play()
-        tOut.Completed:Wait()
-
-        -- 2) Set 'Copied' text, fade in
-        GetCodeButton.Text = "Copied"
-        local tIn = TweenService:Create(GetCodeButton, TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { TextTransparency = 0 })
-        tIn:Play()
-        tIn.Completed:Wait()
-
-        -- wait 2s visible
-        local waited = 0
-        while waited < 2 do
-            task.wait(0.05); waited = waited + 0.05
-            -- if copy result ready earlier, break to update CodeBox quicker
-            if copyResult ~= nil then break end
-        end
-
-        -- If copy finished while animating, apply result to CodeBox (if appropriate)
-        if copyResult ~= nil then
-            if copyResult.ok == false and copyResult.a == "no_copy_fn" then
-                -- nothing to call
-                showTempMessageInBox("Hàm copy không khả dụng.", Color3.fromRGB(255,160,0), 2)
-            else
-                if copyResult.ok then
-                    -- copyLink returned values in copyResult.a, copyResult.b depending on implementation
-                    -- copyLink normally returns (true, link) or (false, link)
-                    local a, b = copyResult.a, copyResult.b
-                    if a == true and type(b) == "string" then
-                        if CodeBox and CodeBox:IsA("TextBox") then CodeBox.Text = b end
-                        uiNotify("Get Key", "Đã copy link vào clipboard.", 3)
-                    elseif a == false and type(b) == "string" then
-                        if CodeBox and CodeBox:IsA("TextBox") then CodeBox.Text = b end
-                        uiNotify("Get Key", "Không thể copy; link đặt vào ô nhập.", 3)
-                    elseif type(a) == "string" then
-                        if CodeBox and CodeBox:IsA("TextBox") then CodeBox.Text = a end
-                        uiNotify("Get Key", "Link trả về (vui lòng copy).", 3)
-                    else
-                        uiNotify("Get Key", "Không nhận được link.", 3)
-                    end
+            if not result then
+                if a == "no_copy_function" then
+                    uiNotify("Get Key", "Hàm copy/cache link không khả dụng.", 3)
                 else
-                    -- pcall failed (runtime error), copyResult.a is error
-                    uiNotify("Get Key", "Lỗi khi lấy link: "..tostring(copyResult.a), 3)
+                    uiNotify("Get Key", "Lỗi lấy link: " .. tostring(a), 3)
+                end
+            else
+                -- handle typical return shapes:
+                -- (true, link) => copied to clipboard
+                -- (false, link) => not copied, but link returned
+                -- (string) => sometimes cacheLink may return string in first arg
+                if a == true and type(b) == "string" then
+                    if CodeBox and CodeBox:IsA("TextBox") then CodeBox.Text = b end
+                    uiNotify("Get Key", "Link sẵn sàng và đã copy (nếu executor cho phép).", 3)
+                elseif a == false and type(b) == "string" then
+                    if CodeBox and CodeBox:IsA("TextBox") then CodeBox.Text = b end
+                    uiNotify("Get Key", "Link được trả về trong ô nhập (không thể copy).", 3)
+                elseif type(a) == "string" and b == nil then
+                    if CodeBox and CodeBox:IsA("TextBox") then CodeBox.Text = a end
+                    uiNotify("Get Key", "Link trả về (vui lòng copy).", 3)
+                else
+                    uiNotify("Get Key", "Kết quả trả về không rõ.", 3)
                 end
             end
-        else
-            -- copy still pending: spawn a watcher to update CodeBox once it returns (timeout 6s)
-            task.spawn(function()
-                local waited2 = 0
-                while copyResult == nil and waited2 < 6 do
-                    task.wait(0.08); waited2 = waited2 + 0.08
-                end
-                if copyResult ~= nil then
-                    if copyResult.ok then
-                        local a, b = copyResult.a, copyResult.b
-                        if a == true and type(b) == "string" then
-                            if CodeBox and CodeBox:IsA("TextBox") then CodeBox.Text = b end
-                            uiNotify("Get Key", "Đã copy link vào clipboard.", 3)
-                        elseif a == false and type(b) == "string" then
-                            if CodeBox and CodeBox:IsA("TextBox") then CodeBox.Text = b end
-                            uiNotify("Get Key", "Không thể copy; link đặt vào ô nhập.", 3)
-                        elseif type(a) == "string" then
-                            if CodeBox and CodeBox:IsA("TextBox") then CodeBox.Text = a end
-                            uiNotify("Get Key", "Link trả về (vui lòng copy).", 3)
-                        else
-                            uiNotify("Get Key", "Không nhận được link.", 3)
-                        end
-                    else
-                        uiNotify("Get Key", "Lỗi khi lấy link: "..tostring(copyResult.a), 3)
-                    end
-                end
-            end)
-        end
 
-        -- 3) Fade text out -> restore orig text -> fade in, tween BG back to original
-        local tOut2 = TweenService:Create(GetCodeButton, TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { TextTransparency = 1 })
-        local tBgBack = TweenService:Create(GetCodeButton, TweenInfo.new(0.28, Enum.EasingStyle.Quad), { BackgroundColor3 = origBg })
-        tOut2:Play()
-        tOut2.Completed:Wait()
-        GetCodeButton.Text = origText
-        local tIn2 = TweenService:Create(GetCodeButton, TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { TextTransparency = origTextTransparency or 0 })
-        tIn2:Play()
-        tBgBack:Play()
-        tIn2.Completed:Wait()
-
-        -- unlock
-        locked = false
-        GetCodeButton.Active = true
-        GetCodeButton.Selectable = true
+            -- unlock regardless
+            locked = false
+            GetCodeButton.Active = true
+            GetCodeButton.Selectable = true
+        end)
     end)
 end
 
--- ========== Energy visual spawn helper ==========
+-- ---------- Energy parabolic effect helper (kept) ----------
 local function getCenterUDim2(gui)
     if not gui or not gui:IsA("GuiObject") then return UDim2.new(0.5,0,0.5,0) end
     local pos = gui.Position
     local size = gui.Size
+    -- center using offsets (best-effort)
     return UDim2.new(pos.X.Scale, pos.X.Offset + (size.X.Offset * 0.5), pos.Y.Scale, pos.Y.Offset + (size.Y.Offset * 0.5))
+end
+
+local function safeFadeTween(guiObj, duration)
+    -- attempt to fade ImageTransparency, TextTransparency, then BackgroundTransparency
+    pcall(function()
+        if guiObj:IsA("ImageLabel") or guiObj:IsA("ImageButton") then
+            TweenService:Create(guiObj, TweenInfo.new(duration, Enum.EasingStyle.Linear), { ImageTransparency = 1 }):Play()
+        end
+    end)
+    pcall(function()
+        if guiObj:IsA("TextLabel") or guiObj:IsA("TextBox") or guiObj:IsA("TextButton") then
+            TweenService:Create(guiObj, TweenInfo.new(duration, Enum.EasingStyle.Linear), { TextTransparency = 1 }):Play()
+        end
+    end)
+    pcall(function()
+        TweenService:Create(guiObj, TweenInfo.new(duration, Enum.EasingStyle.Linear), { BackgroundTransparency = 1 }):Play()
+    end)
 end
 
 local function spawnEnergyEffects(prototype, count, targetUDim2)
@@ -221,42 +140,43 @@ local function spawnEnergyEffects(prototype, count, targetUDim2)
             clone.Visible = true
             clone.Parent = prototype.Parent
             clone.ZIndex = (prototype.ZIndex or 1) + 5
-            -- ensure starts where prototype is
             clone.Position = prototype.Position
             clone.AnchorPoint = prototype.AnchorPoint
 
-            -- timing
-            local upTime = 0.20 + (math.random() * 0.07)
+            -- timing & arc
+            local upTime = 0.18 + (math.random() * 0.06)
             local downTime = 0.30 + (math.random() * 0.12)
 
             local start = clone.Position
             local target = targetUDim2 or getCenterUDim2(prototype)
-            -- mid point with lift to make arc (use scale blend + offset average)
+
             local midX = (start.X.Scale + target.X.Scale) / 2
-            local midOffsetX = (start.X.Offset + target.X.Offset) / 2
-            local midY = (start.Y.Scale + target.Y.Scale) / 2 - 0.12
-            local midOffsetY = (start.Y.Offset + target.Y.Offset) / 2 - 8
+            local midOffsetX = (start.X.Offset + target.X.Offset) / 2 + (math.random(-12,12)) -- slight horizontal jitter
+            local midY = (start.Y.Scale + target.Y.Scale) / 2 - 0.12 - (math.random() * 0.05)
+            local midOffsetY = (start.Y.Offset + target.Y.Offset) / 2 - 12 - math.random(0,8)
             local mid = UDim2.new(midX, midOffsetX, midY, midOffsetY)
 
-            -- fade tween (fade out)
-            local fadeTween = TweenService:Create(clone, TweenInfo.new(0.18, Enum.EasingStyle.Linear), { ImageTransparency = 1 })
-
+            local fadeDur = 0.16
+            local fadeTween = TweenService:Create(clone, TweenInfo.new(fadeDur, Enum.EasingStyle.Linear), {} )
+            -- try to set appropriate property tween inside pcall when starting fade
             local tUp = TweenService:Create(clone, TweenInfo.new(upTime, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = mid })
             local tDown = TweenService:Create(clone, TweenInfo.new(downTime, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = target })
 
             tUp:Play()
             tUp.Completed:Wait()
             tDown:Play()
-            -- start fade shortly before end
-            task.delay(math.max(0, downTime - 0.18), function() pcall(function() fadeTween:Play() end) end)
+            -- fade near end
+            task.delay(math.max(0, downTime - fadeDur), function()
+                safeFadeTween(clone, fadeDur)
+            end)
             tDown.Completed:Wait()
             pcall(function() clone:Destroy() end)
         end)
-        task.wait(0.03) -- stagger
+        task.wait(0.03)
     end
 end
 
--- ========== CheckButton logic ==========
+-- ---------- CHECK KEY logic (no CodeBox inline messages) ----------
 if CheckButton and CheckButton:IsA("GuiButton") then
     CheckButton.MouseButton1Click:Connect(function()
         local key = ""
@@ -265,12 +185,12 @@ if CheckButton and CheckButton:IsA("GuiButton") then
         end
 
         if key == "" then
-            showTempMessageInBox("Vui lòng nhập key trước khi kiểm tra.", Color3.fromRGB(255,120,120), 2)
+            uiNotify("Key", "Vui lòng nhập key trước khi kiểm tra.", 3)
             return
         end
 
         if type(verifyKey) ~= "function" then
-            showTempMessageInBox("Hệ thống xác thực không khả dụng.", Color3.fromRGB(255,160,0), 2)
+            uiNotify("Key", "Hệ thống xác thực không khả dụng.", 3)
             return
         end
 
@@ -280,34 +200,33 @@ if CheckButton and CheckButton:IsA("GuiButton") then
 
         local okVerify, verifyRes = pcall(verifyKey, key)
         if not okVerify then
-            showTempMessageInBox("Lỗi khi gọi verifyKey.", Color3.fromRGB(255,120,120), 2)
+            uiNotify("Key", "Lỗi khi gọi verifyKey.", 3)
             CheckButton.Active = true; CheckButton.Selectable = true
             return
         end
         if verifyRes ~= true then
-            showTempMessageInBox("Key không hợp lệ.", Color3.fromRGB(255,120,120), 2)
+            uiNotify("Key", "Key không hợp lệ.", 3)
             CheckButton.Active = true; CheckButton.Selectable = true
             return
         end
 
-        -- server-side checks
+        -- server-side housekeeping
         if type(EnsureUser) == "function" then pcall(EnsureUser) end
         if type(CleanupExpiredKeys) == "function" then pcall(CleanupExpiredKeys) end
 
         if type(IsKeyCurrentlyUsed) == "function" then
             local okUsed, usedRes = pcall(IsKeyCurrentlyUsed, key)
             if okUsed and usedRes == true then
-                showTempMessageInBox("Key đã được dùng trong vòng 1 giờ.", Color3.fromRGB(255,160,0), 2)
+                uiNotify("Key", "Key đã được dùng trong vòng 1 giờ.", 3)
                 CheckButton.Active = true; CheckButton.Selectable = true
                 return
             end
         end
 
-        -- mark used
         if type(MarkKeyUsed) == "function" then
             local okM, resM = pcall(MarkKeyUsed, key)
             if not okM or not resM then
-                showTempMessageInBox("Lỗi lưu key đã dùng.", Color3.fromRGB(255,120,120), 2)
+                uiNotify("Key", "Lỗi lưu key đã dùng.", 3)
                 CheckButton.Active = true; CheckButton.Selectable = true
                 return
             end
@@ -321,7 +240,7 @@ if CheckButton and CheckButton:IsA("GuiButton") then
         end
 
         if curEnergy >= ENERGY_MAX then
-            showTempMessageInBox("Energy đã đầy ("..tostring(ENERGY_MAX)..").", Color3.fromRGB(200,200,200), 2)
+            uiNotify("Key", "Energy đã đầy ("..tostring(ENERGY_MAX)..").", 3)
             CheckButton.Active = true; CheckButton.Selectable = true
             return
         end
@@ -334,19 +253,21 @@ if CheckButton and CheckButton:IsA("GuiButton") then
         end
 
         if addOk then
-            if EnergyValueLabel then EnergyValueLabel.Text = tostring(math.clamp(tonumber(newVal) or newVal, 0, ENERGY_MAX)) .. "/" .. tostring(ENERGY_MAX) end
+            if EnergyValueLabel then
+                EnergyValueLabel.Text = tostring(math.clamp(tonumber(newVal) or newVal, 0, ENERGY_MAX)) .. "/" .. tostring(ENERGY_MAX)
+            end
 
             -- spawn energy effect clones if prototype exists (search inside CheckButton first)
             local prototype = CheckButton:FindFirstChild("EnergyEffect") or System:FindFirstChild("EnergyEffect")
-            if prototype and prototype:IsA("ImageLabel") then
+            if prototype and prototype:IsA("GuiObject") then
                 prototype.Visible = false
                 local targetUDim2 = getCenterUDim2(EnergyIcon or prototype)
                 spawnEnergyEffects(prototype, 10, targetUDim2)
             end
 
-            showTempMessageInBox("Key hợp lệ! +"..tostring(allowed).." Energy", Color3.fromRGB(180,255,180), 2)
+            uiNotify("Key", "Key hợp lệ! +"..tostring(allowed).." Energy", 3)
         else
-            showTempMessageInBox("Lỗi cập nhật Energy.", Color3.fromRGB(255,120,120), 2)
+            uiNotify("Key", "Lỗi cập nhật Energy.", 3)
         end
 
         CheckButton.Active = true
@@ -354,7 +275,7 @@ if CheckButton and CheckButton:IsA("GuiButton") then
     end)
 end
 
--- optional periodic refresh
+-- periodic refresh (reflect server changes)
 task.spawn(function()
     while true do
         refreshEnergyLabel()
