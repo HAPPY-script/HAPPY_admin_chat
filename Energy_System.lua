@@ -747,7 +747,7 @@ if GetCodeButton and GetCodeButton:IsA("GuiButton") then
     end)
 end
 
--- CHECK KEY: minimal Firebase usage, only on-demand (updated: atomic update + rollback)
+-- CHECK KEY: minimal Firebase usage, only on-demand (fixed UI update)
 if CheckButton and CheckButton:IsA("GuiButton") then
     CheckButton.MouseButton1Click:Connect(function()
         task.spawn(function()
@@ -761,7 +761,7 @@ if CheckButton and CheckButton:IsA("GuiButton") then
                 return
             end
 
-            -- try to find verify function
+            -- find verify function
             local verifyF = serviceFuncs.verifyKey or (type(_G) == "table" and _G.verifyKey) or (type(_G) == "table" and type(_G.Platoboost) == "table" and _G.Platoboost.verifyKey)
             if type(verifyF) ~= "function" then
                 pcall(function() resolveServices(0.6) end)
@@ -776,7 +776,7 @@ if CheckButton and CheckButton:IsA("GuiButton") then
             CheckButton.Active = false
             CheckButton.Selectable = false
 
-            -- remote verify (Platoboost)
+            -- verify remotely
             local okVerify, verifyRes = pcall(verifyF, key)
             if not okVerify then
                 uiNotify("Key", "Error calling verifyKey.", 3)
@@ -789,11 +789,11 @@ if CheckButton and CheckButton:IsA("GuiButton") then
                 return
             end
 
-            -- Now perform minimal firebase steps (on-demand only)
+            -- minimal firebase work
             pcall(function() EnsureUser() end)
             pcall(function() CleanupExpiredKeys() end)
 
-            -- check usedKeys (single read)
+            -- check usedKeys
             local okUsed, usedRes = pcall(IsKeyCurrentlyUsed, key)
             if okUsed and usedRes == true then
                 uiNotify("Key", "Key was used within the last hour.", 3)
@@ -801,7 +801,7 @@ if CheckButton and CheckButton:IsA("GuiButton") then
                 return
             end
 
-            -- mark key used (so concurrent redeems from others are prevented)
+            -- mark key used early to avoid races
             local okMark, resMark = pcall(MarkKeyUsed, key)
             if not okMark or not resMark then
                 uiNotify("Key", "Failed to mark key as used.", 3)
@@ -809,7 +809,7 @@ if CheckButton and CheckButton:IsA("GuiButton") then
                 return
             end
 
-            -- get current energy (single read)
+            -- read current energy
             local curEnergy = 0
             local okE, vE = pcall(GetEnergy)
             if okE and tonumber(vE) then curEnergy = tonumber(vE) else curEnergy = 0 end
@@ -823,23 +823,44 @@ if CheckButton and CheckButton:IsA("GuiButton") then
             local allowed = math.min(REWARD_ENERGY, ENERGY_MAX - curEnergy)
             local addOk, newVal = false, curEnergy
 
-            -- prefer serviceFuncs.AddEnergy if available (resolved earlier), fallback to global AddEnergy
+            -- prefer resolved AddEnergy function, fallback to globals
             local addFunc = serviceFuncs.AddEnergy or (type(_G)=="table" and _G.AddEnergy) or AddEnergy
 
             if type(addFunc) == "function" then
-                local okA, retA = pcall(addFunc, allowed)
-                if okA and retA then addOk = true; newVal = retA else addOk = false end
+                -- robustly capture all returns from pcall + function
+                local results = { pcall(addFunc, allowed) }
+                local pcallOk = results[1]
+                if pcallOk then
+                    local fnRet1 = results[2] -- could be ok (bool) or newVal (number) depending on impl
+                    local fnRet2 = results[3] -- likely newVal if fnRet1 is ok-boolean
+
+                    -- case: AddEnergy returns (okBool, newVal)
+                    if type(fnRet1) == "boolean" and fnRet1 == true and fnRet2 ~= nil then
+                        addOk = true
+                        newVal = tonumber(fnRet2) or fnRet2
+                    -- case: AddEnergy returns just newVal (number)
+                    elseif type(fnRet1) == "number" or (type(fnRet1) == "string" and tonumber(fnRet1)) then
+                        addOk = true
+                        newVal = tonumber(fnRet1) or fnRet1
+                    -- case: AddEnergy returns (true, newVal) but pcall captured differently
+                    elseif fnRet1 ~= nil and fnRet2 == nil and tonumber(fnRet1) then
+                        addOk = true
+                        newVal = tonumber(fnRet1)
+                    end
+                end
             else
                 addOk = false
             end
 
             if addOk then
-                -- update UI label only after successful DB update
+                -- update UI immediately with confirmed DB value
                 if EnergyValueLabel then
-                    EnergyValueLabel.Text = tostring(math.clamp(tonumber(newVal) or newVal, 0, ENERGY_MAX)) .. "/" .. tostring(ENERGY_MAX)
+                    pcall(function()
+                        EnergyValueLabel.Text = tostring(math.clamp(tonumber(newVal) or newVal, 0, ENERGY_MAX)) .. "/" .. tostring(ENERGY_MAX)
+                    end)
                 end
 
-                -- play effects if present
+                -- visual effect
                 local prototype = CheckButton:FindFirstChild("EnergyEffect") or (System and System:FindFirstChild("EnergyEffect"))
                 if prototype and prototype:IsA("GuiObject") then
                     prototype.Visible = false
@@ -859,7 +880,7 @@ if CheckButton and CheckButton:IsA("GuiButton") then
 
                 uiNotify("Key", "Key redeemed! +"..tostring(allowed).." Energy", 3)
             else
-                -- add failed: attempt rollback of used mark so key can be retried
+                -- add failed: attempt rollback so key can be retried
                 uiNotify("Key", "Failed to update Energy. Rolling back key usage...", 3)
                 pcall(function()
                     if type(RemoveUsedKey) == "function" then
