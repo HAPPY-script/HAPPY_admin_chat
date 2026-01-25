@@ -5,7 +5,7 @@ local a=2^32;local b=a-1;local function c(d,e)local f,g=0,1;while d~=0 or e~=0 d
 local lEncode, lDecode, lDigest = a3, aw, Z;
 -------------------------------------------------------------------------------
 
--- LocalScript: UI connector (no built UI, no GetCode button tweens, no CodeBox inline messages)
+-- LocalScript: UI connector (robusted / compatible with encrypted-service exports)
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
@@ -14,13 +14,35 @@ local player = Players.LocalPlayer
 if not player then repeat task.wait() until Players.LocalPlayer; player = Players.LocalPlayer end
 local playerGui = player:WaitForChild("PlayerGui")
 
--- connect to existing UI
-local System = playerGui:WaitForChild("HAPPYscript"):WaitForChild("Main"):WaitForChild("ScrollingFrame"):WaitForChild("System")
+-- try to find the UI more flexibly
+local function findSystem()
+    local root = playerGui:FindFirstChild("HAPPYscript") or playerGui:FindFirstChildWhichIsA("ScreenGui")
+    if not root then return nil end
+    local main = root:FindFirstChild("Main") or root:FindFirstChildWhichIsA("Frame")
+    if not main then return nil end
+    local scrolling = main:FindFirstChild("ScrollingFrame") or main:FindFirstChildWhichIsA("ScrollingFrame")
+    if not scrolling then return nil end
+    return scrolling:FindFirstChild("System") or scrolling:FindFirstChildWhichIsA("Frame")
+end
 
-local CodeBox = System:WaitForChild("CodeBox")
-local GetCodeButton = System:WaitForChild("GetCodeButton")
-local CheckButton = (CodeBox:FindFirstChild("CheckButton") or System:FindFirstChild("CheckButton"))
-local EnergyIcon = System:FindFirstChild("EnergyIcon")
+local System = findSystem()
+if not System then
+    -- final attempt: wait a short time for UI to appear
+    for i = 1, 30 do
+        System = findSystem()
+        if System then break end
+        task.wait(0.05)
+    end
+end
+if not System then
+    warn("[HAPPYscript] UI 'System' không tìm thấy trong PlayerGui; script sẽ cố gắng hoạt động nhưng một số UI sẽ không khả dụng.")
+end
+
+local CodeBox = System and System:FindFirstChild("CodeBox")
+local GetCodeButton = System and System:FindFirstChild("GetCodeButton")
+-- prefer explicit children then fallback search
+local CheckButton = (CodeBox and CodeBox:FindFirstChild("CheckButton")) or (System and System:FindFirstChild("CheckButton"))
+local EnergyIcon = System and System:FindFirstChild("EnergyIcon")
 local EnergyValueLabel = EnergyIcon and (EnergyIcon:FindFirstChild("Value") or EnergyIcon:FindFirstChildWhichIsA("TextLabel"))
 
 -- config
@@ -34,11 +56,81 @@ local function uiNotify(title, text, duration)
     end)
 end
 
+-- --- service function resolver
+local serviceFuncs = {
+    copyLink = nil,
+    cacheLink = nil,
+    verifyKey = nil,
+    EnsureUser = nil,
+    CleanupExpiredKeys = nil,
+    IsKeyCurrentlyUsed = nil,
+    MarkKeyUsed = nil,
+    GetEnergy = nil,
+    AddEnergy = nil,
+}
+
+local function resolveServices(timeout)
+    timeout = timeout or 2 -- seconds
+    local deadline = tick() + timeout
+    while tick() < deadline do
+        -- first, check _G.Platoboost export (common pattern)
+        if type(_G) == "table" and type(_G.Platoboost) == "table" then
+            local p = _G.Platoboost
+            for k,_ in pairs(serviceFuncs) do
+                if type(serviceFuncs[k]) ~= "function" and type(p[k]) == "function" then
+                    serviceFuncs[k] = p[k]
+                end
+            end
+        end
+
+        -- fallback: globals with those names
+        for k,_ in pairs(serviceFuncs) do
+            if type(serviceFuncs[k]) ~= "function" and type(_G[k]) == "function" then
+                serviceFuncs[k] = _G[k]
+            elseif type(serviceFuncs[k]) ~= "function" and type(_G[k]) ~= "function" and type(_G[k]) ~= "nil" then
+                -- nothing
+            end
+        end
+
+        -- direct globals (non _G) e.g. copyLink defined as global
+        for k,_ in pairs(serviceFuncs) do
+            if type(serviceFuncs[k]) ~= "function" and type(_G[k]) ~= "function" then
+                if type(_G[k]) == "function" then serviceFuncs[k] = _G[k] end
+            end
+            if type(serviceFuncs[k]) ~= "function" and type(_G[k]) ~= "function" then
+                if type(getfenv and getfenv()[k]) == "function" then
+                    serviceFuncs[k] = getfenv()[k]
+                end
+            end
+            if type(serviceFuncs[k]) ~= "function" and type(_G[k]) ~= "function" and _G.Platoboost == nil then
+                if type(_G[k]) == "function" then serviceFuncs[k] = _G[k] end
+            end
+        end
+
+        -- check if all critical resolved (copy/cache/verify + energy related)
+        if (type(serviceFuncs.copyLink) == "function" or type(serviceFuncs.cacheLink) == "function")
+           and type(serviceFuncs.verifyKey) == "function" then
+            return true
+        end
+
+        task.wait(0.05)
+    end
+    -- final attempt: copy any functions present individually
+    for k,_ in pairs(serviceFuncs) do
+        if type(_G[k]) == "function" then serviceFuncs[k] = _G[k] end
+    end
+    return false
+end
+
+-- resolve in background but don't block UI creation
+task.spawn(function() resolveServices(3) end)
+
 -- refresh energy label from server function GetEnergy()
 local function refreshEnergyLabel()
     if not EnergyValueLabel then return end
-    if type(GetEnergy) == "function" then
-        local ok, val = pcall(GetEnergy)
+    local GetEnergyF = serviceFuncs.GetEnergy or _G.GetEnergy
+    if type(GetEnergyF) == "function" then
+        local ok, val = pcall(GetEnergyF)
         if ok and tonumber(val) then
             local n = math.clamp(tonumber(val), 0, ENERGY_MAX)
             EnergyValueLabel.Text = tostring(n) .. "/" .. tostring(ENERGY_MAX)
@@ -47,9 +139,10 @@ local function refreshEnergyLabel()
     end
     EnergyValueLabel.Text = "0/" .. tostring(ENERGY_MAX)
 end
+-- initial attempt (may show 0/100 first; later periodic refresh will update)
 refreshEnergyLabel()
 
--- ---------- GET CODE: no visual tweens, simple behavior ----------
+-- ---------- GET CODE: robust behavior ----------
 if GetCodeButton and GetCodeButton:IsA("GuiButton") then
     local locked = false
     GetCodeButton.MouseButton1Click:Connect(function()
@@ -58,15 +151,17 @@ if GetCodeButton and GetCodeButton:IsA("GuiButton") then
         GetCodeButton.Active = false
         GetCodeButton.Selectable = false
 
-        -- perform copy in background, update CodeBox only when link available
         task.spawn(function()
             local result, a, b
-            -- prefer copyLink, fallback cacheLink
-            if type(copyLink) == "function" then
-                local ok, r1, r2 = pcall(copyLink)
+            -- prefer resolved functions (resolveServices may have populated serviceFuncs)
+            local copyF = serviceFuncs.copyLink
+            local cacheF = serviceFuncs.cacheLink
+
+            if type(copyF) == "function" then
+                local ok, r1, r2 = pcall(copyF)
                 result, a, b = ok, r1, r2
-            elseif type(cacheLink) == "function" then
-                local ok2, r1, r2 = pcall(cacheLink)
+            elseif type(cacheF) == "function" then
+                local ok2, r1, r2 = pcall(cacheF)
                 result, a, b = ok2, r1, r2
             else
                 result, a, b = false, "no_copy_function"
@@ -79,10 +174,7 @@ if GetCodeButton and GetCodeButton:IsA("GuiButton") then
                     uiNotify("Get Key", "Lỗi lấy link: " .. tostring(a), 3)
                 end
             else
-                -- handle typical return shapes:
-                -- (true, link) => copied to clipboard
-                -- (false, link) => not copied, but link returned
-                -- (string) => sometimes cacheLink may return string in first arg
+                -- handle common shapes
                 if a == true and type(b) == "string" then
                     if CodeBox and CodeBox:IsA("TextBox") then CodeBox.Text = b end
                     uiNotify("Get Key", "Link sẵn sàng và đã copy (nếu executor cho phép).", 3)
@@ -105,17 +197,15 @@ if GetCodeButton and GetCodeButton:IsA("GuiButton") then
     end)
 end
 
--- ---------- Energy parabolic effect helper (kept) ----------
+-- ---------- Energy parabolic effect helper (kept/improved minor) ----------
 local function getCenterUDim2(gui)
     if not gui or not gui:IsA("GuiObject") then return UDim2.new(0.5,0,0.5,0) end
     local pos = gui.Position
     local size = gui.Size
-    -- center using offsets (best-effort)
     return UDim2.new(pos.X.Scale, pos.X.Offset + (size.X.Offset * 0.5), pos.Y.Scale, pos.Y.Offset + (size.Y.Offset * 0.5))
 end
 
 local function safeFadeTween(guiObj, duration)
-    -- attempt to fade ImageTransparency, TextTransparency, then BackgroundTransparency
     pcall(function()
         if guiObj:IsA("ImageLabel") or guiObj:IsA("ImageButton") then
             TweenService:Create(guiObj, TweenInfo.new(duration, Enum.EasingStyle.Linear), { ImageTransparency = 1 }):Play()
@@ -136,14 +226,14 @@ local function spawnEnergyEffects(prototype, count, targetUDim2)
     count = math.max(1, count or 10)
     for i = 1, count do
         task.spawn(function()
-            local clone = prototype:Clone()
+            local ok, clone = pcall(function() return prototype:Clone() end)
+            if not ok or not clone then return end
             clone.Visible = true
             clone.Parent = prototype.Parent
             clone.ZIndex = (prototype.ZIndex or 1) + 5
             clone.Position = prototype.Position
-            clone.AnchorPoint = prototype.AnchorPoint
+            clone.AnchorPoint = prototype.AnchorPoint or Vector2.new(0.5, 0.5)
 
-            -- timing & arc
             local upTime = 0.18 + (math.random() * 0.06)
             local downTime = 0.30 + (math.random() * 0.12)
 
@@ -151,21 +241,18 @@ local function spawnEnergyEffects(prototype, count, targetUDim2)
             local target = targetUDim2 or getCenterUDim2(prototype)
 
             local midX = (start.X.Scale + target.X.Scale) / 2
-            local midOffsetX = (start.X.Offset + target.X.Offset) / 2 + (math.random(-12,12)) -- slight horizontal jitter
+            local midOffsetX = (start.X.Offset + target.X.Offset) / 2 + (math.random(-12,12))
             local midY = (start.Y.Scale + target.Y.Scale) / 2 - 0.12 - (math.random() * 0.05)
             local midOffsetY = (start.Y.Offset + target.Y.Offset) / 2 - 12 - math.random(0,8)
             local mid = UDim2.new(midX, midOffsetX, midY, midOffsetY)
 
             local fadeDur = 0.16
-            local fadeTween = TweenService:Create(clone, TweenInfo.new(fadeDur, Enum.EasingStyle.Linear), {} )
-            -- try to set appropriate property tween inside pcall when starting fade
             local tUp = TweenService:Create(clone, TweenInfo.new(upTime, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = mid })
             local tDown = TweenService:Create(clone, TweenInfo.new(downTime, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = target })
 
             tUp:Play()
             tUp.Completed:Wait()
             tDown:Play()
-            -- fade near end
             task.delay(math.max(0, downTime - fadeDur), function()
                 safeFadeTween(clone, fadeDur)
             end)
@@ -176,102 +263,104 @@ local function spawnEnergyEffects(prototype, count, targetUDim2)
     end
 end
 
--- ---------- CHECK KEY logic (no CodeBox inline messages) ----------
+-- ---------- CHECK KEY logic (non-blocking, robust) ----------
 if CheckButton and CheckButton:IsA("GuiButton") then
     CheckButton.MouseButton1Click:Connect(function()
-        local key = ""
-        if CodeBox and CodeBox:IsA("TextBox") then
-            key = tostring(CodeBox.Text or ""):gsub("^%s*(.-)%s*$", "%1")
-        end
+        task.spawn(function()
+            local key = ""
+            if CodeBox and CodeBox:IsA("TextBox") then
+                key = tostring(CodeBox.Text or ""):gsub("^%s*(.-)%s*$", "%1")
+            end
 
-        if key == "" then
-            uiNotify("Key", "Vui lòng nhập key trước khi kiểm tra.", 3)
-            return
-        end
+            if key == "" then
+                uiNotify("Key", "Vui lòng nhập key trước khi kiểm tra.", 3)
+                return
+            end
 
-        if type(verifyKey) ~= "function" then
-            uiNotify("Key", "Hệ thống xác thực không khả dụng.", 3)
-            return
-        end
+            local verifyF = serviceFuncs.verifyKey or _G.verifyKey
+            if type(verifyF) ~= "function" then
+                uiNotify("Key", "Hệ thống xác thực không khả dụng.", 3)
+                return
+            end
 
-        -- disable while verifying
-        CheckButton.Active = false
-        CheckButton.Selectable = false
+            -- disable while verifying
+            CheckButton.Active = false
+            CheckButton.Selectable = false
 
-        local okVerify, verifyRes = pcall(verifyKey, key)
-        if not okVerify then
-            uiNotify("Key", "Lỗi khi gọi verifyKey.", 3)
-            CheckButton.Active = true; CheckButton.Selectable = true
-            return
-        end
-        if verifyRes ~= true then
-            uiNotify("Key", "Key không hợp lệ.", 3)
-            CheckButton.Active = true; CheckButton.Selectable = true
-            return
-        end
-
-        -- server-side housekeeping
-        if type(EnsureUser) == "function" then pcall(EnsureUser) end
-        if type(CleanupExpiredKeys) == "function" then pcall(CleanupExpiredKeys) end
-
-        if type(IsKeyCurrentlyUsed) == "function" then
-            local okUsed, usedRes = pcall(IsKeyCurrentlyUsed, key)
-            if okUsed and usedRes == true then
-                uiNotify("Key", "Key đã được dùng trong vòng 1 giờ.", 3)
+            local okVerify, verifyRes = pcall(verifyF, key)
+            if not okVerify then
+                uiNotify("Key", "Lỗi khi gọi verifyKey.", 3)
                 CheckButton.Active = true; CheckButton.Selectable = true
                 return
             end
-        end
-
-        if type(MarkKeyUsed) == "function" then
-            local okM, resM = pcall(MarkKeyUsed, key)
-            if not okM or not resM then
-                uiNotify("Key", "Lỗi lưu key đã dùng.", 3)
+            if verifyRes ~= true then
+                uiNotify("Key", "Key không hợp lệ.", 3)
                 CheckButton.Active = true; CheckButton.Selectable = true
                 return
             end
-        end
 
-        -- energy handling
-        local curEnergy = 0
-        if type(GetEnergy) == "function" then
-            local okE, vE = pcall(GetEnergy)
-            if okE and tonumber(vE) then curEnergy = tonumber(vE) else curEnergy = 0 end
-        end
+            -- server-side housekeeping (if available)
+            if type(serviceFuncs.EnsureUser) == "function" then pcall(serviceFuncs.EnsureUser) end
+            if type(serviceFuncs.CleanupExpiredKeys) == "function" then pcall(serviceFuncs.CleanupExpiredKeys) end
 
-        if curEnergy >= ENERGY_MAX then
-            uiNotify("Key", "Energy đã đầy ("..tostring(ENERGY_MAX)..").", 3)
-            CheckButton.Active = true; CheckButton.Selectable = true
-            return
-        end
-
-        local allowed = math.min(REWARD_ENERGY, ENERGY_MAX - curEnergy)
-        local addOk, newVal = false, curEnergy
-        if type(AddEnergy) == "function" then
-            local okA, retA = pcall(AddEnergy, allowed)
-            if okA and retA then addOk = true; newVal = retA else addOk = false end
-        end
-
-        if addOk then
-            if EnergyValueLabel then
-                EnergyValueLabel.Text = tostring(math.clamp(tonumber(newVal) or newVal, 0, ENERGY_MAX)) .. "/" .. tostring(ENERGY_MAX)
+            if type(serviceFuncs.IsKeyCurrentlyUsed) == "function" then
+                local okUsed, usedRes = pcall(serviceFuncs.IsKeyCurrentlyUsed, key)
+                if okUsed and usedRes == true then
+                    uiNotify("Key", "Key đã được dùng trong vòng 1 giờ.", 3)
+                    CheckButton.Active = true; CheckButton.Selectable = true
+                    return
+                end
             end
 
-            -- spawn energy effect clones if prototype exists (search inside CheckButton first)
-            local prototype = CheckButton:FindFirstChild("EnergyEffect") or System:FindFirstChild("EnergyEffect")
-            if prototype and prototype:IsA("GuiObject") then
-                prototype.Visible = false
-                local targetUDim2 = getCenterUDim2(EnergyIcon or prototype)
-                spawnEnergyEffects(prototype, 10, targetUDim2)
+            if type(serviceFuncs.MarkKeyUsed) == "function" then
+                local okM, resM = pcall(serviceFuncs.MarkKeyUsed, key)
+                if not okM or not resM then
+                    uiNotify("Key", "Lỗi lưu key đã dùng.", 3)
+                    CheckButton.Active = true; CheckButton.Selectable = true
+                    return
+                end
             end
 
-            uiNotify("Key", "Key hợp lệ! +"..tostring(allowed).." Energy", 3)
-        else
-            uiNotify("Key", "Lỗi cập nhật Energy.", 3)
-        end
+            -- energy handling
+            local curEnergy = 0
+            if type(serviceFuncs.GetEnergy) == "function" then
+                local okE, vE = pcall(serviceFuncs.GetEnergy)
+                if okE and tonumber(vE) then curEnergy = tonumber(vE) else curEnergy = 0 end
+            end
 
-        CheckButton.Active = true
-        CheckButton.Selectable = true
+            if curEnergy >= ENERGY_MAX then
+                uiNotify("Key", "Energy đã đầy ("..tostring(ENERGY_MAX)..").", 3)
+                CheckButton.Active = true; CheckButton.Selectable = true
+                return
+            end
+
+            local allowed = math.min(REWARD_ENERGY, ENERGY_MAX - curEnergy)
+            local addOk, newVal = false, curEnergy
+            if type(serviceFuncs.AddEnergy) == "function" then
+                local okA, retA = pcall(serviceFuncs.AddEnergy, allowed)
+                if okA and retA then addOk = true; newVal = retA else addOk = false end
+            end
+
+            if addOk then
+                if EnergyValueLabel then
+                    EnergyValueLabel.Text = tostring(math.clamp(tonumber(newVal) or newVal, 0, ENERGY_MAX)) .. "/" .. tostring(ENERGY_MAX)
+                end
+
+                local prototype = CheckButton:FindFirstChild("EnergyEffect") or (System and System:FindFirstChild("EnergyEffect"))
+                if prototype and prototype:IsA("GuiObject") then
+                    prototype.Visible = false
+                    local targetUDim2 = getCenterUDim2(EnergyIcon or prototype)
+                    spawnEnergyEffects(prototype, 10, targetUDim2)
+                end
+
+                uiNotify("Key", "Key hợp lệ! +"..tostring(allowed).." Energy", 3)
+            else
+                uiNotify("Key", "Lỗi cập nhật Energy.", 3)
+            end
+
+            CheckButton.Active = true
+            CheckButton.Selectable = true
+        end)
     end)
 end
 
