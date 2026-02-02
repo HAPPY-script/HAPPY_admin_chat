@@ -34,7 +34,7 @@ local ScriptMapping = {
 
 	-- GameHud --
 	BloxFruit = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/BLOX_FRUIT/refs/heads/main/NewUINotification.lua")
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/BloxFruitHub_NewUI/refs/heads/main/MainLoad.lua")
 		loadstring(code)()
 	end,
 	ZombieStories = function()
