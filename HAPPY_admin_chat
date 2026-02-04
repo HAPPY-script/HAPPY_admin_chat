@@ -1,4 +1,4 @@
-getgenv().RestFireBase = false
+getgenv().RestFireBase = true
 getgenv().DataMember = false
 
 --[[ local Players = game:GetService("Players")
