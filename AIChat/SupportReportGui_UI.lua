@@ -12,7 +12,7 @@ Main4.BackgroundColor3 = Color3.new(0.0941177, 0.0941177, 0.0941177)
 Main4.BorderSizePixel = 0
 Main4.BorderColor3 = Color3.new(0, 0, 0)
 Main4.AnchorPoint = Vector2.new(0.5, 0.5)
-Main4.Visible = false
+Main4.Visible = true
 Main4.Parent = SupportReportGui
 
 local UIARCMain = Instance.new("UIAspectRatioConstraint")
