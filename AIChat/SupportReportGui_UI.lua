@@ -390,9 +390,7 @@ Instruct.BackgroundTransparency = 1
 Instruct.BorderSizePixel = 0
 Instruct.BorderColor3 = Color3.new(0, 0, 0)
 Instruct.Transparency = 1
-Instruct.Text = "Contact the developer to send your message directly to the developer, but you'll have to wait a considerable amount of time for a response.
-
-Contact the AI ​​to send a message to the developer's AI; the AI ​​will respond shortly, but the response won't be as accurate as the developer's."
+Instruct.Text = "Contact the developer to send your message directly to the developer, but you'll have to wait a considerable amount of time for a response.\nContact the AI ​​to send a message to the developer's AI; the AI ​​will respond shortly, but the response won't be as accurate as the developer's."
 Instruct.TextColor3 = Color3.new(0.541176, 0.541176, 0.541176)
 Instruct.TextSize = 14
 Instruct.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
