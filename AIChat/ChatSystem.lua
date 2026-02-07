@@ -86,7 +86,8 @@ do
 			isWaiting = false,
 			doneVisible = false,
 			lastResponse = nil,
-			waitTween = nil
+			waitTween = nil,
+			typingToken = 0
 		},
 		AI = {
 			container = chatAI,
@@ -95,9 +96,13 @@ do
 			isWaiting = false,
 			doneVisible = false,
 			lastResponse = nil,
-			waitTween = nil
+			waitTween = nil,
+			typingToken = 0
 		}
 	}
+	
+	-- typing default duration (seconds)
+	local TYPING_DURATION = 0.5
 	
 	-- colors
 	local COLOR_DEFAULT = Color3.fromRGB(24,24,24)
@@ -139,6 +144,62 @@ do
 		sendButton.AutoButtonColor = true
 	end
 	
+	-- MOD: time-based typing that completes in chunks of 0.5s per 100 chars
+	-- If `duration` is passed (non-nil), that value is used. Otherwise:
+	-- duration = ceil(max(1, n) / 100) * 0.5
+	local function typeTextIntoLabel(label, fullText, duration, channel)
+		if not label then return end
+	
+		local s = tostring(fullText or "")
+		local n = #s
+	
+		-- compute duration automatically if not provided:
+		if not duration then
+			-- ensure at least 1 char bucket so empty strings still use 0.5s
+			local bucketCount = math.ceil(math.max(1, n) / 100)
+			duration = bucketCount * 0.5
+		end
+	
+		-- bump token to cancel any previous typing for this channel
+		if channel then
+			channel.typingToken = (channel.typingToken or 0) + 1
+		end
+		local myToken = channel and channel.typingToken or math.random(1,1000000)
+	
+		-- quick path for empty string: still respect duration by doing nothing (or set empty)
+		pcall(function() label.Text = "" end)
+		if n == 0 then return end
+	
+		task.spawn(function()
+			local startTime = tick()
+			local displayed = 0
+			local tickWait = 0.016 -- ~60 FPS updates
+	
+			while true do
+				-- cancel if another typing started
+				if channel and channel.typingToken ~= myToken then return end
+	
+				local elapsed = tick() - startTime
+				if elapsed >= duration then break end
+	
+				-- fraction progress [0,1)
+				local frac = elapsed / duration
+				local want = math.floor(frac * n)
+	
+				if want > displayed then
+					displayed = want
+					pcall(function() label.Text = string.sub(s, 1, displayed) end)
+				end
+	
+				task.wait(tickWait)
+			end
+	
+			-- final cancel check then set full text
+			if channel and channel.typingToken ~= myToken then return end
+			pcall(function() label.Text = s end)
+		end)
+	end
+	
 	-- wait loop
 	local waitLoopRunning = false
 	local function startWaitLoopFor(channelName)
@@ -172,6 +233,52 @@ do
 		end
 	end
 	
+	-- Reset a channel to a clean initial state (cancels typing/tweens, clears texts, hides done/wait)
+	local function resetChannel(channelName)
+		local ch = channels[channelName]
+		if not ch then return end
+	
+		-- cancel wait tween
+		if ch.waitTween then
+			pcall(function() ch.waitTween:Cancel() end)
+			ch.waitTween = nil
+		end
+	
+		-- stop waiting/done state
+		ch.isWaiting = false
+		ch.doneVisible = false
+		ch.lastResponse = nil
+	
+		-- bump typing token to cancel any active typing
+		ch.typingToken = (ch.typingToken or 0) + 1
+	
+		-- hide waitdot if active channel
+		if channelName == activeChannelName then
+			if waitDot then waitDot.Visible = false end
+			if doneButton then doneButton.Visible = false end
+			if doneFrame then doneFrame.Visible = false end
+		end
+	
+		-- reset myChat and chat UI positions and text safely
+		if ch.myChat then
+			pcall(function()
+				if ch.myChat:FindFirstChild("TextChat") then ch.myChat.TextChat.Text = "" end
+				local startYScale = (ch.myChat.Position and ch.myChat.Position.Y.Scale) or 0.1
+				local startYOffset = (ch.myChat.Position and ch.myChat.Position.Y.Offset) or 0
+				ch.myChat.Position = UDim2.new(1, 0, startYScale, startYOffset)
+			end)
+		end
+	
+		if ch.chat then
+			pcall(function()
+				if ch.chat:FindFirstChild("TextChat") then ch.chat.TextChat.Text = "" end
+				local startYScale = (ch.chat.Position and ch.chat.Position.Y.Scale) or 0.175
+				local startYOffset = (ch.chat.Position and ch.chat.Position.Y.Offset) or 0
+				ch.chat.Position = UDim2.new(-0.55, 0, startYScale, startYOffset)
+			end)
+		end
+	end
+	
 	local function stopWaitFor(channelName, responseText)
 		local ch = channels[channelName]
 		if not ch then return end
@@ -181,17 +288,20 @@ do
 	
 		-- set stored text and put hidden pos for that channel (safe)
 		if ch.chat and ch.chat:FindFirstChild("TextChat") then
-			ch.chat.TextChat.Text = tostring(responseText or "")
+			-- clear text and set hidden X (we will tween in and type)
+			pcall(function() ch.chat.TextChat.Text = "" end)
 			local startYScale = (ch.chat.Position and ch.chat.Position.Y.Scale) or 0.175
 			local startYOffset = (ch.chat.Position and ch.chat.Position.Y.Offset) or 0
-			-- set hidden X but preserve current X if possible? we set to hidden so response stored offscreen
 			ch.chat.Position = UDim2.new(-0.55, 0, startYScale, startYOffset)
 		end
 	
-		-- if active -> tween into view
+		-- if active -> tween into view and type response
 		if channelName == activeChannelName then
-			if ch.chat then
-				tweenX(ch.chat, 0.1, 0.45, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+			if ch.chat and ch.chat:FindFirstChild("TextChat") then
+				-- tween in
+				local tw = tweenX(ch.chat, 0.1, 0.45, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+				-- start typing concurrently (use channel typing token)
+				typeTextIntoLabel(ch.chat.TextChat, tostring(responseText or ""), TYPING_DURATION, ch)
 			end
 			if doneButton then doneButton.Visible = true end
 			if doneFrame then doneFrame.Visible = true end
@@ -222,28 +332,63 @@ do
 		end)
 	end
 	
-	local function doSend(message)
-		if not message then return end
-		local trimmed = message:match("^%s*(.-)%s*$") or ""
+	-- MOD: doSendFor - send a message for a specific channel WITHOUT forcing UI tab switch.
+	-- Additionally: ensure Developer channel is reset before sending (so old states don't interfere).
+	local function doSendFor(channelName, message)
+		if not channelName or not message then return end
+		local ch = channels[channelName]
+		if not ch then return end
+		local trimmed = tostring(message):match("^%s*(.-)%s*$") or ""
 		if #trimmed < 2 then return end
 	
-		if chatBox then chatBox.Text = "" end
-	
-		local ch = channels[activeChannelName]
-		if ch and ch.myChat and ch.myChat:FindFirstChild("TextChat") then
-			local t = ch.myChat.TextChat
-			t.Text = tostring(trimmed)
-			local startYScale = (ch.myChat.Position and ch.myChat.Position.Y.Scale) or 0.1
-			local startYOffset = (ch.myChat.Position and ch.myChat.Position.Y.Offset) or 0
-			ch.myChat.Position = UDim2.new(1, 0, startYScale, startYOffset)
-			tweenX(ch.myChat, 0.35, 0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+		-- MOD: If target is Developer, reset it first (clear old state)
+		if channelName == "Developer" then
+			pcall(function() resetChannel("Developer") end)
 		end
 	
+		-- if sending in active channel, preserve existing behavior
+		if channelName == activeChannelName then
+			-- clear chatBox for active channel (user pressed send)
+			if chatBox then chatBox.Text = "" end
+	
+			if ch and ch.myChat and ch.myChat:FindFirstChild("TextChat") then
+				local t = ch.myChat.TextChat
+				-- clear and set hidden X first (we want consistent starting position)
+				pcall(function() t.Text = "" end)
+				local startYScale = (ch.myChat.Position and ch.myChat.Position.Y.Scale) or 0.1
+				local startYOffset = (ch.myChat.Position and ch.myChat.Position.Y.Offset) or 0
+				ch.myChat.Position = UDim2.new(1, 0, startYScale, startYOffset)
+				-- tween in and type concurrently
+				tweenX(ch.myChat, 0.35, 0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+				typeTextIntoLabel(t, trimmed, TYPING_DURATION, ch)
+			end
+		else
+			-- inactive channel: do not touch chatBox or UI that is visible to the user.
+			-- We set the hidden myChat text so the message is queued/stored for that channel.
+			if ch and ch.myChat and ch.myChat:FindFirstChild("TextChat") then
+				pcall(function()
+					-- set text immediately (no typing animation since it's hidden)
+					ch.myChat.TextChat.Text = trimmed
+					-- ensure it stays hidden
+					local startYScale = (ch.myChat.Position and ch.myChat.Position.Y.Scale) or 0.1
+					local startYOffset = (ch.myChat.Position and ch.myChat.Position.Y.Offset) or 0
+					ch.myChat.Position = UDim2.new(1, 0, startYScale, startYOffset)
+				end)
+			end
+		end
+	
+		-- fire bindable so other systems see the chat (channelName param)
 		if myChatEvent and myChatEvent:IsA("BindableEvent") then
-			pcall(function() myChatEvent:Fire(activeChannelName, trimmed) end)
+			pcall(function() myChatEvent:Fire(channelName, trimmed) end)
 		end
 	
-		startWaitLoopFor(activeChannelName)
+		-- start waiting visuals/state for that channel (if active, visuals will show; if not, state is still correct)
+		startWaitLoopFor(channelName)
+	end
+	
+	-- keep doSend wrapper for backward compatibility (calls doSendFor for activeChannel)
+	local function doSend(message)
+		doSendFor(activeChannelName, message)
 	end
 	
 	-- layout helpers (unchanged)
@@ -362,6 +507,10 @@ do
 		if ch.doneVisible and ch.chat then
 			-- Important: we tween X to visible. This is fine.
 			pcall(function() tweenX(ch.chat, 0.1, 0.45, Enum.EasingStyle.Back, Enum.EasingDirection.Out) end)
+			-- If we have lastResponse stored, start typing it now (ensure typing token used)
+			if ch.lastResponse and ch.chat and ch.chat:FindFirstChild("TextChat") then
+				typeTextIntoLabel(ch.chat.TextChat, tostring(ch.lastResponse or ""), TYPING_DURATION, ch)
+			end
 		end
 	
 		-- Title animate
@@ -404,6 +553,9 @@ do
 			doneButton.Visible = false
 			if doneFrame then doneFrame.Visible = false end
 	
+			-- cancel typing
+			ch.typingToken = (ch.typingToken or 0) + 1
+	
 			-- reset myChat (X preserved)
 			if ch.myChat then
 				if ch.myChat:FindFirstChild("TextChat") then ch.myChat.TextChat.Text = "" end
@@ -439,6 +591,10 @@ do
 	
 		chatBox.FocusLost:Connect(function(enterPressed)
 			if enterPressed and not (channels[activeChannelName] and channels[activeChannelName].isWaiting) and not (channels[activeChannelName] and channels[activeChannelName].doneVisible) and checkSendable(chatBox.Text) then
+				-- MOD: If active is Developer, reset Developer first (so manual send also resets then sends)
+				if activeChannelName == "Developer" then
+					pcall(function() resetChannel("Developer") end)
+				end
 				doSend(chatBox.Text)
 			end
 		end)
@@ -449,8 +605,55 @@ do
 			if channels[activeChannelName] and channels[activeChannelName].doneVisible then return end
 			if channels[activeChannelName] and channels[activeChannelName].isWaiting then return end
 			if not checkSendable(chatBox and chatBox.Text or "") then return end
+			-- MOD: If active is Developer, reset Developer first (manual Send also resets then sends)
+			if activeChannelName == "Developer" then
+				pcall(function() resetChannel("Developer") end)
+			end
 			doSend(chatBox.Text)
 		end)
+	end
+	
+	-- NEW: receive external SendMyChat commands
+	-- We create a BindableFunction (SendMyChat) under chatFrame so other LocalScripts can invoke it.
+	-- Also expose _G.SendMyChat as a convenience fallback (note: using _G across separate script environments may not always be reliable; prefer BindableFunction).
+	local function _internalHandleIncomingSendMyChat(msg)
+		task.spawn(function()
+			if not msg then return end
+			local trimmed = tostring(msg):match("^%s*(.-)%s*$") or ""
+			if #trimmed < 2 then return end
+	
+			-- MOD: Always allow SendMyChat. Reset Developer channel first to ensure clean state, then send into Developer.
+			local target = "Developer"
+			local ch = channels[target]
+			if not ch then return end
+	
+			-- reset Developer to clear any previous waiting/done/typing state
+			pcall(function() resetChannel(target) end)
+	
+			-- now send into Developer (will start wait state)
+			doSendFor(target, trimmed)
+		end)
+	end
+	
+	local sendMyChatFunc = chatFrame:FindFirstChild("SendMyChat")
+	if not sendMyChatFunc then
+		local ok, fn = pcall(function()
+			local f = Instance.new("BindableFunction")
+			f.Name = "SendMyChat"
+			f.Parent = chatFrame
+			return f
+		end)
+		if ok then sendMyChatFunc = fn end
+	end
+	if sendMyChatFunc and sendMyChatFunc:IsA("BindableFunction") then
+		sendMyChatFunc.OnInvoke = function(msg)
+			_internalHandleIncomingSendMyChat(msg)
+			return true
+		end
+	end
+	
+	_G.SendMyChat = function(msg)
+		_internalHandleIncomingSendMyChat(msg)
 	end
 	
 	-- SAFE INITIAL POSITION SET (don't overwrite X on later updates)
