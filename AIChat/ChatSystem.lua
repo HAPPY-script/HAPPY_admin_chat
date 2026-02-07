@@ -17,6 +17,7 @@ do
 	local sendButton = chatFrame:FindFirstChild("SendButton")
 	local waitDot    = chatFrame:FindFirstChild("WaitDot")
 	local doneButton = chatFrame:FindFirstChild("DoneButton")
+	local doneFrame  = chatFrame:FindFirstChild("DoneFrame")
 	
 	-- chat roots
 	local parentContainer = chatFrame.Parent
@@ -193,6 +194,7 @@ do
 				tweenX(ch.chat, 0.1, 0.45, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
 			end
 			if doneButton then doneButton.Visible = true end
+			if doneFrame then doneFrame.Visible = true end
 			waitLoopRunning = false
 			if ch.waitTween then pcall(function() ch.waitTween:Cancel() end) ch.waitTween = nil end
 		end
@@ -380,7 +382,14 @@ do
 	-- DoneButton reset (preserve X when resetting Y)
 	if doneButton then
 		doneButton.Visible = false
+		if doneFrame then doneFrame.Visible = false end -- << thêm
+	
 		doneButton:GetPropertyChangedSignal("Visible"):Connect(function()
+			-- DoneFrame bật/tắt chung DoneButton
+			if doneFrame then
+				doneFrame.Visible = doneButton.Visible
+			end
+	
 			updateSendButtonVisual(checkSendable(chatBox and chatBox.Text or ""))
 		end)
 	
@@ -393,6 +402,7 @@ do
 			if ch.waitTween then pcall(function() ch.waitTween:Cancel() end) ch.waitTween = nil end
 			if waitDot then waitDot.Visible = false end
 			doneButton.Visible = false
+			if doneFrame then doneFrame.Visible = false end
 	
 			-- reset myChat (X preserved)
 			if ch.myChat then
