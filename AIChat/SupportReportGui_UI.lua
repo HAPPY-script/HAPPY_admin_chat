@@ -4,21 +4,20 @@ SupportReportGui.ResetOnSpawn = false
 SupportReportGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 SupportReportGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-local Main4 = Instance.new("Frame")
-Main4.Name = "Main"
-Main4.Position = UDim2.new(0.5, 0, 0.5, 0)
-Main4.Size = UDim2.new(0.7, 0, 0.7, 0)
-Main4.BackgroundColor3 = Color3.new(0.0941177, 0.0941177, 0.0941177)
-Main4.BorderSizePixel = 0
-Main4.BorderColor3 = Color3.new(0, 0, 0)
-Main4.AnchorPoint = Vector2.new(0.5, 0.5)
-Main4.Visible = true
-Main4.Parent = SupportReportGui
+local Main = Instance.new("Frame")
+Main.Name = "Main"
+Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+Main.Size = UDim2.new(0.7, 0, 0.7, 0)
+Main.BackgroundColor3 = Color3.new(0.0941177, 0.0941177, 0.0941177)
+Main.BorderSizePixel = 0
+Main.BorderColor3 = Color3.new(0, 0, 0)
+Main.AnchorPoint = Vector2.new(0.5, 0.5)
+Main.Parent = SupportReportGui
 
 local UIARCMain = Instance.new("UIAspectRatioConstraint")
 UIARCMain.Name = "UIARCMain"
 UIARCMain.AspectRatio = 1.75
-UIARCMain.Parent = Main4
+UIARCMain.Parent = Main
 
 local ChatDeveloper = Instance.new("ScrollingFrame")
 ChatDeveloper.Name = "ChatDeveloper"
@@ -30,7 +29,7 @@ ChatDeveloper.BorderColor3 = Color3.new(0, 0, 0)
 ChatDeveloper.AnchorPoint = Vector2.new(0.5, 0.5)
 ChatDeveloper.Active = true
 ChatDeveloper.ScrollBarThickness = 7
-ChatDeveloper.Parent = Main4
+ChatDeveloper.Parent = Main
 
 local MyChat = Instance.new("Frame")
 MyChat.Name = "MyChat"
@@ -59,28 +58,28 @@ TextChat.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enu
 TextChat.TextWrapped = true
 TextChat.Parent = MyChat
 
-local Avatar2 = Instance.new("ImageLabel")
-Avatar2.Name = "Avatar"
-Avatar2.Position = UDim2.new(1.075, 0, 0.75, 0)
-Avatar2.Size = UDim2.new(1.15, 0, 1.15, 0)
-Avatar2.BackgroundColor3 = Color3.new(1, 1, 1)
-Avatar2.BackgroundTransparency = 1
-Avatar2.BorderSizePixel = 0
-Avatar2.BorderColor3 = Color3.new(0, 0, 0)
-Avatar2.AnchorPoint = Vector2.new(0.5, 0.5)
-Avatar2.Transparency = 1
-Avatar2.Image = "rbxassetid://12928483360"
-Avatar2.Parent = MyChat
+local Avatar = Instance.new("ImageLabel")
+Avatar.Name = "Avatar"
+Avatar.Position = UDim2.new(1.075, 0, 0.75, 0)
+Avatar.Size = UDim2.new(1.15, 0, 1.15, 0)
+Avatar.BackgroundColor3 = Color3.new(1, 1, 1)
+Avatar.BackgroundTransparency = 1
+Avatar.BorderSizePixel = 0
+Avatar.BorderColor3 = Color3.new(0, 0, 0)
+Avatar.AnchorPoint = Vector2.new(0.5, 0.5)
+Avatar.Transparency = 1
+Avatar.Image = "rbxassetid://12928483360"
+Avatar.Parent = MyChat
 
-local UIAspectRatioConstraint110 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint110.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint110.Parent = Avatar2
+UIAspectRatioConstraint.Parent = Avatar
 
-local UICorner200 = Instance.new("UICorner")
-UICorner200.Name = "UICorner"
-UICorner200.CornerRadius = UDim.new(1, 0)
-UICorner200.Parent = Avatar2
+local UICorner = Instance.new("UICorner")
+UICorner.Name = "UICorner"
+UICorner.CornerRadius = UDim.new(1, 0)
+UICorner.Parent = Avatar
 
 local BackGroundFrame = Instance.new("Frame")
 BackGroundFrame.Name = "BackGroundFrame"
@@ -129,28 +128,28 @@ TextChat2.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", En
 TextChat2.TextWrapped = true
 TextChat2.Parent = DevChat
 
-local Avatar3 = Instance.new("ImageLabel")
-Avatar3.Name = "Avatar"
-Avatar3.Position = UDim2.new(-0.08, 0, 0.75, 0)
-Avatar3.Size = UDim2.new(1.15, 0, 1.15, 0)
-Avatar3.BackgroundColor3 = Color3.new(1, 1, 1)
-Avatar3.BackgroundTransparency = 1
-Avatar3.BorderSizePixel = 0
-Avatar3.BorderColor3 = Color3.new(0, 0, 0)
-Avatar3.AnchorPoint = Vector2.new(0.5, 0.5)
-Avatar3.Transparency = 1
-Avatar3.Image = "rbxassetid://90219562764375"
-Avatar3.Parent = DevChat
+local Avatar2 = Instance.new("ImageLabel")
+Avatar2.Name = "Avatar"
+Avatar2.Position = UDim2.new(-0.08, 0, 0.75, 0)
+Avatar2.Size = UDim2.new(1.15, 0, 1.15, 0)
+Avatar2.BackgroundColor3 = Color3.new(1, 1, 1)
+Avatar2.BackgroundTransparency = 1
+Avatar2.BorderSizePixel = 0
+Avatar2.BorderColor3 = Color3.new(0, 0, 0)
+Avatar2.AnchorPoint = Vector2.new(0.5, 0.5)
+Avatar2.Transparency = 1
+Avatar2.Image = "rbxassetid://90219562764375"
+Avatar2.Parent = DevChat
 
-local UIAspectRatioConstraint111 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint111.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint2 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint2.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint111.Parent = Avatar3
+UIAspectRatioConstraint2.Parent = Avatar2
 
-local UICorner201 = Instance.new("UICorner")
-UICorner201.Name = "UICorner"
-UICorner201.CornerRadius = UDim.new(1, 0)
-UICorner201.Parent = Avatar3
+local UICorner2 = Instance.new("UICorner")
+UICorner2.Name = "UICorner"
+UICorner2.CornerRadius = UDim.new(1, 0)
+UICorner2.Parent = Avatar2
 
 local ChatAI = Instance.new("ScrollingFrame")
 ChatAI.Name = "ChatAI"
@@ -163,7 +162,7 @@ ChatAI.Visible = false
 ChatAI.AnchorPoint = Vector2.new(0.5, 0.5)
 ChatAI.Active = true
 ChatAI.ScrollBarThickness = 7
-ChatAI.Parent = Main4
+ChatAI.Parent = Main
 
 local AIChat = Instance.new("Frame")
 AIChat.Name = "AIChat"
@@ -202,28 +201,28 @@ TextChat3.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", En
 TextChat3.TextWrapped = true
 TextChat3.Parent = AIChat
 
-local Avatar4 = Instance.new("ImageLabel")
-Avatar4.Name = "Avatar"
-Avatar4.Position = UDim2.new(-0.08, 0, 0.75, 0)
-Avatar4.Size = UDim2.new(1.15, 0, 1.15, 0)
-Avatar4.BackgroundColor3 = Color3.new(1, 1, 1)
-Avatar4.BackgroundTransparency = 1
-Avatar4.BorderSizePixel = 0
-Avatar4.BorderColor3 = Color3.new(0, 0, 0)
-Avatar4.AnchorPoint = Vector2.new(0.5, 0.5)
-Avatar4.Transparency = 1
-Avatar4.Image = "rbxassetid://129880070293829"
-Avatar4.Parent = AIChat
+local Avatar3 = Instance.new("ImageLabel")
+Avatar3.Name = "Avatar"
+Avatar3.Position = UDim2.new(-0.08, 0, 0.75, 0)
+Avatar3.Size = UDim2.new(1.15, 0, 1.15, 0)
+Avatar3.BackgroundColor3 = Color3.new(1, 1, 1)
+Avatar3.BackgroundTransparency = 1
+Avatar3.BorderSizePixel = 0
+Avatar3.BorderColor3 = Color3.new(0, 0, 0)
+Avatar3.AnchorPoint = Vector2.new(0.5, 0.5)
+Avatar3.Transparency = 1
+Avatar3.Image = "rbxassetid://129880070293829"
+Avatar3.Parent = AIChat
 
-local UIAspectRatioConstraint112 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint112.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint3 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint3.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint112.Parent = Avatar4
+UIAspectRatioConstraint3.Parent = Avatar3
 
-local UICorner202 = Instance.new("UICorner")
-UICorner202.Name = "UICorner"
-UICorner202.CornerRadius = UDim.new(1, 0)
-UICorner202.Parent = Avatar4
+local UICorner3 = Instance.new("UICorner")
+UICorner3.Name = "UICorner"
+UICorner3.CornerRadius = UDim.new(1, 0)
+UICorner3.Parent = Avatar3
 
 local MyChat2 = Instance.new("Frame")
 MyChat2.Name = "MyChat"
@@ -252,28 +251,28 @@ TextChat4.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", En
 TextChat4.TextWrapped = true
 TextChat4.Parent = MyChat2
 
-local Avatar5 = Instance.new("ImageLabel")
-Avatar5.Name = "Avatar"
-Avatar5.Position = UDim2.new(1.075, 0, 0.75, 0)
-Avatar5.Size = UDim2.new(1.15, 0, 1.15, 0)
-Avatar5.BackgroundColor3 = Color3.new(1, 1, 1)
-Avatar5.BackgroundTransparency = 1
-Avatar5.BorderSizePixel = 0
-Avatar5.BorderColor3 = Color3.new(0, 0, 0)
-Avatar5.AnchorPoint = Vector2.new(0.5, 0.5)
-Avatar5.Transparency = 1
-Avatar5.Image = "rbxassetid://12928483360"
-Avatar5.Parent = MyChat2
+local Avatar4 = Instance.new("ImageLabel")
+Avatar4.Name = "Avatar"
+Avatar4.Position = UDim2.new(1.075, 0, 0.75, 0)
+Avatar4.Size = UDim2.new(1.15, 0, 1.15, 0)
+Avatar4.BackgroundColor3 = Color3.new(1, 1, 1)
+Avatar4.BackgroundTransparency = 1
+Avatar4.BorderSizePixel = 0
+Avatar4.BorderColor3 = Color3.new(0, 0, 0)
+Avatar4.AnchorPoint = Vector2.new(0.5, 0.5)
+Avatar4.Transparency = 1
+Avatar4.Image = "rbxassetid://12928483360"
+Avatar4.Parent = MyChat2
 
-local UIAspectRatioConstraint113 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint113.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint4 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint4.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint113.Parent = Avatar5
+UIAspectRatioConstraint4.Parent = Avatar4
 
-local UICorner203 = Instance.new("UICorner")
-UICorner203.Name = "UICorner"
-UICorner203.CornerRadius = UDim.new(1, 0)
-UICorner203.Parent = Avatar5
+local UICorner4 = Instance.new("UICorner")
+UICorner4.Name = "UICorner"
+UICorner4.CornerRadius = UDim.new(1, 0)
+UICorner4.Parent = Avatar4
 
 local BackGroundFrame4 = Instance.new("Frame")
 BackGroundFrame4.Name = "BackGroundFrame"
@@ -296,7 +295,7 @@ ComeBackButton.BorderColor3 = Color3.new(0, 0, 0)
 ComeBackButton.AnchorPoint = Vector2.new(0.5, 0.5)
 ComeBackButton.Transparency = 1
 ComeBackButton.Image = "rbxassetid://103860213946459"
-ComeBackButton.Parent = Main4
+ComeBackButton.Parent = Main
 
 local UIARCComeBackButton = Instance.new("UIAspectRatioConstraint")
 UIARCComeBackButton.Name = "UIARCComeBackButton"
@@ -314,12 +313,12 @@ EnergyIcon.BorderColor3 = Color3.new(0, 0, 0)
 EnergyIcon.Transparency = 1
 EnergyIcon.Image = "rbxassetid://542310892"
 EnergyIcon.ImageColor3 = Color3.new(0.882353, 1, 0)
-EnergyIcon.Parent = Main4
+EnergyIcon.Parent = Main
 
-local UIAspectRatioConstraint114 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint114.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint5 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint5.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint114.Parent = EnergyIcon
+UIAspectRatioConstraint5.Parent = EnergyIcon
 
 local Value = Instance.new("TextLabel")
 Value.Name = "Value"
@@ -353,12 +352,12 @@ Developer.FontFace = Font.new("rbxasset://fonts/families/TitilliumWeb.json", Enu
 Developer.TextScaled = true
 Developer.TextWrapped = true
 Developer.TextXAlignment = Enum.TextXAlignment.Left
-Developer.Parent = Main4
+Developer.Parent = Main
 
-local UICorner204 = Instance.new("UICorner")
-UICorner204.Name = "UICorner"
-UICorner204.CornerRadius = UDim.new(0.2, 0)
-UICorner204.Parent = Developer
+local UICorner5 = Instance.new("UICorner")
+UICorner5.Name = "UICorner"
+UICorner5.CornerRadius = UDim.new(0.2, 0)
+UICorner5.Parent = Developer
 
 local AI = Instance.new("TextButton")
 AI.Name = "AI"
@@ -374,12 +373,12 @@ AI.FontFace = Font.new("rbxasset://fonts/families/TitilliumWeb.json", Enum.FontW
 AI.TextScaled = true
 AI.TextWrapped = true
 AI.TextXAlignment = Enum.TextXAlignment.Left
-AI.Parent = Main4
+AI.Parent = Main
 
-local UICorner205 = Instance.new("UICorner")
-UICorner205.Name = "UICorner"
-UICorner205.CornerRadius = UDim.new(0.2, 0)
-UICorner205.Parent = AI
+local UICorner6 = Instance.new("UICorner")
+UICorner6.Name = "UICorner"
+UICorner6.CornerRadius = UDim.new(0.2, 0)
+UICorner6.Parent = AI
 
 local Instruct = Instance.new("TextLabel")
 Instruct.Name = "Instruct"
@@ -390,7 +389,7 @@ Instruct.BackgroundTransparency = 1
 Instruct.BorderSizePixel = 0
 Instruct.BorderColor3 = Color3.new(0, 0, 0)
 Instruct.Transparency = 1
-Instruct.Text = "Contact the developer to send your message directly to the developer, but you'll have to wait a considerable amount of time for a response.\nContact the AI ​​to send a message to the developer's AI; the AI ​​will respond shortly, but the response won't be as accurate as the developer's."
+Instruct.Text = "Contact the developer to send your message directly to the developer, but you'll have to wait a considerable amount of time for a response.\n\nContact the AI ​​to send a message to the developer's AI; the AI ​​will respond shortly, but the response won't be as accurate as the developer's."
 Instruct.TextColor3 = Color3.new(0.541176, 0.541176, 0.541176)
 Instruct.TextSize = 14
 Instruct.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
@@ -398,7 +397,7 @@ Instruct.TextScaled = true
 Instruct.TextWrapped = true
 Instruct.TextXAlignment = Enum.TextXAlignment.Left
 Instruct.TextYAlignment = Enum.TextYAlignment.Top
-Instruct.Parent = Main4
+Instruct.Parent = Main
 
 local InstructTitle = Instance.new("TextLabel")
 InstructTitle.Name = "InstructTitle"
@@ -416,11 +415,11 @@ InstructTitle.TextScaled = true
 InstructTitle.TextWrapped = true
 InstructTitle.Parent = Instruct
 
-local UIStroke148 = Instance.new("UIStroke")
-UIStroke148.Name = "UIStroke"
-UIStroke148.Color = Color3.new(1, 1, 1)
-UIStroke148.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-UIStroke148.Parent = Instruct
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Name = "UIStroke"
+UIStroke.Color = Color3.new(1, 1, 1)
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = Instruct
 
 local ChatFrame = Instance.new("Frame")
 ChatFrame.Name = "ChatFrame"
@@ -431,7 +430,7 @@ ChatFrame.BorderSizePixel = 0
 ChatFrame.BorderColor3 = Color3.new(0, 0, 0)
 ChatFrame.ZIndex = 2
 ChatFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-ChatFrame.Parent = Main4
+ChatFrame.Parent = Main
 
 local ChatBox = Instance.new("TextBox")
 ChatBox.Name = "ChatBox"
@@ -454,10 +453,10 @@ ChatBox.PlaceholderText = "You cannot undo the chat once you have started it."
 ChatBox.PlaceholderColor3 = Color3.new(0.615686, 0.615686, 0.615686)
 ChatBox.Parent = ChatFrame
 
-local UICorner206 = Instance.new("UICorner")
-UICorner206.Name = "UICorner"
-UICorner206.CornerRadius = UDim.new(1, 0)
-UICorner206.Parent = ChatFrame
+local UICorner7 = Instance.new("UICorner")
+UICorner7.Name = "UICorner"
+UICorner7.CornerRadius = UDim.new(1, 0)
+UICorner7.Parent = ChatFrame
 
 local SendButton = Instance.new("ImageButton")
 SendButton.Name = "SendButton"
@@ -474,23 +473,23 @@ UIARCSendButton.Name = "UIARCSendButton"
 
 UIARCSendButton.Parent = SendButton
 
-local UICorner207 = Instance.new("UICorner")
-UICorner207.Name = "UICorner"
-UICorner207.CornerRadius = UDim.new(1, 0)
-UICorner207.Parent = SendButton
+local UICorner8 = Instance.new("UICorner")
+UICorner8.Name = "UICorner"
+UICorner8.CornerRadius = UDim.new(1, 0)
+UICorner8.Parent = SendButton
 
-local Icon3 = Instance.new("ImageLabel")
-Icon3.Name = "Icon"
-Icon3.Position = UDim2.new(0.5, 0, 0.5, 0)
-Icon3.Size = UDim2.new(0.75, 0, 0.75, 0)
-Icon3.BackgroundColor3 = Color3.new(1, 1, 1)
-Icon3.BackgroundTransparency = 1
-Icon3.BorderSizePixel = 0
-Icon3.BorderColor3 = Color3.new(0, 0, 0)
-Icon3.AnchorPoint = Vector2.new(0.5, 0.5)
-Icon3.Transparency = 1
-Icon3.Image = "rbxassetid://93632981420289"
-Icon3.Parent = SendButton
+local Icon = Instance.new("ImageLabel")
+Icon.Name = "Icon"
+Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
+Icon.Size = UDim2.new(0.75, 0, 0.75, 0)
+Icon.BackgroundColor3 = Color3.new(1, 1, 1)
+Icon.BackgroundTransparency = 1
+Icon.BorderSizePixel = 0
+Icon.BorderColor3 = Color3.new(0, 0, 0)
+Icon.AnchorPoint = Vector2.new(0.5, 0.5)
+Icon.Transparency = 1
+Icon.Image = "rbxassetid://93632981420289"
+Icon.Parent = SendButton
 
 local ExtendButton = Instance.new("ImageButton")
 ExtendButton.Name = "ExtendButton"
@@ -507,23 +506,23 @@ UIARCSendButton2.Name = "UIARCSendButton"
 
 UIARCSendButton2.Parent = ExtendButton
 
-local UICorner208 = Instance.new("UICorner")
-UICorner208.Name = "UICorner"
-UICorner208.CornerRadius = UDim.new(1, 0)
-UICorner208.Parent = ExtendButton
+local UICorner9 = Instance.new("UICorner")
+UICorner9.Name = "UICorner"
+UICorner9.CornerRadius = UDim.new(1, 0)
+UICorner9.Parent = ExtendButton
 
-local Icon4 = Instance.new("ImageLabel")
-Icon4.Name = "Icon"
-Icon4.Position = UDim2.new(0.5, 0, 0.5, 0)
-Icon4.Size = UDim2.new(0.75, 0, 0.75, 0)
-Icon4.BackgroundColor3 = Color3.new(1, 1, 1)
-Icon4.BackgroundTransparency = 1
-Icon4.BorderSizePixel = 0
-Icon4.BorderColor3 = Color3.new(0, 0, 0)
-Icon4.AnchorPoint = Vector2.new(0.5, 0.5)
-Icon4.Transparency = 1
-Icon4.Image = "rbxassetid://98892580149497"
-Icon4.Parent = ExtendButton
+local Icon2 = Instance.new("ImageLabel")
+Icon2.Name = "Icon"
+Icon2.Position = UDim2.new(0.5, 0, 0.5, 0)
+Icon2.Size = UDim2.new(0.75, 0, 0.75, 0)
+Icon2.BackgroundColor3 = Color3.new(1, 1, 1)
+Icon2.BackgroundTransparency = 1
+Icon2.BorderSizePixel = 0
+Icon2.BorderColor3 = Color3.new(0, 0, 0)
+Icon2.AnchorPoint = Vector2.new(0.5, 0.5)
+Icon2.Transparency = 1
+Icon2.Image = "rbxassetid://98892580149497"
+Icon2.Parent = ExtendButton
 
 local WaitDot = Instance.new("Frame")
 WaitDot.Name = "WaitDot"
@@ -535,15 +534,15 @@ WaitDot.BorderColor3 = Color3.new(0, 0, 0)
 WaitDot.AnchorPoint = Vector2.new(0.5, 0.5)
 WaitDot.Parent = ChatFrame
 
-local UICorner209 = Instance.new("UICorner")
-UICorner209.Name = "UICorner"
-UICorner209.CornerRadius = UDim.new(1, 0)
-UICorner209.Parent = WaitDot
+local UICorner10 = Instance.new("UICorner")
+UICorner10.Name = "UICorner"
+UICorner10.CornerRadius = UDim.new(1, 0)
+UICorner10.Parent = WaitDot
 
-local UIAspectRatioConstraint115 = Instance.new("UIAspectRatioConstraint")
-UIAspectRatioConstraint115.Name = "UIAspectRatioConstraint"
+local UIAspectRatioConstraint6 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint6.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint115.Parent = WaitDot
+UIAspectRatioConstraint6.Parent = WaitDot
 
 local DoneButton = Instance.new("TextButton")
 DoneButton.Name = "DoneButton"
@@ -552,7 +551,7 @@ DoneButton.Size = UDim2.new(0.175, 0, 0.7, 0)
 DoneButton.BackgroundColor3 = Color3.new(1, 1, 1)
 DoneButton.BorderSizePixel = 0
 DoneButton.BorderColor3 = Color3.new(0, 0, 0)
-DoneButton.Visible = false
+DoneButton.ZIndex = 2
 DoneButton.Text = "Done"
 DoneButton.TextColor3 = Color3.new(0, 0, 0)
 DoneButton.TextSize = 14
@@ -561,10 +560,10 @@ DoneButton.TextScaled = true
 DoneButton.TextWrapped = true
 DoneButton.Parent = ChatFrame
 
-local UICorner210 = Instance.new("UICorner")
-UICorner210.Name = "UICorner"
-UICorner210.CornerRadius = UDim.new(1, 0)
-UICorner210.Parent = DoneButton
+local UICorner11 = Instance.new("UICorner")
+UICorner11.Name = "UICorner"
+UICorner11.CornerRadius = UDim.new(1, 0)
+UICorner11.Parent = DoneButton
 
 local Notification = Instance.new("TextLabel")
 Notification.Name = "Notification"
@@ -574,6 +573,7 @@ Notification.BackgroundColor3 = Color3.new(1, 1, 1)
 Notification.BackgroundTransparency = 1
 Notification.BorderSizePixel = 0
 Notification.BorderColor3 = Color3.new(0, 0, 0)
+Notification.ZIndex = 2
 Notification.AnchorPoint = Vector2.new(0.5, 0.5)
 Notification.Transparency = 1
 Notification.Text = "The conversation has ended, please confirm that the conversation is complete."
@@ -584,6 +584,15 @@ Notification.TextScaled = true
 Notification.TextWrapped = true
 Notification.Parent = DoneButton
 
+local DoneFrame = Instance.new("Frame")
+DoneFrame.Name = "DoneFrame"
+DoneFrame.Position = UDim2.new(0.44, 0, -1.3, 0)
+DoneFrame.Size = UDim2.new(0.56, 0, 1.25, 0)
+DoneFrame.BackgroundColor3 = Color3.new(0.0941177, 0.0941177, 0.0941177)
+DoneFrame.BorderSizePixel = 0
+DoneFrame.BorderColor3 = Color3.new(0, 0, 0)
+DoneFrame.Parent = ChatFrame
+
 local ChatFrameExtend = Instance.new("Frame")
 ChatFrameExtend.Name = "ChatFrameExtend"
 ChatFrameExtend.Position = UDim2.new(0.625, 0, 0.725, 0)
@@ -593,12 +602,12 @@ ChatFrameExtend.BorderSizePixel = 0
 ChatFrameExtend.BorderColor3 = Color3.new(0, 0, 0)
 ChatFrameExtend.Visible = false
 ChatFrameExtend.AnchorPoint = Vector2.new(0.5, 0.5)
-ChatFrameExtend.Parent = Main4
+ChatFrameExtend.Parent = Main
 
-local UICorner211 = Instance.new("UICorner")
-UICorner211.Name = "UICorner"
-UICorner211.CornerRadius = UDim.new(0.15, 0)
-UICorner211.Parent = ChatFrameExtend
+local UICorner12 = Instance.new("UICorner")
+UICorner12.Name = "UICorner"
+UICorner12.CornerRadius = UDim.new(0.15, 0)
+UICorner12.Parent = ChatFrameExtend
 
 local TitleChannel = Instance.new("TextLabel")
 TitleChannel.Name = "TitleChannel"
@@ -614,7 +623,7 @@ TitleChannel.TextSize = 14
 TitleChannel.FontFace = Font.new("rbxasset://fonts/families/PatrickHand.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
 TitleChannel.TextScaled = true
 TitleChannel.TextWrapped = true
-TitleChannel.Parent = Main4
+TitleChannel.Parent = Main
 
 local Frame = SupportReportGui
 if not Frame then return end
