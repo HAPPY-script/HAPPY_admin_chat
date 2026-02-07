@@ -213,11 +213,11 @@ do
 end
 
 --=== AutoScaleSetChat ==================================================================================================================================================--
-
 do
     local Players = game:GetService("Players")
     local TweenService = game:GetService("TweenService")
     local TextService = game:GetService("TextService")
+    local RunService = game:GetService("RunService")
     
     local player = Players.LocalPlayer
     local playerGui = player:WaitForChild("PlayerGui")
@@ -225,18 +225,15 @@ do
     --========================================
     --  UI PATH
     --========================================
-    
     local main = playerGui:WaitForChild("SupportReportGui")
     	:WaitForChild("Main")
     
-    -- 2 roots nằm trong Main
     local ChatDeveloper = main:WaitForChild("ChatDeveloper")
     local ChatAI = main:WaitForChild("ChatAI")
     
     --========================================
     --  CONFIG
     --========================================
-    
     local TWEEN_TIME = 0.18
     local EASING = Enum.EasingStyle.Sine
     local EASING_DIR = Enum.EasingDirection.Out
@@ -244,7 +241,6 @@ do
     --========================================
     --  TWEEN HELPER
     --========================================
-    
     local function tween(instance, properties, time)
     	local info = TweenInfo.new(time or TWEEN_TIME, EASING, EASING_DIR)
     	local tw = TweenService:Create(instance, info, properties)
@@ -253,56 +249,103 @@ do
     end
     
     --========================================
-    --  LINE CALC
+    --  UTILS: compute available width (subtract UIPadding if any)
     --========================================
+    local function getAvailableWidthFor(textObj)
+    	-- wait until AbsoluteSize.X becomes > 0 a few frames (layout might not be ready)
+    	local tries = 0
+    	while (not textObj or textObj.AbsoluteSize.X <= 1) and tries < 10 do
+    		tries = tries + 1
+    		RunService.Heartbeat:Wait()
+    	end
     
+    	local width = math.max(1, (textObj and textObj.AbsoluteSize.X) or 1)
+    
+    	-- check for UIPadding on parent (common pattern)
+    	local parent = textObj and textObj.Parent
+    	if parent then
+    		local padding = parent:FindFirstChildOfClass("UIPadding")
+    		if padding then
+    			-- compute pixel padding (Scale + Offset)
+    			local parentAbsX = math.max(1, parent.AbsoluteSize.X)
+    			local left = (padding.PaddingLeft.Scale * parentAbsX) + padding.PaddingLeft.Offset
+    			local right = (padding.PaddingRight.Scale * parentAbsX) + padding.PaddingRight.Offset
+    			width = math.max(1, width - left - right)
+    		end
+    	end
+    
+    	-- small safety margin to avoid wrap edge issues
+    	width = math.max(1, width - 6)
+    
+    	return width
+    end
+    
+    --========================================
+    --  LINE CALC (robust)
+    --========================================
     local function calcLinesFrom(textObj)
+    	if not textObj then return 1 end
     	local text = tostring(textObj.Text or "")
     	if text == "" then return 1 end
     
-    	local width = math.max(1, textObj.AbsoluteSize.X)
+    	-- get reliable available width (may wait a few frames)
+    	local width = getAvailableWidthFor(textObj)
+    	if width <= 1 then
+    		-- fallback to at least 1
+    		return 1
+    	end
     
-    	local size = TextService:GetTextSize(
-    		text,
-    		textObj.TextSize,
-    		textObj.Font,
-    		Vector2.new(width, math.huge)
-    	)
+    	-- get font & size (safe fallback)
+    	local font = textObj.Font or Enum.Font.SourceSans
+    	local fontSize = textObj.TextSize or 14
     
-    	local approxLineH = textObj.TextSize * 1.2
-    	return math.max(1, math.ceil(size.Y / approxLineH))
+    	-- try using TextService:GetTextSize with constraint width
+    	local ok, size = pcall(function()
+    		return TextService:GetTextSize(text, fontSize, font, Vector2.new(width, math.huge))
+    	end)
+    
+    	if ok and size and type(size.Y) == "number" and size.Y > 0 then
+    		-- approximate line height. using TextSize * 1.15 gives better results across fonts.
+    		local approxLineH = fontSize * 1.15
+    		local lines = math.max(1, math.ceil(size.Y / approxLineH))
+    		return lines
+    	end
+    
+    	-- fallback: try using TextBounds (renders actual text) if available
+    	local ok2, tb = pcall(function() return textObj.TextBounds end)
+    	if ok2 and tb and tb.Y and tb.Y > 0 then
+    		local approxLineH = (textObj.TextSize or fontSize) * 1.15
+    		return math.max(1, math.ceil(tb.Y / approxLineH))
+    	end
+    
+    	-- worst-case fallback
+    	return 1
     end
     
     --========================================
     --  RESIZE FUNCTION
     --========================================
-    
     local function resizeChat(bg, textObj, lines)
     	local targetY = 1 + (lines - 1) * 0.5
     	local size = UDim2.new(1, 0, targetY, 0)
     
+    	-- use tween but don't spam many tweens if repeated rapidly
     	tween(bg, { Size = size })
     	tween(textObj, { Size = size })
     end
     
     --========================================
-    --  APPLY SYSTEM FOR ONE ROOT
+    --  SETUP FOR EACH ROOT
     --========================================
-    
     local function SetupChat(root)
     	print("[SupportChat] Setup:", root.Name)
     
-    	-- MyChat (user)
     	local myChat = root:WaitForChild("MyChat")
     	local bgFrame = myChat:WaitForChild("BackGroundFrame")
     	local avatarImg = myChat:WaitForChild("Avatar")
     	local textChat = myChat:WaitForChild("TextChat")
     
-    	-- DevChat hoặc AIChat
-    	local botChat =
-    		root:FindFirstChild("DevChat")
-    		or root:FindFirstChild("AIChat")
-    
+    	local botChat = root:FindFirstChild("DevChat") or root:FindFirstChild("AIChat")
     	if not botChat then
     		warn("[SupportChat] Không tìm thấy DevChat/AIChat trong:", root.Name)
     		return
@@ -311,89 +354,99 @@ do
     	local botBg = botChat:WaitForChild("BackGroundFrame")
     	local botText = botChat:WaitForChild("TextChat")
     
-    	-- Save initial values
+    	-- store initial
     	local initialBgSize = bgFrame.Size
     	local initialTextSize = textChat.Size
     	local initialBotPos = botChat.Position
     
-    	--====================================
-    	--  AVATAR LOAD
-    	--====================================
-    
+    	-- avatar loader (same as before)
     	local function setAvatar()
     		local userId = player.UserId
-    
     		task.spawn(function()
     			for i = 1, 10 do
     				local ok, content, ready = pcall(function()
-    					return Players:GetUserThumbnailAsync(
-    						userId,
-    						Enum.ThumbnailType.HeadShot,
-    						Enum.ThumbnailSize.Size352x352
-    					)
+    					return Players:GetUserThumbnailAsync(userId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size352x352)
     				end)
-    
     				if ok and ready and content then
     					avatarImg.Image = content
-    					print("[SupportChat] Avatar Loaded:", root.Name)
     					return
     				end
-    
     				task.wait(0.3)
     			end
-    
     			warn("[SupportChat] Avatar Load Failed:", root.Name)
     		end)
     	end
     
-    	--====================================
-    	--  UPDATE MYCHAT
-    	--====================================
+    	-- debounce guards for updates
+    	local myDebounce = false
+    	local botDebounce = false
     
     	local lastMyLines = 0
-    
     	local function updateMyChat()
-    		if textChat.AbsoluteSize.X <= 1 then return end
+    		-- guard: ensure AbsoluteSize ready; if not, wait a frame and retry (non-blocking)
+    		if (not textChat) then return end
+    		if textChat.AbsoluteSize.X <= 1 then
+    			-- schedule short retry
+    			RunService.Heartbeat:Wait()
+    		end
     
-    		local lines = calcLinesFrom(textChat)
-    		if lines == lastMyLines then return end
-    		lastMyLines = lines
+    		if myDebounce then return end
+    		myDebounce = true
+    		task.defer(function()
+    			task.wait(0.02) -- tiny delay allow layout to settle
+    			local lines = calcLinesFrom(textChat)
+    			if lines ~= lastMyLines then
+    				lastMyLines = lines
     
-    		-- Resize user bubble
-    		resizeChat(bgFrame, textChat, lines)
+    				-- set horizontal alignment: Left if multiline, Center if single line
+    				pcall(function()
+    					if lines > 1 then
+    						textChat.TextXAlignment = Enum.TextXAlignment.Left
+    					else
+    						textChat.TextXAlignment = Enum.TextXAlignment.Center
+    					end
+    				end)
     
-    		-- Push bot bubble down
-    		local base = initialBotPos
-    		local newY = base.Y.Scale + (lines - 1) * 0.025
-    
-    		tween(botChat, {
-    			Position = UDim2.new(
-    				base.X.Scale, base.X.Offset,
-    				newY, base.Y.Offset
-    			)
-    		})
+    				resizeChat(bgFrame, textChat, lines)
+    				local base = initialBotPos
+    				local newY = base.Y.Scale + (lines - 1) * 0.025
+    				tween(botChat, { Position = UDim2.new(base.X.Scale, base.X.Offset, newY, base.Y.Offset) })
+    			end
+    			myDebounce = false
+    		end)
     	end
-    
-    	--====================================
-    	--  UPDATE BOT CHAT
-    	--====================================
     
     	local lastBotLines = 0
-    
     	local function updateBotChat()
-    		if botText.AbsoluteSize.X <= 1 then return end
+    		if (not botText) then return end
+    		if botText.AbsoluteSize.X <= 1 then
+    			RunService.Heartbeat:Wait()
+    		end
     
-    		local lines = calcLinesFrom(botText)
-    		if lines == lastBotLines then return end
-    		lastBotLines = lines
+    		if botDebounce then return end
+    		botDebounce = true
+    		task.defer(function()
+    			task.wait(0.02)
+    			local lines = calcLinesFrom(botText)
+    			if lines ~= lastBotLines then
+    				lastBotLines = lines
     
-    		resizeChat(botBg, botText, lines)
+    				-- set horizontal alignment for bot text too
+    				pcall(function()
+    					if lines > 1 then
+    						botText.TextXAlignment = Enum.TextXAlignment.Left
+    					else
+    						botText.TextXAlignment = Enum.TextXAlignment.Center
+    					end
+    				end)
+    
+    				resizeChat(botBg, botText, lines)
+    			end
+    			botDebounce = false
+    		end)
     	end
     
-    	--====================================
-    	--  CONNECT EVENTS
-    	--====================================
-    
+    	-- Connect signals
     	textChat:GetPropertyChangedSignal("Text"):Connect(updateMyChat)
     	textChat:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateMyChat)
     	textChat:GetPropertyChangedSignal("TextSize"):Connect(updateMyChat)
@@ -404,15 +457,16 @@ do
     	botText:GetPropertyChangedSignal("TextSize"):Connect(updateBotChat)
     	botText:GetPropertyChangedSignal("Font"):Connect(updateBotChat)
     
-    	--====================================
-    	--  INIT
-    	--====================================
-    
+    	-- initial
     	task.spawn(function()
     		task.wait(0.5)
     		setAvatar()
+    		-- initial update after UI settles
+    		updateMyChat()
+    		updateBotChat()
     	end)
     
+    	-- restore initial values (safe)
     	bgFrame.Size = initialBgSize
     	textChat.Size = initialTextSize
     	botChat.Position = initialBotPos
@@ -423,7 +477,6 @@ do
     --========================================
     --  START BOTH ROOTS
     --========================================
-    
     SetupChat(ChatDeveloper)
     SetupChat(ChatAI)
 end
