@@ -52,7 +52,7 @@ ImageLabel.Visible = false
 ImageLabel.ZIndex = 8889
 ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
 ImageLabel.Transparency = 1
-ImageLabel.Image = "rbxassetid://103213240646444"
+ImageLabel.Image = "rbxassetid://138160005877645"
 ImageLabel.Parent = NotificationBloxFruit
 
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -278,7 +278,7 @@ local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
 -- ========== CONFIG ==========
-local TARGET_STR = "Dec 23, 11:00 PM" -- định dạng: "Mon D, HH:MM AM/PM" (hiểu là giờ VN)
+local TARGET_STR = "Feb 14, 11:00 PM" -- định dạng: "Mon D, HH:MM AM/PM" (hiểu là giờ VN)
 local TEST_MODE = false              -- bật để test: đặt true => time = 75s (1m15s)
 -- ============================
 
