@@ -123,13 +123,13 @@ waitLoad("Load utility🧩 (2/3)", 0.9)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/Energy_System.lua"))()
 
-
+--[[
 task.spawn(function()
 	loadstring(game:HttpGet(
 		"https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/NotificationBloxFruit.lua"
 	))()
 end)
-
+]]
 waitLoad("Load utility🧩 (3/3)", 0.95)
 
 print("✅Done utility")
