@@ -175,7 +175,7 @@ BackGround.BorderSizePixel = 0
 BackGround.BorderColor3 = Color3.new(0, 0, 0)
 BackGround.AnchorPoint = Vector2.new(0.5, 0.5)
 BackGround.Transparency = 1
-BackGround.Image = "rbxassetid://110000264938069"
+BackGround.Image = "rbxassetid://126901999958543"
 BackGround.Parent = Main
 
 local UICorner3 = Instance.new("UICorner")
