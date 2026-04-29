@@ -20,7 +20,7 @@ BloxFruit.BorderSizePixel = 0
 BloxFruit.BorderColor3 = Color3.new(0, 0, 0)
 BloxFruit.AnchorPoint = Vector2.new(0.5, 0.5)
 BloxFruit.Transparency = 1
-BloxFruit.Image = "rbxassetid://112950958635654"
+BloxFruit.Image = "rbxassetid://135114933434081"
 BloxFruit.Parent = GameHub
 
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -542,3 +542,110 @@ local UICorner15 = Instance.new("UICorner")
 UICorner15.Name = "UICorner"
 UICorner15.CornerRadius = UDim.new(0.1, 0)
 UICorner15.Parent = Loading5
+
+local TowerDefenseSimulator = Instance.new("ImageButton")
+TowerDefenseSimulator.Name = "TowerDefenseSimulator"
+TowerDefenseSimulator.Position = UDim2.new(0.8, 0, 0.5, 0)
+TowerDefenseSimulator.Size = UDim2.new(0.25, 0, 0.25, 0)
+TowerDefenseSimulator.BackgroundColor3 = Color3.new(1, 1, 1)
+TowerDefenseSimulator.BackgroundTransparency = 1
+TowerDefenseSimulator.BorderSizePixel = 0
+TowerDefenseSimulator.BorderColor3 = Color3.new(0, 0, 0)
+TowerDefenseSimulator.AnchorPoint = Vector2.new(0.5, 0.5)
+TowerDefenseSimulator.Transparency = 1
+TowerDefenseSimulator.Image = "rbxassetid://84887021596263"
+TowerDefenseSimulator.Parent = GameHub
+
+local UIAspectRatioConstraint6 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint6.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint6.Parent = TowerDefenseSimulator
+
+local UICorner16 = Instance.new("UICorner")
+UICorner16.Name = "UICorner"
+UICorner16.CornerRadius = UDim.new(0.1, 0)
+UICorner16.Parent = TowerDefenseSimulator
+
+local UIStroke6 = Instance.new("UIStroke")
+UIStroke6.Name = "UIStroke"
+UIStroke6.Color = Color3.new(1, 1, 1)
+UIStroke6.Thickness = 1.5
+UIStroke6.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke6.Parent = TowerDefenseSimulator
+
+local UIGradient11 = Instance.new("UIGradient")
+UIGradient11.Name = "UIGradient"
+UIGradient11.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient11.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient11.Rotation = 90
+UIGradient11.Offset = Vector2.new(0, 1)
+UIGradient11.Parent = TowerDefenseSimulator
+
+local Name6 = Instance.new("TextLabel")
+Name6.Name = "Name"
+Name6.Position = UDim2.new(0, 0, 0.7, 0)
+Name6.Size = UDim2.new(1, 0, 0.3, 0)
+Name6.BackgroundColor3 = Color3.new(1, 1, 1)
+Name6.BackgroundTransparency = 1
+Name6.BorderSizePixel = 0
+Name6.BorderColor3 = Color3.new(0, 0, 0)
+Name6.ZIndex = 2
+Name6.Transparency = 1
+Name6.Text = "Tower Defense Simulator"
+Name6.TextColor3 = Color3.new(0, 1, 1)
+Name6.TextSize = 14
+Name6.FontFace = Font.new("rbxasset://fonts/families/HighwayGothic.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Name6.TextScaled = true
+Name6.TextWrapped = true
+Name6.Parent = TowerDefenseSimulator
+
+local Effect6 = Instance.new("Frame")
+Effect6.Name = "Effect"
+Effect6.Size = UDim2.new(1, 0, 1, 0)
+Effect6.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect6.BorderSizePixel = 0
+Effect6.BorderColor3 = Color3.new(0, 0, 0)
+Effect6.Parent = TowerDefenseSimulator
+
+local UICorner17 = Instance.new("UICorner")
+UICorner17.Name = "UICorner"
+UICorner17.CornerRadius = UDim.new(0.1, 0)
+UICorner17.Parent = Effect6
+
+local UIGradient12 = Instance.new("UIGradient")
+UIGradient12.Name = "UIGradient"
+UIGradient12.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient12.Rotation = -45
+UIGradient12.Offset = Vector2.new(0, -1.5)
+UIGradient12.Parent = Effect6
+
+local Loading6 = Instance.new("Frame")
+Loading6.Name = "Loading"
+Loading6.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading6.Size = UDim2.new(1, 0, 1, 0)
+Loading6.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading6.BackgroundTransparency = 0.10000000149011612
+Loading6.BorderSizePixel = 0
+Loading6.BorderColor3 = Color3.new(0, 0, 0)
+Loading6.Visible = false
+Loading6.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading6.Transparency = 0.10000000149011612
+Loading6.Parent = TowerDefenseSimulator
+
+local ImageLabel6 = Instance.new("ImageLabel")
+ImageLabel6.Name = "ImageLabel"
+ImageLabel6.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel6.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel6.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel6.BackgroundTransparency = 1
+ImageLabel6.BorderSizePixel = 0
+ImageLabel6.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel6.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel6.Transparency = 1
+ImageLabel6.Image = "rbxassetid://17687447043"
+ImageLabel6.Parent = Loading6
+
+local UICorner18 = Instance.new("UICorner")
+UICorner18.Name = "UICorner"
+UICorner18.CornerRadius = UDim.new(0.1, 0)
+UICorner18.Parent = Loading6
