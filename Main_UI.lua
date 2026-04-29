@@ -230,6 +230,7 @@ Version.BorderColor3 = Color3.new(0, 0, 0)
 Version.Rotation = -15
 Version.AnchorPoint = Vector2.new(0.5, 0.5)
 Version.TextStrokeTransparency = 0
+Version.TextStrokeColor3 = Color3.fromRGB(150, 0, 255)
 Version.Text = "v0.08"
 Version.TextColor3 = Color3.new(1, 0.588235, 1)
 Version.TextSize = 14
