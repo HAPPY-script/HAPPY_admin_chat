@@ -53,6 +53,10 @@ local ScriptMapping = {
 		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Gunfight_Arena/refs/heads/main/Gunfight_Arena.lua")
 		loadstring(code)()
 	end,
+	TowerDefenseSimulator = function()
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TDSHub/refs/heads/main/MainLoad.lua")
+		loadstring(code)()
+	end,
 
 	-- Character --
 	Fly = function()
