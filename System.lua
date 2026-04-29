@@ -391,7 +391,7 @@ local function openNoti()
 	TweenService:Create(Noti, tweenInfo, {Size = UDim2.new(0.4,0,0.4,0)}):Play()
 end
 
-local function closeNoti()
+local function closeNoti(onClosed)
 	local tw = TweenService:Create(Noti, tweenInfo, {Size = UDim2.new(0.025,0,0.025,0)})
 	tw:Play()
 	tw.Completed:Once(function()
@@ -402,10 +402,12 @@ local function closeNoti()
 		end
 		if menuWasOpen then
 			menuOpen = true
-			-- reuse openMenu function defined later; ensure main.Visible true + tween
 			main.Visible = true
 			main.Size = closeSize
 			TweenService:Create(main, tweenInfo, {Size = openSize}):Play()
+		end
+		if onClosed then
+			task.defer(onClosed)
 		end
 	end)
 end
@@ -434,24 +436,9 @@ Noti_Back.MouseButton1Click:Connect(function() closeNoti() end)
 
 Noti_Done.MouseButton1Click:Connect(function()
 	local sname = NOTI_CONTEXT.scriptName
-	if not sname then closeNoti(); return end
-
-	if NOTI_CONTEXT.scriptFunc then
-		game.StarterGui:SetCore("SendNotification", {
-			Title = "Running Script⌛",
-			Text = "Running " .. sname .. "...",
-			Duration = 5
-		})
-		task.spawn(function()
-			pcall(NOTI_CONTEXT.scriptFunc)
-			game.StarterGui:SetCore("SendNotification", {
-				Title = "Script Finished✅",
-				Text = sname .. " finished running!",
-				Duration = 5
-			})
-		end)
-	else
-		warn("Không tìm thấy script func cho", sname)
+	if not sname then
+		closeNoti()
+		return
 	end
 
 	local r1On = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
@@ -460,7 +447,26 @@ Noti_Done.MouseButton1Click:Connect(function()
 	if r1On then setOnceFlag(sname, true) else setOnceFlag(sname, false) end
 	if rfOn then setForeverFlag(sname, true) else setForeverFlag(sname, false) end
 
-	closeNoti()
+	closeNoti(function()
+		if NOTI_CONTEXT.scriptFunc then
+			game.StarterGui:SetCore("SendNotification", {
+				Title = "Running Script⌛",
+				Text = "Running " .. sname .. "...",
+				Duration = 5
+			})
+
+			task.spawn(function()
+				pcall(NOTI_CONTEXT.scriptFunc)
+				game.StarterGui:SetCore("SendNotification", {
+					Title = "Script Finished✅",
+					Text = sname .. " finished running!",
+					Duration = 5
+				})
+			end)
+		else
+			warn("Không tìm thấy script func cho", sname)
+		end
+	end)
 end)
 
 Noti_Return1.MouseButton1Click:Connect(function()
