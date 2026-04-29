@@ -205,6 +205,14 @@ end
 local PROJECT_URL = "https://happy-script-bada6-default-rtdb.asia-southeast1.firebasedatabase.app/users/"
 local URL = PROJECT_URL .. tostring(player.UserId) .. ".json"
 
+local doneBusy = false
+local function setNotiLocked(state)
+	for _, btn in ipairs({Noti_Done, Noti_Back, Noti_Return1, Noti_ReturnIfn}) do
+		btn.Active = not state
+		btn.AutoButtonColor = not state
+	end
+end
+
 local function safeDecode(body)
 	if not body or body == "null" or body == "" then return nil end
 	local ok, decoded = pcall(function() return HttpService:JSONDecode(body) end)
@@ -367,6 +375,9 @@ local blur -- BlurEffect object
 local menuWasOpen = false
 
 local function openNoti()
+	doneBusy = false
+	setNotiLocked(false)
+	
 	menuWasOpen = menuOpen
 	if menuOpen then
 		menuOpen = false
@@ -435,37 +446,54 @@ end
 Noti_Back.MouseButton1Click:Connect(function() closeNoti() end)
 
 Noti_Done.MouseButton1Click:Connect(function()
-	local sname = NOTI_CONTEXT.scriptName
-	if not sname then
-		closeNoti()
-		return
-	end
+	if doneBusy then return end
+	doneBusy = true
+	setNotiLocked(true)
 
+	local sname = NOTI_CONTEXT.scriptName
+	local scriptFunc = NOTI_CONTEXT.scriptFunc
 	local r1On = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
 	local rfOn = (Noti_ReturnIfn.BackgroundColor3 == Color3.fromRGB(50,255,50))
 
-	if r1On then setOnceFlag(sname, true) else setOnceFlag(sname, false) end
-	if rfOn then setForeverFlag(sname, true) else setForeverFlag(sname, false) end
+	closeNoti()
 
-	closeNoti(function()
-		if NOTI_CONTEXT.scriptFunc then
-			game.StarterGui:SetCore("SendNotification", {
-				Title = "Running Script⌛",
-				Text = "Running " .. sname .. "...",
-				Duration = 5
-			})
+	task.delay(tweenInfo.Time, function()
+		task.spawn(function()
+			if sname then
+				if r1On then
+					setOnceFlag(sname, true)
+				else
+					setOnceFlag(sname, false)
+				end
 
-			task.spawn(function()
-				pcall(NOTI_CONTEXT.scriptFunc)
-				game.StarterGui:SetCore("SendNotification", {
-					Title = "Script Finished✅",
-					Text = sname .. " finished running!",
-					Duration = 5
-				})
-			end)
-		else
-			warn("Không tìm thấy script func cho", sname)
-		end
+				if rfOn then
+					setForeverFlag(sname, true)
+				else
+					setForeverFlag(sname, false)
+				end
+
+				if scriptFunc then
+					game.StarterGui:SetCore("SendNotification", {
+						Title = "Running Script⌛",
+						Text = "Running " .. sname .. "...",
+						Duration = 5
+					})
+
+					pcall(scriptFunc)
+
+					game.StarterGui:SetCore("SendNotification", {
+						Title = "Script Finished✅",
+						Text = sname .. " finished running!",
+						Duration = 5
+					})
+				else
+					warn("Không tìm thấy script func cho", sname)
+				end
+			end
+
+			doneBusy = false
+			setNotiLocked(false)
+		end)
 	end)
 end)
 
