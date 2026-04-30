@@ -15,7 +15,15 @@ local function HttpRequest(data)
 	elseif fluxus and fluxus.request then
 		return fluxus.request(data)
 	else
-		error("Executor does NOT support http requests!")
+		warn("Executor does NOT support http requests!")
+
+		_G.HAPPYnotification = {
+			title = "Executor Error",
+			text = "Your executor does not support HTTP requests.",
+			color = {255, 80, 80},
+			time = 10
+		}
+		return nil
 	end
 end
 
@@ -24,7 +32,6 @@ end
 --=====================================================
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
-local StarterGui = game:GetService("StarterGui")
 
 local player = Players.LocalPlayer
 local playerName = player.Name
@@ -121,20 +128,21 @@ local function UrlEncode(str)
 	return str
 end
 
-local function Notify(title, text)
-	pcall(function()
-		StarterGui:SetCore("SendNotification", {
-			Title = title,
-			Text = text,
-			Duration = 5,
-		})
-	end)
+local function Notify(title, text, time, color)
+	_G.HAPPYnotification = {
+		title = title or "Notification",
+		text = text or "",
+		color = color or {255, 255, 255},
+		time = time or 5
+	}
 end
 
 local function NotifyMaintenance()
 	Notify(
 		"⚙Report System⚠",
-		"The data system is temporarily under maintenance. Please try again later."
+		"The data system is temporarily under maintenance. Please try again later.",
+		8,
+		{255, 100, 100}
 	)
 end
 
@@ -299,12 +307,12 @@ if supportFrame then
 			deleteReportRequest()
 			supportFrame.Visible = false
 			stopDotAnimation()
-			Notify("Report Cancelled", "Your report has been removed.")
+			Notify("Report Cancelled", "Your report has been removed.", 6, {255, 120, 120})
 		else
 			deleteReportRequest()
 			supportFrame.Visible = false
 			stopDotAnimation()
-			Notify("Report Closed", "Your report has been cleared.")
+			Notify("Report Closed", "Your report has been cleared.", 6, {100, 255, 100})
 		end
 	end)
 
@@ -364,12 +372,12 @@ sendButton.MouseButton1Click:Connect(function()
 	local length = #content
 
 	if length < 1 then
-		Notify("Report Failed", "You must enter a message.")
+		Notify("Report Failed", "You must enter a message.", 5, {255, 100, 100})
 		return
 	end
 
 	if length > MAX_LEN then
-		Notify("Report Failed", "Message exceeds character limit!")
+		Notify("Report Failed", "Message exceeds character limit!", 5, {255, 100, 100})
 		return
 	end
 
@@ -392,7 +400,7 @@ sendButton.MouseButton1Click:Connect(function()
 	end
 
 	if exists then
-		Notify("Report Locked", "You already have a pending report. Wait for admin approval.")
+		Notify("Report Locked", "You already have a pending report.", 6, {255, 200, 100})
 		return
 	end
 
@@ -417,10 +425,10 @@ sendButton.MouseButton1Click:Connect(function()
 	end
 
 	if success then
-		Notify("Report Sent", "Your report has been submitted successfully.")
+		Notify("Report Sent", "Your report has been submitted successfully.", 6, {100, 255, 100})
 		textBox.Text = ""
 		maxText.Text = "0/" .. MAX_LEN
 	else
-		Notify("Error", "Failed to send report. Try again later.")
+		Notify("Error", "Failed to send report. Try again later.", 6, {255, 100, 100})
 	end
 end)
