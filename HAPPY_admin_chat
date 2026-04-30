@@ -33,17 +33,21 @@ if _G.HAPPY_script then
 end
 _G.HAPPY_script = true
 
+-- System notification
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/Notification_System.lua"))()
+
 local function waitLoad(name, pct)
     if shared.HAPPY_LOADER_UPDATE then
         shared.HAPPY_LOADER_UPDATE(name, pct)
     end
 end
 
-game.StarterGui:SetCore("SendNotification", {
-    Title = "⚜️HAPPY script v0.08⚜️";
-    Text = "Good Luck🍀";
-    Duration = 5;
-})
+_G.HAPPYnotification = {
+	title = "HAPPY script v0.08",
+	text = "Good Luck🍀",
+	color = {255, 255, 255},
+	time = 5
+}
 
 waitLoad("Loading UI🖼 0/4", 0.075)
 
