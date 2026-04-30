@@ -411,43 +411,54 @@ sendButton.MouseButton1Click:Connect(function()
 		return
 	end
 
-	local content = textBox.Text or ""
-	local length = #content
+	if buttonBusy[sendButton] then return end
+	setButtonBusy(sendButton, true, OK_BUSY_COLOR)
 
-	if length < 1 then
-		Notify("Report Failed", "You must enter a message.", 5, {255, 100, 100})
-		return
-	end
+	task.spawn(function()
+		local content = textBox.Text or ""
+		local length = #content
 
-	if length > MAX_LEN then
-		Notify("Report Failed", "Message exceeds character limit!", 5, {255, 100, 100})
-		return
-	end
+		if length < 1 then
+			Notify("Report Failed", "You must enter a message.", 5, {255, 100, 100})
+			setButtonBusy(sendButton, false)
+			return
+		end
 
-	if currentReport and reportExistsFromData(currentReport) then
-		Notify("Report Locked", "You already have a pending report.", 6, {255, 200, 100})
-		return
-	end
+		if length > MAX_LEN then
+			Notify("Report Failed", "Message exceeds character limit!", 5, {255, 100, 100})
+			setButtonBusy(sendButton, false)
+			return
+		end
 
-	local success = SendReport(content)
+		if currentReport and reportExistsFromData(currentReport) then
+			Notify("Report Locked", "You already have a pending report.", 6, {255, 200, 100})
+			setButtonBusy(sendButton, false)
+			return
+		end
 
-	if success then
-		currentReport = {
-			player = player.Name,
-			user_id = player.UserId,
-			message = CleanMessage(content),
-			timestamp = os.time() * 1000,
-			responded = false,
-			response = nil,
-			responded_at = nil,
-			response_type = nil
-		}
+		local success = SendReport(content)
 
-		updateSupportUIFromData(currentReport)
-		Notify("Report Sent", "Your report has been submitted successfully.", 6, {100, 255, 100})
-		textBox.Text = ""
-		maxText.Text = "0/" .. MAX_LEN
-	else
-		Notify("Error", "Failed to send report. Try again later.", 6, {255, 100, 100})
-	end
+		if success then
+			currentReport = {
+				player = player.Name,
+				user_id = player.UserId,
+				message = CleanMessage(content),
+				timestamp = os.time() * 1000,
+				responded = false,
+				response = nil,
+				responded_at = nil,
+				response_type = nil
+			}
+
+			updateSupportUIFromData(currentReport)
+			Notify("Report Sent", "Your report has been submitted successfully.", 6, {100, 255, 100})
+			textBox.Text = ""
+			maxText.Text = "0/" .. MAX_LEN
+		else
+			Notify("Error", "Failed to send report. Try again later.", 6, {255, 100, 100})
+		end
+
+		task.wait(BUTTON_BUSY_COOLDOWN)
+		setButtonBusy(sendButton, false)
+	end)
 end)
