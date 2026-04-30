@@ -1,13 +1,15 @@
---EFFECT
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
+
 local player = Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui"):WaitForChild("HAPPYscript")
 local main = gui:WaitForChild("Main")
+local scroll = main:WaitForChild("ScrollingFrame")
 local particleTemplate = main:WaitForChild("Particle")
 
 local SETTINGS = {
 	SpawnRate = 0.5,
+	MaxParticles = 180,
 	MinSize = 5,
 	MaxSize = 15,
 	MinFallTime = 17,
@@ -16,76 +18,156 @@ local SETTINGS = {
 	MaxRotation = 250,
 }
 
-local function createParticle()
-	if #main.ScrollingFrame:GetChildren() > 180 then return end
+local effectEnabled = main.Visible
+local activeParticles = {}
 
-	local particle = particleTemplate:Clone()
-	particle.Visible = true
-	particle.Parent = main.ScrollingFrame
-	particle.ImageTransparency = 1 -- Bắt đầu mờ 100%
+--------------------------------------------------
+-- PAUSE / RESUME SYSTEM
+--------------------------------------------------
+local function pauseParticle(p)
+	if p._moveTween then
+		p._moveTween:Cancel()
+	end
+	if p._fadeTween then
+		p._fadeTween:Cancel()
+	end
+end
 
-	-- Random size
-	local size = math.random(SETTINGS.MinSize, SETTINGS.MaxSize)
-	particle.Size = UDim2.fromOffset(size, size)
+local function resumeParticle(p)
+	if not p or not p.Parent then return end
 
-	-- Rotation
-	particle.Rotation = math.random(SETTINGS.MinRotation, SETTINGS.MaxRotation)
-	particle.ZIndex = 1
+	local remainingTime = p._remainingTime or 5
+	local targetY = 1
 
-	particle.AnchorPoint = Vector2.new(0.5, 0.5)
-	particle.Position = UDim2.new(math.random(), 0, 0, -15)
-
-	local fallTime = math.random(SETTINGS.MinFallTime, SETTINGS.MaxFallTime)
-	local sideOffset = math.random(-40, 40)
-
-	----------------------------------------------------
-	-- 1. FADE IN
-	----------------------------------------------------
-	local fadeIn = TweenService:Create(
-		particle,
-		TweenInfo.new(fallTime * 0.1, Enum.EasingStyle.Linear),
-		{ImageTransparency = 0}
-	)
-	fadeIn:Play()
-
-	----------------------------------------------------
-	-- 2. MOVE
-	----------------------------------------------------
-	local move = TweenService:Create(
-		particle,
-		TweenInfo.new(fallTime, Enum.EasingStyle.Linear),
+	p._moveTween = TweenService:Create(
+		p,
+		TweenInfo.new(remainingTime, Enum.EasingStyle.Linear),
 		{
 			Position = UDim2.new(
-				particle.Position.X.Scale + (sideOffset / main.AbsoluteSize.X),
+				p.Position.X.Scale,
 				0,
-				1,
+				targetY,
 				20
 			)
 		}
 	)
-	move:Play()
+	p._moveTween:Play()
 
-	----------------------------------------------------
-	-- 3. FADE OUT (sau 90% thời gian)
-	----------------------------------------------------
-	task.delay(fallTime * 0.9, function()
-		local fadeOut = TweenService:Create(
-			particle,
-			TweenInfo.new(fallTime * 0.1, Enum.EasingStyle.Linear),
-			{ImageTransparency = 1}
+	-- Fade out cuối
+	task.delay(remainingTime * 0.9, function()
+		if not p.Parent then return end
+
+		p._fadeTween = TweenService:Create(
+			p,
+			TweenInfo.new(remainingTime * 0.1),
+			{ ImageTransparency = 1 }
 		)
-		fadeOut:Play()
+		p._fadeTween:Play()
 
-		-- Destroy sau fade-out, KHÔNG phụ thuộc tween move
-		fadeOut.Completed:Connect(function()
-			particle:Destroy()
+		p._fadeTween.Completed:Once(function()
+			if p.Parent then
+				p:Destroy()
+			end
 		end)
 	end)
 end
 
+--------------------------------------------------
+-- HANDLE VISIBILITY
+--------------------------------------------------
+main:GetPropertyChangedSignal("Visible"):Connect(function()
+	effectEnabled = main.Visible
+
+	if not effectEnabled then
+		-- PAUSE tất cả
+		for p in pairs(activeParticles) do
+			if p and p.Parent then
+				p._remainingTime = 5 -- fallback (có thể nâng cấp tracking real time)
+				pauseParticle(p)
+			end
+		end
+	else
+		-- RESUME tất cả
+		for p in pairs(activeParticles) do
+			resumeParticle(p)
+		end
+	end
+end)
+
+--------------------------------------------------
+-- CREATE PARTICLE
+--------------------------------------------------
+local function createParticle()
+	if not effectEnabled then return end
+	if table.getn(activeParticles) >= SETTINGS.MaxParticles then return end
+
+	local p = particleTemplate:Clone()
+	p.Visible = true
+	p.Parent = scroll
+	p.ImageTransparency = 1
+
+	activeParticles[p] = true
+
+	p.AncestryChanged:Connect(function(_, parent)
+		if not parent then
+			activeParticles[p] = nil
+		end
+	end)
+
+	local size = math.random(SETTINGS.MinSize, SETTINGS.MaxSize)
+	p.Size = UDim2.fromOffset(size, size)
+	p.Rotation = math.random(SETTINGS.MinRotation, SETTINGS.MaxRotation)
+	p.AnchorPoint = Vector2.new(0.5, 0.5)
+	p.Position = UDim2.new(math.random(), 0, 0, -15)
+
+	local fallTime = math.random(SETTINGS.MinFallTime, SETTINGS.MaxFallTime)
+	p._remainingTime = fallTime
+
+	-- Fade in
+	local fadeIn = TweenService:Create(
+		p,
+		TweenInfo.new(fallTime * 0.1),
+		{ ImageTransparency = 0 }
+	)
+	fadeIn:Play()
+
+	-- Move
+	p._moveTween = TweenService:Create(
+		p,
+		TweenInfo.new(fallTime, Enum.EasingStyle.Linear),
+		{ Position = UDim2.new(p.Position.X.Scale, 0, 1, 20) }
+	)
+	p._moveTween:Play()
+
+	-- Fade out
+	task.delay(fallTime * 0.9, function()
+		if not p.Parent then return end
+
+		p._fadeTween = TweenService:Create(
+			p,
+			TweenInfo.new(fallTime * 0.1),
+			{ ImageTransparency = 1 }
+		)
+		p._fadeTween:Play()
+
+		p._fadeTween.Completed:Once(function()
+			if p.Parent then
+				p:Destroy()
+			end
+		end)
+	end)
+end
+
+--------------------------------------------------
+-- LOOP
+--------------------------------------------------
 task.spawn(function()
-	while true do
-		createParticle()
-		task.wait(SETTINGS.SpawnRate)
+	while gui.Parent do
+		if effectEnabled then
+			createParticle()
+			task.wait(SETTINGS.SpawnRate)
+		else
+			task.wait(0.3)
+		end
 	end
 end)
