@@ -40,7 +40,7 @@ local function waitLoad(name, pct)
 end
 
 game.StarterGui:SetCore("SendNotification", {
-    Title = "⚜️HAPPY script v0.07⚜️";
+    Title = "⚜️HAPPY script v0.08⚜️";
     Text = "Good Luck🍀";
     Duration = 5;
 })
