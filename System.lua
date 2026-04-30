@@ -132,6 +132,20 @@ end
 --------------------------------------------------------
 -- UI / TWEEN CONSTANTS
 --------------------------------------------------------
+local Camera = workspace.CurrentCamera or workspace:WaitForChild("Camera")
+
+local function isMobileDevice()
+	return UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
+end
+
+local function getOpenSize()
+	if isMobileDevice() then
+		return UDim2.new(0.75, 0, 0.75, 0)
+	end
+
+	return UDim2.fromOffset(650, 650)
+end
+
 local startSize = UDim2.new(0.01, 0, 0.01, 0)
 local idleSize = UDim2.new(0.25, 0, 0.25, 0)
 local hoverSize = UDim2.new(0.275, 0, 0.275, 0)
@@ -139,7 +153,6 @@ local hoverSize = UDim2.new(0.275, 0, 0.275, 0)
 local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 local fastInfo = TweenInfo.new(0.07, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
-local openSize = UDim2.new(0.75, 0, 0.75, 0)
 local closeSize = UDim2.new(0.025, 0, 0.025, 0)
 
 local menuOpen = false
@@ -384,7 +397,7 @@ local menuWasOpen = false
 local function openNoti()
 	doneBusy = false
 	setNotiLocked(false)
-	
+
 	menuWasOpen = menuOpen
 	if menuOpen then
 		menuOpen = false
@@ -422,7 +435,7 @@ local function closeNoti(onClosed)
 			menuOpen = true
 			main.Visible = true
 			main.Size = closeSize
-			TweenService:Create(main, tweenInfo, {Size = openSize}):Play()
+			TweenService:Create(main, tweenInfo, {Size = getOpenSize()}):Play()
 		end
 		if onClosed then
 			task.defer(onClosed)
@@ -738,7 +751,7 @@ frame.InputEnded:Connect(function(input)
 			if menuOpen then
 				main.Visible = true
 				main.Size = closeSize
-				TweenService:Create(main, tweenInfo, {Size = openSize}):Play()
+				TweenService:Create(main, tweenInfo, {Size = getOpenSize()}):Play()
 			else
 				local tween = TweenService:Create(main, tweenInfo, {Size = closeSize})
 				tween:Play()
