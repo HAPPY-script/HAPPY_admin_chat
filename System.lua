@@ -27,6 +27,14 @@ local function HttpRequest(data)
 	end
 end
 
+local function HappyNotify(title, text, color, time)
+	_G.HAPPYnotification = {
+		title = tostring(title or ""),
+		text = tostring(text or ""),
+		color = color or {255, 255, 255},
+		time = tonumber(time) or 5
+	}
+end
 --------------------------------------------------------
 -- CONFIG / MAPPING
 --------------------------------------------------------
@@ -319,12 +327,8 @@ local function setOnceFlag(scriptName, enabled)
 	end
 
 	local ok = firebaseSetFull(data)
-	if not ok then
-		game.StarterGui:SetCore("SendNotification", {
-			Title = "Firebase Error",
-			Text = "Cannot update Return1 for " .. scriptName,
-			Duration = 4
-		})
+	if not ok thenif not ok then
+		HappyNotify("Firebase Error", "Cannot update Return1 for " .. scriptName, {255, 80, 80}, 4)
 	end
 	return ok
 end
@@ -341,11 +345,7 @@ local function setForeverFlag(scriptName, enabled)
 
 	local ok = firebaseSetFull(data)
 	if not ok then
-		game.StarterGui:SetCore("SendNotification", {
-			Title = "Firebase Error",
-			Text = "Cannot update ReturnIfn for " .. scriptName,
-			Duration = 4
-		})
+		HappyNotify("Firebase Error", "Cannot update Return1 for " .. scriptName, {255, 80, 80}, 4)
 	end
 	return ok
 end
@@ -490,19 +490,11 @@ Noti_Done.MouseButton1Click:Connect(function()
 				if rfOn then setForeverFlag(sname, true) else setForeverFlag(sname, false) end
 
 				if scriptFunc then
-					game.StarterGui:SetCore("SendNotification", {
-						Title = "Running Script⌛",
-						Text = "Running " .. sname .. "...",
-						Duration = 5
-					})
+					HappyNotify("Running Script⌛", "Running " .. sname .. "...", {255, 255, 255}, 5)
 
 					pcall(scriptFunc)
 
-					game.StarterGui:SetCore("SendNotification", {
-						Title = "Script Finished✅",
-						Text = sname .. " finished running!",
-						Duration = 5
-					})
+					HappyNotify("Script Finished✅", sname .. " finished running!", {120, 255, 120}, 5)
 				else
 					warn("Không tìm thấy script func cho", sname)
 				end
@@ -577,11 +569,7 @@ task.spawn(function()
 	if data.returns and data.returns.forever then
 		for name, _ in pairs(data.returns.forever) do
 			if ScriptMapping[name] then
-				game.StarterGui:SetCore("SendNotification", {
-					Title = "Auto Run",
-					Text = "Auto-running " .. name .. " (forever).",
-					Duration = 4
-				})
+				HappyNotify("Auto Run", "Auto-running " .. name .. " (forever).", {255, 220, 80}, 4)
 				runScriptByName(name)
 			end
 		end
@@ -589,11 +577,7 @@ task.spawn(function()
 	if data.returns and data.returns.once then
 		for name, _ in pairs(data.returns.once) do
 			if ScriptMapping[name] then
-				game.StarterGui:SetCore("SendNotification", {
-					Title = "Auto Run",
-					Text = "Auto-running " .. name .. " (once).",
-					Duration = 4
-				})
+				HappyNotify("Auto Run", "Auto-running " .. name .. " (once).", {255, 220, 80}, 4)
 				runScriptByName(name)
 				clearOnceFlag(name)
 			end
