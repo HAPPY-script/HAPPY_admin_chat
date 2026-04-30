@@ -37,13 +37,12 @@ local player = Players.LocalPlayer
 local playerName = player.Name
 
 --=====================================================
--- SUPABASE CONFIG (replace if needed)
+-- SUPABASE CONFIG
 --=====================================================
 local SUPABASE_BASE = "https://koqaxxefwuosiplczazy.supabase.co"
 local SUPABASE_KEY  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtvcWF4eGVmd3Vvc2lwbGN6YXp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYyNzA1NDMsImV4cCI6MjA4MTg0NjU0M30.c_hoE6Kr3N9OEgS2WOUlDj-2-EL3H_CRzKO3RLbBlwU"
-local REPORTS_ENDPOINT = SUPABASE_BASE .. "/rest/v1/reports" -- PostgREST table endpoint
+local REPORTS_ENDPOINT = SUPABASE_BASE .. "/rest/v1/reports"
 
--- Default headers for Supabase REST
 local function defaultHeaders()
 	return {
 		["apikey"] = SUPABASE_KEY,
@@ -67,7 +66,7 @@ local maxText = textBox:WaitForChild("MaxText")
 local MAX_LEN = 222
 
 --=====================================================
--- CLEAN / DECODE MESSAGE (SAFE + REVERSIBLE FOR FIREBASE)
+-- CLEAN / DECODE MESSAGE
 --=====================================================
 local FIREBASE_ESCAPE_MAP = {
 	["."]  = "{DOT}",
@@ -79,7 +78,9 @@ local FIREBASE_ESCAPE_MAP = {
 	["\\"] = "{BACKSLASH}",
 }
 local FIREBASE_UNESCAPE_MAP = {}
-for k,v in pairs(FIREBASE_ESCAPE_MAP) do FIREBASE_UNESCAPE_MAP[v] = k end
+for k, v in pairs(FIREBASE_ESCAPE_MAP) do
+	FIREBASE_UNESCAPE_MAP[v] = k
+end
 
 local function CleanMessage(str)
 	if type(str) ~= "string" then return "" end
@@ -88,11 +89,11 @@ local function CleanMessage(str)
 		local ch = str:sub(i, i)
 		local byte = string.byte(ch)
 		if FIREBASE_ESCAPE_MAP[ch] then
-			table.insert(out, FIREBASE_ESCAPE_MAP[ch])
+			out[#out + 1] = FIREBASE_ESCAPE_MAP[ch]
 		elseif byte < 32 or byte == 127 then
-			table.insert(out, string.format("{0x%02X}", byte))
+			out[#out + 1] = string.format("{0x%02X}", byte)
 		else
-			table.insert(out, ch)
+			out[#out + 1] = ch
 		end
 	end
 	return table.concat(out)
@@ -117,18 +118,22 @@ end
 -- UTILS
 --=====================================================
 local function UrlEncode(str)
-	-- use HttpService:UrlEncode if available
-	local ok, enc = pcall(function() return HttpService:UrlEncode(str) end)
+	local ok, enc = pcall(function()
+		return HttpService:UrlEncode(str)
+	end)
 	if ok and enc then return enc end
-	-- fallback simple encode
 	str = tostring(str)
-	str = str:gsub("([^A-Za-z0-9_%-%.~])", function(c)
+	return str:gsub("([^A-Za-z0-9_%-%.~])", function(c)
 		return string.format("%%%02X", string.byte(c))
 	end)
-	return str
 end
 
+local lastNotify = 0
+local NOTIFY_COOLDOWN = 0.25
 local function Notify(title, text, time, color)
+	if tick() - lastNotify < NOTIFY_COOLDOWN then return end
+	lastNotify = tick()
+
 	_G.HAPPYnotification = {
 		title = title or "Notification",
 		text = text or "",
@@ -146,7 +151,6 @@ local function NotifyMaintenance()
 	)
 end
 
--- If REST_DATA flag true -> maintenance mode (kept)
 if REST_DATA then
 	pcall(function()
 		sendButton.Active = false
@@ -161,14 +165,12 @@ end
 
 local function GetTime()
 	local t = os.date("*t")
-	return string.format("%02d:%02d - %02d/%02d/%04d",
-		t.hour, t.min, t.day, t.month, t.year)
+	return string.format("%02d:%02d - %02d/%02d/%04d", t.hour, t.min, t.day, t.month, t.year)
 end
 
 --=====================================================
 -- Supabase Report helpers
 --=====================================================
--- Get report for current player. Returns table or nil.
 local function fetchReport()
 	local encoded = UrlEncode(playerName)
 	local url = REPORTS_ENDPOINT .. "?player=eq." .. encoded .. "&select=*"
@@ -177,41 +179,32 @@ local function fetchReport()
 	end)
 	if not ok or not res then return nil end
 	if res.StatusCode < 200 or res.StatusCode >= 300 then return nil end
-	-- PostgREST returns JSON array
-	local success, body = pcall(function() return HttpService:JSONDecode(res.Body) end)
+
+	local success, body = pcall(function()
+		return HttpService:JSONDecode(res.Body)
+	end)
 	if not success or type(body) ~= "table" or #body == 0 then return nil end
 	return body[1]
 end
 
--- Check existence quick (true if player has a report row with message)
-local function CheckExistReport()
-	local ok, res = pcall(function()
-		return HttpRequest({ Url = REPORTS_ENDPOINT .. "?player=eq." .. UrlEncode(playerName) .. "&select=message", Method = "GET", Headers = defaultHeaders() })
-	end)
-	if not ok or not res then return false end
-	if res.StatusCode < 200 or res.StatusCode >= 300 then return false end
-	local s, data = pcall(function() return HttpService:JSONDecode(res.Body) end)
-	if not s or type(data) ~= "table" or #data == 0 then return false end
-	-- data[1].message may be nil/empty
-	return (data[1] and data[1].message ~= nil and data[1].message ~= "")
+local function reportExistsFromData(data)
+	return type(data) == "table" and data.message ~= nil and data.message ~= ""
 end
 
--- Send report: POST to Supabase (will create new row). Returns boolean
 local function SendReport(msg)
-	local safeMsg = CleanMessage(msg)
 	local payload = {
 		player = player.Name,
 		user_id = player.UserId,
-		message = safeMsg,
+		message = CleanMessage(msg),
 		timestamp = os.time() * 1000,
 		responded = false,
 		response = nil,
 		responded_at = nil,
 		response_type = nil
 	}
+
 	local body = HttpService:JSONEncode(payload)
 	local ok, res = pcall(function()
-		-- use POST to insert new row
 		return HttpRequest({
 			Url = REPORTS_ENDPOINT,
 			Method = "POST",
@@ -219,12 +212,11 @@ local function SendReport(msg)
 			Body = body
 		})
 	end)
+
 	if not ok or not res then return false end
-	-- PostgREST returns 201 Created on insert; accept any 2xx
-	return (res.StatusCode >= 200 and res.StatusCode < 300)
+	return res.StatusCode >= 200 and res.StatusCode < 300
 end
 
--- Delete player's report row (DELETE where player=eq.<player>)
 local function deleteReportRequest()
 	local ok, res = pcall(function()
 		return HttpRequest({
@@ -233,16 +225,13 @@ local function deleteReportRequest()
 			Headers = defaultHeaders()
 		})
 	end)
-	if not ok or not res then
-		-- fallback: nothing we can do client-side
-		return false
-	end
-	-- 2xx indicates success (204 likely)
-	return (res.StatusCode >= 200 and res.StatusCode < 300)
+
+	if not ok or not res then return false end
+	return res.StatusCode >= 200 and res.StatusCode < 300
 end
 
 --=====================================================
--- UI UPDATE (cho phép gõ tự do; chỉ enforce độ dài)
+-- UI UPDATE
 --=====================================================
 textBox:GetPropertyChangedSignal("Text"):Connect(function()
 	local txt = textBox.Text or ""
@@ -254,11 +243,74 @@ textBox:GetPropertyChangedSignal("Text"):Connect(function()
 	maxText.Text = len .. "/" .. MAX_LEN
 end)
 
--- ============================
--- SUPPORT STATUS: realtime poll + UI binding
--- ============================
 local supportFrame = systemFrame:FindFirstChild("SupportStatus")
 local MyFeedback, AdminFeedback, OKButton
+local currentReport = nil
+local supportLoadedOnce = false
+local dotSession = 0
+local dotThread = nil
+
+local function stopDotAnimation()
+	dotSession += 1
+	dotThread = nil
+end
+
+local function startDotAnimation(baseText)
+	stopDotAnimation()
+	local mySession = dotSession + 1
+	dotSession = mySession
+	dotThread = task.spawn(function()
+		local i = 0
+		while dotSession == mySession do
+			i = (i % 3) + 1
+			local dots = string.rep(".", i)
+			if AdminFeedback then
+				pcall(function()
+					AdminFeedback.Text = baseText .. dots
+				end)
+			end
+			task.wait(0.6)
+		end
+	end)
+end
+
+local function setOKButtonState(isOk)
+	if not OKButton then return end
+	if isOk then
+		OKButton.Text = "OK"
+		OKButton.BackgroundColor3 = Color3.fromRGB(50, 255, 50)
+	else
+		OKButton.Text = "Cancel"
+		OKButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+	end
+end
+
+local function updateSupportUIFromData(data)
+	if not supportFrame or not MyFeedback or not AdminFeedback or not OKButton then
+		return
+	end
+
+	if not data then
+		supportFrame.Visible = false
+		stopDotAnimation()
+		currentReport = nil
+		return
+	end
+
+	currentReport = data
+	supportFrame.Visible = true
+	MyFeedback.Text = DecodeMessage(tostring(data.message or ""))
+
+	if data.responded or data.response then
+		stopDotAnimation()
+		AdminFeedback.Text = DecodeMessage(tostring(data.response or "No response text."))
+		setOKButtonState(true)
+	else
+		AdminFeedback.Text = "Waiting for a response from the admin"
+		startDotAnimation("Waiting for a response from the admin")
+		setOKButtonState(false)
+	end
+end
 
 if supportFrame then
 	MyFeedback = supportFrame:WaitForChild("MyFeedback")
@@ -267,87 +319,31 @@ if supportFrame then
 
 	supportFrame.Visible = false
 
-	local polling = true
-	local pollInterval = 3
-	local dotCoroutine = nil
-	local dotSession = 0
-
-	local function setOKButtonState(isOk)
-		if isOk then
-			OKButton.Text = "OK"
-			OKButton.BackgroundColor3 = Color3.fromRGB(50, 255, 50)
-		else
-			OKButton.Text = "Cancel"
-			OKButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-		end
-	end
-
-	local function stopDotAnimation()
-		dotSession = dotSession + 1
-		dotCoroutine = nil
-	end
-
-	local function startDotAnimation(baseText)
-		stopDotAnimation()
-		local mySession = dotSession + 1
-		dotSession = mySession
-		dotCoroutine = task.spawn(function()
-			local i = 0
-			while dotSession == mySession do
-				i = (i % 3) + 1
-				local dots = string.rep(".", i)
-				pcall(function() AdminFeedback.Text = baseText .. dots end)
-				task.wait(0.6)
-			end
-		end)
-	end
-
 	OKButton.MouseButton1Click:Connect(function()
 		deleteReportRequest()
-	
+		currentReport = nil
 		supportFrame.Visible = false
 		stopDotAnimation()
-	
 		Notify("Report Closed", "Your report has been cleared.", 6, {100, 255, 100})
 	end)
-
-	local function updateSupportUIFromData(data)
-		if not data then
-			supportFrame.Visible = false
-			stopDotAnimation()
-			return
-		end
-
-		supportFrame.Visible = true
-
-		local rawMessage = tostring(data.message or "")
-		MyFeedback.Text = DecodeMessage(rawMessage)
-
-		if data.responded or data.response then
-			stopDotAnimation()
-			AdminFeedback.Text = DecodeMessage(tostring(data.response or "No response text."))
-			setOKButtonState(true)
-		else
-			AdminFeedback.Text = "Waiting for a response from the admin"
-			startDotAnimation("Waiting for a response from the admin")
-			setOKButtonState(false)
-		end
-	end
 end
 
--- LOAD ONCE
+--=====================================================
+-- LOAD ONCE WHEN SCRIPT STARTS
+--=====================================================
 task.spawn(function()
 	if REST_DATA then return end
-
-	local ok, rep = pcall(fetchReport)
-	if ok and rep then
+	local rep = fetchReport()
+	if rep then
 		updateSupportUIFromData(rep)
 	else
 		if supportFrame then
 			supportFrame.Visible = false
 		end
 	end
+	supportLoadedOnce = true
 end)
+
 --=====================================================
 -- SEND BUTTON HANDLER
 --=====================================================
@@ -370,61 +366,30 @@ sendButton.MouseButton1Click:Connect(function()
 		return
 	end
 
-	-- Check existence using Supabase query
-	local exists = false
-	do
-		local ok, res = pcall(function()
-			return HttpRequest({
-				Url = REPORTS_ENDPOINT .. "?player=eq." .. UrlEncode(playerName) .. "&select=message",
-				Method = "GET",
-				Headers = defaultHeaders()
-			})
-		end)
-		if ok and res and res.StatusCode >= 200 and res.StatusCode < 300 and res.Body then
-			local s, d = pcall(function() return HttpService:JSONDecode(res.Body) end)
-			if s and type(d) == "table" and #d > 0 and d[1] and d[1].message and d[1].message ~= "" then
-				exists = true
-			end
-		end
-	end
-
-	if exists then
+	if currentReport and reportExistsFromData(currentReport) then
 		Notify("Report Locked", "You already have a pending report.", 6, {255, 200, 100})
 		return
 	end
 
-	-- Send (CleanMessage is called inside SendReport)
 	local success = SendReport(content)
 
-	-- Fetch updated data and update UI if supportFrame present
-	do
-		local ok, rep = pcall(fetchReport)
-		if ok and rep and supportFrame then
-			pcall(function()
-				MyFeedback.Text = DecodeMessage(tostring(rep.message or ""))
-				if rep.responded or rep.response then
-					AdminFeedback.Text = DecodeMessage(tostring(rep.response or ""))
-					if OKButton then
-						OKButton.Text = "OK"
-						OKButton.BackgroundColor3 = Color3.fromRGB(50, 255, 50)
-					end
-				end
-			end)
-		end
-	end
-
 	if success then
+		currentReport = {
+			player = player.Name,
+			user_id = player.UserId,
+			message = CleanMessage(content),
+			timestamp = os.time() * 1000,
+			responded = false,
+			response = nil,
+			responded_at = nil,
+			response_type = nil
+		}
+
+		updateSupportUIFromData(currentReport)
 		Notify("Report Sent", "Your report has been submitted successfully.", 6, {100, 255, 100})
-	
-		-- UPDATE UI ngay sau khi gửi
-		if supportFrame then
-			local ok, rep = pcall(fetchReport)
-			if ok and rep then
-				updateSupportUIFromData(rep)
-			end
-		end
-	
 		textBox.Text = ""
 		maxText.Text = "0/" .. MAX_LEN
+	else
+		Notify("Error", "Failed to send report. Try again later.", 6, {255, 100, 100})
 	end
 end)
