@@ -274,14 +274,35 @@ local function startDotAnimation(baseText)
 	end)
 end
 
+local OK_IDLE_COLOR = Color3.fromRGB(50, 255, 50)
+local OK_BUSY_COLOR = Color3.fromRGB(140, 140, 140)
+local CANCEL_IDLE_COLOR = Color3.fromRGB(255, 50, 50)
+local BUTTON_BUSY_COOLDOWN = 0.15
+
+local buttonBusy = {}
+
+local function setButtonBusy(btn, busy, busyColor)
+	if not btn then return end
+	if busy then
+		buttonBusy[btn] = true
+		btn.Active = false
+		btn.AutoButtonColor = false
+		btn.BackgroundColor3 = busyColor or OK_BUSY_COLOR
+	else
+		buttonBusy[btn] = nil
+		btn.Active = true
+		btn.AutoButtonColor = true
+	end
+end
+
 local function setOKButtonState(isOk)
 	if not OKButton then return end
 	if isOk then
 		OKButton.Text = "OK"
-		OKButton.BackgroundColor3 = Color3.fromRGB(50, 255, 50)
+		OKButton.BackgroundColor3 = OK_IDLE_COLOR
 	else
 		OKButton.Text = "Cancel"
-		OKButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+		OKButton.BackgroundColor3 = CANCEL_IDLE_COLOR
 	end
 end
 
@@ -320,11 +341,25 @@ if supportFrame then
 	supportFrame.Visible = false
 
 	OKButton.MouseButton1Click:Connect(function()
-		deleteReportRequest()
-		currentReport = nil
-		supportFrame.Visible = false
-		stopDotAnimation()
-		Notify("Report Closed", "Your report has been cleared.", 6, {100, 255, 100})
+		if buttonBusy[OKButton] then return end
+		setButtonBusy(OKButton, true, OK_BUSY_COLOR)
+
+		task.spawn(function()
+			local ok = deleteReportRequest()
+			currentReport = nil
+			supportFrame.Visible = false
+			stopDotAnimation()
+
+			if ok then
+				Notify("Report Closed", "Your report has been cleared.", 6, {100, 255, 100})
+			else
+				Notify("Report Error", "Could not clear your report right now.", 6, {255, 100, 100})
+			end
+
+			task.wait(BUTTON_BUSY_COOLDOWN)
+			setButtonBusy(OKButton, false)
+			setOKButtonState(true)
+		end)
 	end)
 end
 
