@@ -303,17 +303,12 @@ if supportFrame then
 	end
 
 	OKButton.MouseButton1Click:Connect(function()
-		if OKButton.Text == "Cancel" then
-			deleteReportRequest()
-			supportFrame.Visible = false
-			stopDotAnimation()
-			Notify("Report Cancelled", "Your report has been removed.", 6, {255, 120, 120})
-		else
-			deleteReportRequest()
-			supportFrame.Visible = false
-			stopDotAnimation()
-			Notify("Report Closed", "Your report has been cleared.", 6, {100, 255, 100})
-		end
+		deleteReportRequest()
+	
+		supportFrame.Visible = false
+		stopDotAnimation()
+	
+		Notify("Report Closed", "Your report has been cleared.", 6, {100, 255, 100})
 	end)
 
 	local function updateSupportUIFromData(data)
@@ -338,27 +333,21 @@ if supportFrame then
 			setOKButtonState(false)
 		end
 	end
-
-	-- Polling loop
-	task.spawn(function()
-		if REST_DATA then return end
-		while true do
-			local ok, rep = pcall(fetchReport)
-			local data = nil
-			if ok and rep then data = rep end
-			if data then
-				updateSupportUIFromData(data)
-			else
-				if supportFrame.Visible then
-					supportFrame.Visible = false
-				end
-				stopDotAnimation()
-			end
-			task.wait(pollInterval)
-		end
-	end)
 end
 
+-- LOAD ONCE
+task.spawn(function()
+	if REST_DATA then return end
+
+	local ok, rep = pcall(fetchReport)
+	if ok and rep then
+		updateSupportUIFromData(rep)
+	else
+		if supportFrame then
+			supportFrame.Visible = false
+		end
+	end
+end)
 --=====================================================
 -- SEND BUTTON HANDLER
 --=====================================================
@@ -426,9 +415,16 @@ sendButton.MouseButton1Click:Connect(function()
 
 	if success then
 		Notify("Report Sent", "Your report has been submitted successfully.", 6, {100, 255, 100})
+	
+		-- UPDATE UI ngay sau khi gửi
+		if supportFrame then
+			local ok, rep = pcall(fetchReport)
+			if ok and rep then
+				updateSupportUIFromData(rep)
+			end
+		end
+	
 		textBox.Text = ""
 		maxText.Text = "0/" .. MAX_LEN
-	else
-		Notify("Error", "Failed to send report. Try again later.", 6, {255, 100, 100})
 	end
 end)
