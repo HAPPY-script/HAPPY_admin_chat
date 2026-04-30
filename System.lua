@@ -654,6 +654,7 @@ hideAllFrames()
 local function openTabFrame(targetFrame)
 	hideAllFrames()
 	targetFrame.Visible = true
+	task.wait()
 
 	local buttons = {}
 	for _, child in ipairs(targetFrame:GetChildren()) do
@@ -667,10 +668,13 @@ local function openTabFrame(targetFrame)
 	end
 
 	table.sort(buttons, function(a, b)
-		local ax, ay = a.Position.X.Scale, a.Position.Y.Scale
-		local bx, by = b.Position.X.Scale, b.Position.Y.Scale
-		if ay ~= by then return ay < by end
-		return ax < bx
+		local ap = a.AbsolutePosition
+		local bp = b.AbsolutePosition
+
+		if ap.Y ~= bp.Y then
+			return ap.Y < bp.Y
+		end
+		return ap.X < bp.X
 	end)
 
 	task.spawn(function()
