@@ -327,7 +327,7 @@ local function setOnceFlag(scriptName, enabled)
 	end
 
 	local ok = firebaseSetFull(data)
-	if not ok thenif not ok then
+	if not ok then if not ok then
 		HappyNotify("Firebase Error", "Cannot update Return1 for " .. scriptName, {255, 80, 80}, 4)
 	end
 	return ok
