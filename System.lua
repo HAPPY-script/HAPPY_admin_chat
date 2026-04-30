@@ -164,11 +164,14 @@ local function startLoading(btn)
 	local loadingFrame = btn:FindFirstChild("Loading")
 	if not loadingFrame then return end
 
-	-- nếu đã đang loading thì show và return
 	if loadingConns[loadingFrame] then
 		loadingFrame.Visible = true
 		return
 	end
+
+	btn.Active = false
+	btn.AutoButtonColor = false
+	btn:SetAttribute("LoadingBusy", true)
 
 	local img = findSpinnerImage(loadingFrame)
 	if img then
@@ -197,6 +200,10 @@ local function stopLoading(btn)
 	local img = findSpinnerImage(loadingFrame)
 	if img then img.Rotation = 0 end
 	loadingFrame.Visible = false
+
+	btn.Active = true
+	btn.AutoButtonColor = true
+	btn:SetAttribute("LoadingBusy", false)
 end
 
 --------------------------------------------------------
@@ -443,34 +450,31 @@ local function openNotiFor(btn)
 end
 
 -- Hook Noti buttons
-Noti_Back.MouseButton1Click:Connect(function() closeNoti() end)
+Noti_Back.MouseButton1Click:Connect(function()
+	local sourceBtn = NOTI_CONTEXT.btnObject
+	closeNoti(function()
+		if sourceBtn then
+			stopLoading(sourceBtn)
+		end
+	end)
+end)
 
 Noti_Done.MouseButton1Click:Connect(function()
 	if doneBusy then return end
 	doneBusy = true
 	setNotiLocked(true)
 
+	local sourceBtn = NOTI_CONTEXT.btnObject
 	local sname = NOTI_CONTEXT.scriptName
 	local scriptFunc = NOTI_CONTEXT.scriptFunc
 	local r1On = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
 	local rfOn = (Noti_ReturnIfn.BackgroundColor3 == Color3.fromRGB(50,255,50))
 
-	closeNoti()
-
-	task.delay(tweenInfo.Time, function()
+	closeNoti(function()
 		task.spawn(function()
 			if sname then
-				if r1On then
-					setOnceFlag(sname, true)
-				else
-					setOnceFlag(sname, false)
-				end
-
-				if rfOn then
-					setForeverFlag(sname, true)
-				else
-					setForeverFlag(sname, false)
-				end
+				if r1On then setOnceFlag(sname, true) else setOnceFlag(sname, false) end
+				if rfOn then setForeverFlag(sname, true) else setForeverFlag(sname, false) end
 
 				if scriptFunc then
 					game.StarterGui:SetCore("SendNotification", {
@@ -491,6 +495,9 @@ Noti_Done.MouseButton1Click:Connect(function()
 				end
 			end
 
+			if sourceBtn then
+				stopLoading(sourceBtn)
+			end
 			doneBusy = false
 			setNotiLocked(false)
 		end)
@@ -612,6 +619,7 @@ local function applyButtonEffects(btn)
 	end)
 
 	btn.MouseButton1Click:Connect(function()
+		if btn:GetAttribute("LoadingBusy") then return end
 		tween(btn, fastInfo, {Size = idleSize})
 		task.wait(0.07)
 		if hovering then tween(btn, fastInfo, {Size = hoverSize}) end
@@ -623,7 +631,6 @@ local function applyButtonEffects(btn)
 				openNotiFor(btn)
 			end)
 			if not ok then warn("[openNotiFor] error:", err) end
-			stopLoading(btn)
 		end)
 	end)
 end
