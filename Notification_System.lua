@@ -1,46 +1,61 @@
-local HAPPYscriptNotification = Instance.new("ScreenGui")
-HAPPYscriptNotification.Name = "HAPPYscriptNotification"
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local function ensureChild(parent, className, name)
+	local obj = parent:FindFirstChild(name)
+	if obj and obj.ClassName ~= className then
+		obj:Destroy()
+		obj = nil
+	end
+	if not obj then
+		obj = Instance.new(className)
+		obj.Name = name
+		obj.Parent = parent
+	end
+	return obj
+end
+
+--------------------------------------------------------
+-- UI CREATE / ENSURE
+--------------------------------------------------------
+local HAPPYscriptNotification = ensureChild(playerGui, "ScreenGui", "HAPPYscriptNotification")
 HAPPYscriptNotification.ResetOnSpawn = false
 HAPPYscriptNotification.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 HAPPYscriptNotification.DisplayOrder = 99999
-HAPPYscriptNotification.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-local NotificationFrame = Instance.new("Frame")
-NotificationFrame.Name = "NotificationFrame"
+local NotificationFrame = ensureChild(HAPPYscriptNotification, "Frame", "NotificationFrame")
 NotificationFrame.Position = UDim2.new(1, 0, 0.9, 0)
 NotificationFrame.Size = UDim2.new(0, 250, 0, 75)
 NotificationFrame.BackgroundColor3 = Color3.new(1, 1, 1)
-NotificationFrame.BackgroundTransparency = 0.15000000596046448
+NotificationFrame.BackgroundTransparency = 0.15
 NotificationFrame.BorderSizePixel = 0
 NotificationFrame.BorderColor3 = Color3.new(0, 0, 0)
 NotificationFrame.Visible = false
 NotificationFrame.AnchorPoint = Vector2.new(1, 0.5)
-NotificationFrame.Transparency = 0.15000000596046448
-NotificationFrame.Parent = HAPPYscriptNotification
 
-local UIGradient = Instance.new("UIGradient")
-UIGradient.Name = "UIGradient"
-UIGradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.0431373, 0, 0.0627451)), ColorSequenceKeypoint.new(0.698962, Color3.new(0.0980392, 0, 0.137255)), ColorSequenceKeypoint.new(1, Color3.new(0.203922, 0, 0.203922))})
+local UIGradient = ensureChild(NotificationFrame, "UIGradient", "UIGradient")
+UIGradient.Color = ColorSequence.new({
+	ColorSequenceKeypoint.new(0, Color3.new(0.0431373, 0, 0.0627451)),
+	ColorSequenceKeypoint.new(0.698962, Color3.new(0.0980392, 0, 0.137255)),
+	ColorSequenceKeypoint.new(1, Color3.new(0.203922, 0, 0.203922))
+})
 UIGradient.Rotation = 90
-UIGradient.Parent = NotificationFrame
 
-local Line = Instance.new("Frame")
-Line.Name = "Line"
+local Line = ensureChild(NotificationFrame, "Frame", "Line")
 Line.Position = UDim2.new(0.003, 0, 0, 0)
 Line.Size = UDim2.new(0.015, 0, 1, 0)
 Line.BackgroundColor3 = Color3.new(1, 0, 1)
 Line.BorderSizePixel = 0
 Line.BorderColor3 = Color3.new(0, 0, 0)
 Line.ZIndex = 2
-Line.Parent = NotificationFrame
 
-local UICorner = Instance.new("UICorner")
-UICorner.Name = "UICorner"
-UICorner.CornerRadius = UDim.new(0.25, 0)
-UICorner.Parent = Line
+local LineCorner = ensureChild(Line, "UICorner", "UICorner")
+LineCorner.CornerRadius = UDim.new(0.25, 0)
 
-local Text = Instance.new("TextLabel")
-Text.Name = "Text"
+local Text = ensureChild(NotificationFrame, "TextLabel", "Text")
 Text.Position = UDim2.new(0.515, 0, 0.75, 0)
 Text.Size = UDim2.new(0.95, 0, 0.5, 0)
 Text.BackgroundColor3 = Color3.new(1, 1, 1)
@@ -48,18 +63,17 @@ Text.BackgroundTransparency = 1
 Text.BorderSizePixel = 0
 Text.BorderColor3 = Color3.new(0, 0, 0)
 Text.AnchorPoint = Vector2.new(0.5, 0.5)
-Text.Transparency = 1
 Text.Text = "Goodluck!"
 Text.TextColor3 = Color3.new(1, 1, 1)
+Text.TextTransparency = 0
+Text.TextStrokeTransparency = 1
 Text.TextSize = 30
 Text.FontFace = Font.new("rbxasset://fonts/families/TitilliumWeb.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
 Text.TextScaled = true
 Text.TextWrapped = true
 Text.RichText = true
-Text.Parent = NotificationFrame
 
-local Title = Instance.new("TextLabel")
-Title.Name = "Title"
+local Title = ensureChild(NotificationFrame, "TextLabel", "Title")
 Title.Position = UDim2.new(0.515, 0, 0.25, 0)
 Title.Size = UDim2.new(0.95, 0, 0.5, 0)
 Title.BackgroundColor3 = Color3.new(1, 1, 1)
@@ -67,69 +81,37 @@ Title.BackgroundTransparency = 1
 Title.BorderSizePixel = 0
 Title.BorderColor3 = Color3.new(0, 0, 0)
 Title.AnchorPoint = Vector2.new(0.5, 0.5)
-Title.Transparency = 1
 Title.Text = "HAPPY script"
 Title.TextColor3 = Color3.new(1, 0, 1)
+Title.TextTransparency = 0
+Title.TextStrokeTransparency = 1
 Title.TextSize = 30
 Title.FontFace = Font.new("rbxasset://fonts/families/PatrickHand.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 Title.TextScaled = true
 Title.TextWrapped = true
-Title.Parent = NotificationFrame
 
-local TimeFrame = Instance.new("Frame")
-TimeFrame.Name = "TimeFrame"
+local TimeFrame = ensureChild(NotificationFrame, "Frame", "TimeFrame")
 TimeFrame.Position = UDim2.new(0.015, 0, 0.99, 0)
 TimeFrame.Size = UDim2.new(1, 0, 0.03, 0)
 TimeFrame.BackgroundColor3 = Color3.new(0, 0, 0)
 TimeFrame.BorderSizePixel = 0
 TimeFrame.BorderColor3 = Color3.new(0, 0, 0)
 TimeFrame.AnchorPoint = Vector2.new(0, 0.5)
-TimeFrame.Parent = NotificationFrame
 
-local Time = Instance.new("Frame")
-Time.Name = "Time"
+local Time = ensureChild(TimeFrame, "Frame", "Time")
 Time.Position = UDim2.new(0.5, 0, 0.5, 0)
 Time.Size = UDim2.new(1, 0, 1, 0)
 Time.BackgroundColor3 = Color3.new(1, 0, 0.392157)
 Time.BorderSizePixel = 0
 Time.BorderColor3 = Color3.new(0, 0, 0)
 Time.AnchorPoint = Vector2.new(0.5, 0.5)
-Time.Parent = TimeFrame
 
-local Frame = NotificationFrame
-if not Frame then return end
-task.spawn(function()
-	while true do
-		local allOk = true
-		for _, obj in ipairs(Frame:GetDescendants()) do
-			if obj:IsA("TextLabel")
-			or obj:IsA("TextBox")
-			or obj:IsA("TextButton") then
-				if obj.TextTransparency ~= 0 then
-					obj.TextTransparency = 0
-					allOk = false
-				end
-			end
-		end
-		if allOk then break end
-		task.wait(0.1)
-	end
-end)
-
---==============================================================================--
---======== SYSTEM ==============================================================--
---==============================================================================--
-
-local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService")
-
-local player = Players.LocalPlayer
-local gui = player:WaitForChild("PlayerGui"):WaitForChild("HAPPYscriptNotification")
-local template = gui:WaitForChild("NotificationFrame")
-
+template = NotificationFrame
 template.Visible = false
 
+--------------------------------------------------------
+-- SYSTEM
+--------------------------------------------------------
 local START_POS = UDim2.new(1, 0, 1.1, 0)
 local BASE_POS = UDim2.new(1, 0, 0.9, 0)
 local STACK_Y = 80
@@ -137,30 +119,7 @@ local MAX_NOTIF = 6
 
 local active = {}
 local pending = {}
-local running = false
-
-local function getFadeObjects(root)
-	local list = {}
-
-	for _, obj in ipairs(root:GetDescendants()) do
-		if obj:IsA("Frame") then
-			table.insert(list, {obj, "BackgroundTransparency"})
-		elseif obj:IsA("TextLabel") then
-			table.insert(list, {obj, "TextTransparency"})
-		elseif obj:IsA("ImageLabel") then
-			table.insert(list, {obj, "ImageTransparency"})
-		elseif obj:IsA("UIStroke") then
-			table.insert(list, {obj, "Transparency"})
-		end
-	end
-
-	-- include root luôn
-	if root:IsA("Frame") then
-		table.insert(list, {root, "BackgroundTransparency"})
-	end
-
-	return list
-end
+local processing = false
 
 local function toColor3(v)
 	if typeof(v) == "Color3" then
@@ -208,6 +167,34 @@ local function getTimeBar(frame)
 	return timeFrame:FindFirstChild("Time")
 end
 
+local function collectFadeObjects(root)
+	local list = {}
+
+	local function add(obj, prop)
+		list[#list + 1] = { obj = obj, prop = prop }
+	end
+
+	local function walk(obj)
+		if obj:IsA("Frame") or obj:IsA("ScrollingFrame") then
+			add(obj, "BackgroundTransparency")
+		elseif obj:IsA("TextLabel") or obj:IsA("TextButton") or obj:IsA("TextBox") then
+			add(obj, "TextTransparency")
+			add(obj, "TextStrokeTransparency")
+		elseif obj:IsA("ImageLabel") or obj:IsA("ImageButton") then
+			add(obj, "ImageTransparency")
+		elseif obj:IsA("UIStroke") then
+			add(obj, "Transparency")
+		end
+
+		for _, child in ipairs(obj:GetChildren()) do
+			walk(child)
+		end
+	end
+
+	walk(root)
+	return list
+end
+
 local function reflow()
 	for i, item in ipairs(active) do
 		if item and item.Frame and item.Frame.Parent then
@@ -234,21 +221,24 @@ local function removeNotif(item)
 	local idx = table.find(active, item)
 	if idx then
 		table.remove(active, idx)
+		reflow()
 	end
 
 	if item.Frame and item.Frame.Parent then
-		local fadeObjects = getFadeObjects(item.Frame)
+		local fadeObjects = collectFadeObjects(item.Frame)
 
 		for _, data in ipairs(fadeObjects) do
-			local obj = data[1]
-			local prop = data[2]
+			local obj = data.obj
+			local prop = data.prop
 
 			if obj and obj.Parent then
-				TweenService:Create(
-					obj,
-					TweenInfo.new(0.15),
-					{ [prop] = 1 }
-				):Play()
+				pcall(function()
+					TweenService:Create(
+						obj,
+						TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+						{ [prop] = 1 }
+					):Play()
+				end)
 			end
 		end
 
@@ -256,10 +246,7 @@ local function removeNotif(item)
 			if item.Frame and item.Frame.Parent then
 				item.Frame:Destroy()
 			end
-			reflow()
 		end)
-	else
-		reflow()
 	end
 end
 
@@ -270,8 +257,9 @@ local function showNotif(data)
 
 	local frame = template:Clone()
 	frame.Visible = true
-	frame.Parent = gui
+	frame.Parent = HAPPYscriptNotification
 	frame.Position = START_POS
+	frame.BackgroundTransparency = 0.15
 
 	local titleValue = clearText(data.title)
 	local textValue = clearText(data.text)
@@ -306,59 +294,69 @@ local function showNotif(data)
 	reflow()
 
 	if timeBar then
-		local tween = TweenService:Create(
+		TweenService:Create(
 			timeBar,
 			TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
 			{ Size = UDim2.new(0, 0, 1, 0) }
-		)
-		tween:Play()
+		):Play()
 	end
 
 	task.delay(duration, function()
 		removeNotif(item)
 	end)
-
-    -- reset transparency chuẩn
-    for _, obj in ipairs(frame:GetDescendants()) do
-        if obj:IsA("Frame") then
-            obj.BackgroundTransparency = 0.15
-        elseif obj:IsA("TextLabel") then
-            obj.TextTransparency = 0
-        elseif obj:IsA("ImageLabel") then
-            obj.ImageTransparency = 0
-        elseif obj:IsA("UIStroke") then
-            obj.Transparency = 0
-        end
-    end
-
-    frame.BackgroundTransparency = 0.15
 end
 
-local function consumeGlobalNotification()
-	local data = rawget(_G, "HAPPYnotification")
-	if type(data) == "table" then
-		_G.HAPPYnotification = nil
-		table.insert(pending, data)
+local function enqueueNotification(data)
+	if type(data) ~= "table" then
+		return
 	end
-end
 
-task.spawn(function()
-	while gui.Parent do
-		consumeGlobalNotification()
+	pending[#pending + 1] = data
 
+	if processing then
+		return
+	end
+
+	processing = true
+	task.spawn(function()
 		while #pending > 0 do
-			local data = table.remove(pending, 1)
-			showNotif(data)
+			local dataToShow = table.remove(pending, 1)
+			showNotif(dataToShow)
 		end
+		processing = false
+	end)
+end
 
-		task.wait(0.1)
-	end
+local oldMeta = getmetatable(_G)
+local oldNewIndex = oldMeta and oldMeta.__newindex
+
+pcall(function()
+	setmetatable(_G, {
+		__newindex = function(t, k, v)
+			if k == "HAPPYnotification" and type(v) == "table" then
+				enqueueNotification(v)
+				return
+			end
+
+			if type(oldNewIndex) == "function" then
+				oldNewIndex(t, k, v)
+			else
+				rawset(t, k, v)
+			end
+		end
+	})
 end)
 
---[[ HOOK
+local existing = rawget(_G, "HAPPYnotification")
+if type(existing) == "table" then
+	rawset(_G, "HAPPYnotification", nil)
+	enqueueNotification(existing)
+end
+
+--[[ USE
 _G.HAPPYnotification = {
-	title = "",
-	text = "",
+	title = "title",
+	text = "text",
 	color = {255, 255, 255},
 	time = 5
 }
