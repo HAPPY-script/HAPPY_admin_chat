@@ -329,20 +329,43 @@ if supportFrame then
 end
 
 --=====================================================
--- LOAD ONCE WHEN SCRIPT STARTS
+-- REFRESH ONLY WHEN SYSTEM FRAME IS RE-OPENED
 --=====================================================
-task.spawn(function()
+local REFRESH_COOLDOWN = 180
+local lastSystemRefreshAt = 0
+local lastSystemVisible = systemFrame.Visible
+
+local function tryRefreshOnOpen()
 	if REST_DATA then return end
+	if not supportFrame or not MyFeedback or not AdminFeedback or not OKButton then return end
+
+	local now = os.clock()
+	if now - lastSystemRefreshAt < REFRESH_COOLDOWN then
+		return
+	end
+
+	lastSystemRefreshAt = now
 	local rep = fetchReport()
 	if rep then
 		updateSupportUIFromData(rep)
-	else
-		if supportFrame then
-			supportFrame.Visible = false
-		end
+	elseif supportFrame then
+		supportFrame.Visible = false
+		stopDotAnimation()
+		currentReport = nil
 	end
-	supportLoadedOnce = true
+end
+
+systemFrame:GetPropertyChangedSignal("Visible"):Connect(function()
+	local nowVisible = systemFrame.Visible
+	if (not lastSystemVisible) and nowVisible then
+		tryRefreshOnOpen()
+	end
+	lastSystemVisible = nowVisible
 end)
+
+if systemFrame.Visible then
+	lastSystemVisible = false
+end
 
 --=====================================================
 -- SEND BUTTON HANDLER
