@@ -319,15 +319,20 @@ end
 local function setOnceFlag(scriptName, enabled)
 	local data = firebaseGet()
 	data.returns = data.returns or { once = {}, forever = {} }
+
 	if enabled then
 		data.returns.once[scriptName] = true
-		if data.returns.forever then data.returns.forever[scriptName] = nil end
+		if data.returns.forever then
+			data.returns.forever[scriptName] = nil
+		end
 	else
-		if data.returns.once then data.returns.once[scriptName] = nil end
+		if data.returns.once then
+			data.returns.once[scriptName] = nil
+		end
 	end
 
 	local ok = firebaseSetFull(data)
-	if not ok then if not ok then
+	if not ok then
 		HappyNotify("Firebase Error", "Cannot update Return1 for " .. scriptName, {255, 80, 80}, 4)
 	end
 	return ok
@@ -336,16 +341,21 @@ end
 local function setForeverFlag(scriptName, enabled)
 	local data = firebaseGet()
 	data.returns = data.returns or { once = {}, forever = {} }
+
 	if enabled then
 		data.returns.forever[scriptName] = true
-		if data.returns.once then data.returns.once[scriptName] = nil end
+		if data.returns.once then
+			data.returns.once[scriptName] = nil
+		end
 	else
-		if data.returns.forever then data.returns.forever[scriptName] = nil end
+		if data.returns.forever then
+			data.returns.forever[scriptName] = nil
+		end
 	end
 
 	local ok = firebaseSetFull(data)
 	if not ok then
-		HappyNotify("Firebase Error", "Cannot update Return1 for " .. scriptName, {255, 80, 80}, 4)
+		HappyNotify("Firebase Error", "Cannot update ReturnIfn for " .. scriptName, {255, 80, 80}, 4)
 	end
 	return ok
 end
