@@ -280,18 +280,37 @@ local CANCEL_IDLE_COLOR = Color3.fromRGB(255, 50, 50)
 local BUTTON_BUSY_COOLDOWN = 0.15
 
 local buttonBusy = {}
+local buttonOriginal = {}
 
 local function setButtonBusy(btn, busy, busyColor)
 	if not btn then return end
+
 	if busy then
+		if buttonBusy[btn] then return end
+
 		buttonBusy[btn] = true
+
+		-- Lưu trạng thái gốc
+		buttonOriginal[btn] = {
+			color = btn.BackgroundColor3,
+			auto = btn.AutoButtonColor
+		}
+
 		btn.Active = false
 		btn.AutoButtonColor = false
 		btn.BackgroundColor3 = busyColor or OK_BUSY_COLOR
 	else
 		buttonBusy[btn] = nil
+
 		btn.Active = true
-		btn.AutoButtonColor = true
+
+		local original = buttonOriginal[btn]
+		if original then
+			btn.BackgroundColor3 = original.color
+			btn.AutoButtonColor = original.auto
+		else
+			btn.AutoButtonColor = true
+		end
 	end
 end
 
