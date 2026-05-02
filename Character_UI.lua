@@ -608,28 +608,28 @@ UICorner18.Name = "UICorner"
 UICorner18.CornerRadius = UDim.new(0.1, 0)
 UICorner18.Parent = Loading6
 
-local CameraViewer = Instance.new("ImageButton")
-CameraViewer.Name = "CameraViewer"
-CameraViewer.Position = UDim2.new(0.2, 0, 0.8, 0)
-CameraViewer.Size = UDim2.new(0.25, 0, 0.25, 0)
-CameraViewer.BackgroundColor3 = Color3.new(1, 1, 1)
-CameraViewer.BackgroundTransparency = 1
-CameraViewer.BorderSizePixel = 0
-CameraViewer.BorderColor3 = Color3.new(0, 0, 0)
-CameraViewer.AnchorPoint = Vector2.new(0.5, 0.5)
-CameraViewer.Transparency = 1
-CameraViewer.Image = "rbxassetid://87228966964189"
-CameraViewer.Parent = Character
+local FreeCamera = Instance.new("ImageButton")
+FreeCamera.Name = "FreeCamera"
+FreeCamera.Position = UDim2.new(0.2, 0, 0.8, 0)
+FreeCamera.Size = UDim2.new(0.25, 0, 0.25, 0)
+FreeCamera.BackgroundColor3 = Color3.new(1, 1, 1)
+FreeCamera.BackgroundTransparency = 1
+FreeCamera.BorderSizePixel = 0
+FreeCamera.BorderColor3 = Color3.new(0, 0, 0)
+FreeCamera.AnchorPoint = Vector2.new(0.5, 0.5)
+FreeCamera.Transparency = 1
+FreeCamera.Image = "rbxassetid://87228966964189"
+FreeCamera.Parent = Character
 
 local UIAspectRatioConstraint7 = Instance.new("UIAspectRatioConstraint")
 UIAspectRatioConstraint7.Name = "UIAspectRatioConstraint"
 
-UIAspectRatioConstraint7.Parent = CameraViewer
+UIAspectRatioConstraint7.Parent = FreeCamera
 
 local UICorner19 = Instance.new("UICorner")
 UICorner19.Name = "UICorner"
 UICorner19.CornerRadius = UDim.new(0.15, 0)
-UICorner19.Parent = CameraViewer
+UICorner19.Parent = FreeCamera
 
 local UIGradient13 = Instance.new("UIGradient")
 UIGradient13.Name = "UIGradient"
@@ -637,7 +637,7 @@ UIGradient13.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(
 UIGradient13.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
 UIGradient13.Rotation = 90
 UIGradient13.Offset = Vector2.new(0, 1)
-UIGradient13.Parent = CameraViewer
+UIGradient13.Parent = FreeCamera
 
 local Name7 = Instance.new("TextLabel")
 Name7.Name = "Name"
@@ -649,13 +649,13 @@ Name7.BorderSizePixel = 0
 Name7.BorderColor3 = Color3.new(0, 0, 0)
 Name7.ZIndex = 2
 Name7.Transparency = 1
-Name7.Text = "Camera Viewer"
+Name7.Text = "FreeCamera"
 Name7.TextColor3 = Color3.new(1, 1, 1)
 Name7.TextSize = 14
 Name7.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 Name7.TextScaled = true
 Name7.TextWrapped = true
-Name7.Parent = CameraViewer
+Name7.Parent = FreeCamera
 
 local Effect7 = Instance.new("Frame")
 Effect7.Name = "Effect"
@@ -663,7 +663,7 @@ Effect7.Size = UDim2.new(1, 0, 1, 0)
 Effect7.BackgroundColor3 = Color3.new(1, 1, 1)
 Effect7.BorderSizePixel = 0
 Effect7.BorderColor3 = Color3.new(0, 0, 0)
-Effect7.Parent = CameraViewer
+Effect7.Parent = FreeCamera
 
 local UICorner20 = Instance.new("UICorner")
 UICorner20.Name = "UICorner"
@@ -688,7 +688,7 @@ Loading7.BorderColor3 = Color3.new(0, 0, 0)
 Loading7.Visible = false
 Loading7.AnchorPoint = Vector2.new(0.5, 0.5)
 Loading7.Transparency = 0.10000000149011612
-Loading7.Parent = CameraViewer
+Loading7.Parent = FreeCamera
 
 local ImageLabel7 = Instance.new("ImageLabel")
 ImageLabel7.Name = "ImageLabel"
@@ -707,3 +707,104 @@ local UICorner21 = Instance.new("UICorner")
 UICorner21.Name = "UICorner"
 UICorner21.CornerRadius = UDim.new(0.1, 0)
 UICorner21.Parent = Loading7
+
+local Aimbot = Instance.new("ImageButton")
+Aimbot.Name = "Aimbot"
+Aimbot.Position = UDim2.new(0.5, 0, 0.8, 0)
+Aimbot.Size = UDim2.new(0.25, 0, 0.25, 0)
+Aimbot.BackgroundColor3 = Color3.new(1, 1, 1)
+Aimbot.BackgroundTransparency = 1
+Aimbot.BorderSizePixel = 0
+Aimbot.BorderColor3 = Color3.new(0, 0, 0)
+Aimbot.AnchorPoint = Vector2.new(0.5, 0.5)
+Aimbot.Transparency = 1
+Aimbot.Image = "rbxassetid://107077575047404"
+Aimbot.Parent = Character
+
+local UIAspectRatioConstraint8 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint8.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint8.Parent = Aimbot
+
+local UICorner22 = Instance.new("UICorner")
+UICorner22.Name = "UICorner"
+UICorner22.CornerRadius = UDim.new(0.15, 0)
+UICorner22.Parent = Aimbot
+
+local UIGradient15 = Instance.new("UIGradient")
+UIGradient15.Name = "UIGradient"
+UIGradient15.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient15.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient15.Rotation = 90
+UIGradient15.Offset = Vector2.new(0, 1)
+UIGradient15.Parent = Aimbot
+
+local Name8 = Instance.new("TextLabel")
+Name8.Name = "Name"
+Name8.Position = UDim2.new(0, 0, 0.7, 0)
+Name8.Size = UDim2.new(1, 0, 0.3, 0)
+Name8.BackgroundColor3 = Color3.new(1, 1, 1)
+Name8.BackgroundTransparency = 1
+Name8.BorderSizePixel = 0
+Name8.BorderColor3 = Color3.new(0, 0, 0)
+Name8.ZIndex = 2
+Name8.Transparency = 1
+Name8.Text = "Aimbot"
+Name8.TextColor3 = Color3.new(1, 1, 1)
+Name8.TextSize = 14
+Name8.FontFace = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name8.TextScaled = true
+Name8.TextWrapped = true
+Name8.Parent = Aimbot
+
+local Effect8 = Instance.new("Frame")
+Effect8.Name = "Effect"
+Effect8.Size = UDim2.new(1, 0, 1, 0)
+Effect8.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect8.BorderSizePixel = 0
+Effect8.BorderColor3 = Color3.new(0, 0, 0)
+Effect8.Parent = Aimbot
+
+local UICorner23 = Instance.new("UICorner")
+UICorner23.Name = "UICorner"
+UICorner23.CornerRadius = UDim.new(0.1, 0)
+UICorner23.Parent = Effect8
+
+local UIGradient16 = Instance.new("UIGradient")
+UIGradient16.Name = "UIGradient"
+UIGradient16.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient16.Rotation = -45
+UIGradient16.Offset = Vector2.new(0, -1.5)
+UIGradient16.Parent = Effect8
+
+local Loading8 = Instance.new("Frame")
+Loading8.Name = "Loading"
+Loading8.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading8.Size = UDim2.new(1, 0, 1, 0)
+Loading8.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading8.BackgroundTransparency = 0.10000000149011612
+Loading8.BorderSizePixel = 0
+Loading8.BorderColor3 = Color3.new(0, 0, 0)
+Loading8.Visible = false
+Loading8.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading8.Transparency = 0.10000000149011612
+Loading8.Parent = Aimbot
+
+local ImageLabel8 = Instance.new("ImageLabel")
+ImageLabel8.Name = "ImageLabel"
+ImageLabel8.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel8.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel8.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel8.BackgroundTransparency = 1
+ImageLabel8.BorderSizePixel = 0
+ImageLabel8.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel8.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel8.Transparency = 1
+ImageLabel8.Image = "rbxassetid://17687447043"
+ImageLabel8.Parent = Loading8
+
+local UICorner24 = Instance.new("UICorner")
+UICorner24.Name = "UICorner"
+UICorner24.CornerRadius = UDim.new(0.1, 0)
+UICorner24.Parent = Loading8
+
