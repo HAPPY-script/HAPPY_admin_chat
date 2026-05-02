@@ -91,8 +91,12 @@ local ScriptMapping = {
 		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESP/refs/heads/main/ESP.lua")
 		loadstring(code)()
 	end,
-	CameraViewer = function()
+	FreeCamera = function()
 		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Camera_Viewer/refs/heads/main/System.lua")
+		loadstring(code)()
+	end,
+	Aimbot = function()
+		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Aimbot/refs/heads/main/Aimbot.lua")
 		loadstring(code)()
 	end,
 }
