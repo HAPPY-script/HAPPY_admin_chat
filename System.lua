@@ -43,42 +43,42 @@ local ScriptMapping = {
 
 	-- GameHud --
 	BloxFruit = {
-		ids = { 2753915549 },
+		ids = { 994732206 },
 		run = function()
 			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/BloxFruitHub_NewUI/refs/heads/main/MainLoad.lua")
 			loadstring(code)()
 		end
 	},
 	ZombieStories = {
-		ids = { 2984072291 },
+		ids = { 653118530 },
 		run = function()
 			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ZOMBIE_STORIES/refs/heads/main/ZOMBIE_STORIES")
 			loadstring(code)()
 		end
 	},
 	MM2 = {
-		ids = { 142823291 },
+		ids = { 66654135 },
 		run = function()
 			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Muder-Mystery-2/refs/heads/main/Muder%20Mystery%202")
 			loadstring(code)()
 		end
 	},
 	DeadRails = {
-		ids = { 116495829188952 },
+		ids = { 7018190066 },
 		run = function()
 			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/DEAD_RAILS/refs/heads/main/DEAD_RAILS")
 			loadstring(code)()
 		end
 	},
 	GunfightArena = {
-		ids = { 14518422161 },
+		ids = { 5012222382 },
 		run = function()
 			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Gunfight_Arena/refs/heads/main/Gunfight_Arena.lua")
 			loadstring(code)()
 		end
 	},
 	TowerDefenseSimulator = {
-		ids = { 3260590327 },
+		ids = { 1176784616 },
 		run = function()
 			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TDSHub/refs/heads/main/MainLoad.lua")
 			loadstring(code)()
@@ -180,7 +180,7 @@ local function getSupportCheck(scriptName)
 		return tonumber(a) < tonumber(b)
 	end)
 
-	return false, ("This script does not support the current game.\nCurrent PlaceId: %d\nOnly runs in: %s"):format(placeId, table.concat(allowed, ", "))
+	return false, ("This script does not support the current game. Current PlaceId: %d. Only runs in: %s"):format(placeId, table.concat(allowed, ", "))
 end
 
 --------------------------------------------------------
