@@ -736,7 +736,7 @@ local function applyButtonEffects(btn)
 	
 		local supported, msg = getSupportCheck(btn.Name)
 		if not supported then
-			HappyNotify("Không hỗ trợ", msg, {255, 80, 80}, 5)
+			HappyNotify("Not supported", msg, {255, 80, 80}, 5)
 			return
 		end
 	
