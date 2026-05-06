@@ -35,71 +35,153 @@ local function HappyNotify(title, text, color, time)
 		time = tonumber(time) or 5
 	}
 end
+
 --------------------------------------------------------
 -- CONFIG / MAPPING
 --------------------------------------------------------
 local ScriptMapping = {
 
 	-- GameHud --
-	BloxFruit = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/BloxFruitHub_NewUI/refs/heads/main/MainLoad.lua")
-		loadstring(code)()
-	end,
-	ZombieStories = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ZOMBIE_STORIES/refs/heads/main/ZOMBIE_STORIES")
-		loadstring(code)()
-	end,
-	MM2 = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Muder-Mystery-2/refs/heads/main/Muder%20Mystery%202")
-		loadstring(code)()
-	end,
-	DeadRails = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/DEAD_RAILS/refs/heads/main/DEAD_RAILS")
-		loadstring(code)()
-	end,
-	GunfightArena = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Gunfight_Arena/refs/heads/main/Gunfight_Arena.lua")
-		loadstring(code)()
-	end,
-	TowerDefenseSimulator = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TDSHub/refs/heads/main/MainLoad.lua")
-		loadstring(code)()
-	end,
+	BloxFruit = {
+		ids = { 2753915549 },
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/BloxFruitHub_NewUI/refs/heads/main/MainLoad.lua")
+			loadstring(code)()
+		end
+	},
+	ZombieStories = {
+		ids = { 2984072291 },
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ZOMBIE_STORIES/refs/heads/main/ZOMBIE_STORIES")
+			loadstring(code)()
+		end
+	},
+	MM2 = {
+		ids = { 142823291 },
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Muder-Mystery-2/refs/heads/main/Muder%20Mystery%202")
+			loadstring(code)()
+		end
+	},
+	DeadRails = {
+		ids = { 116495829188952 },
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/DEAD_RAILS/refs/heads/main/DEAD_RAILS")
+			loadstring(code)()
+		end
+	},
+	GunfightArena = {
+		ids = { 14518422161 },
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Gunfight_Arena/refs/heads/main/Gunfight_Arena.lua")
+			loadstring(code)()
+		end
+	},
+	TowerDefenseSimulator = {
+		ids = { 3260590327 },
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TDSHub/refs/heads/main/MainLoad.lua")
+			loadstring(code)()
+		end
+	},
 
 	-- Character --
-	Fly = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/FLY/refs/heads/main/FLY")
-		loadstring(code)()
-	end,
-	IfnJump = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/IFN_JUMP/refs/heads/main/IFN_JUMP")
-		loadstring(code)()
-	end,
-	Explorer = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/FILE_GAME/refs/heads/main/FILE_GAME")
-		loadstring(code)()
-	end,
-	HitBox = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HIT_BOX/refs/heads/main/HIT_BOX.lua")
-		loadstring(code)()
-	end,
-	Speed = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SPEED/refs/heads/main/SPEED.lua")
-		loadstring(code)()
-	end,
-	ESP = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESP/refs/heads/main/ESP.lua")
-		loadstring(code)()
-	end,
-	FreeCamera = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Camera_Viewer/refs/heads/main/System.lua")
-		loadstring(code)()
-	end,
-	Aimbot = function()
-		local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Aimbot/refs/heads/main/Aimbot.lua")
-		loadstring(code)()
-	end,
+	Fly = {
+		ids = nil,
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/FLY/refs/heads/main/FLY")
+			loadstring(code)()
+		end
+	},
+	IfnJump = {
+		ids = nil,
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/IFN_JUMP/refs/heads/main/IFN_JUMP")
+			loadstring(code)()
+		end
+	},
+	Explorer = {
+		ids = nil,
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/FILE_GAME/refs/heads/main/FILE_GAME")
+			loadstring(code)()
+		end
+	},
+	HitBox = {
+		ids = nil,
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HIT_BOX/refs/heads/main/HIT_BOX.lua")
+			loadstring(code)()
+		end
+	},
+	Speed = {
+		ids = nil,
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SPEED/refs/heads/main/SPEED.lua")
+			loadstring(code)()
+		end
+	},
+	ESP = {
+		ids = nil,
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESP/refs/heads/main/ESP.lua")
+			loadstring(code)()
+		end
+	},
+	FreeCamera = {
+		ids = nil,
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Camera_Viewer/refs/heads/main/System.lua")
+			loadstring(code)()
+		end
+	},
+	Aimbot = {
+		ids = nil,
+		run = function()
+			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Aimbot/refs/heads/main/Aimbot.lua")
+			loadstring(code)()
+		end
+	},
 }
+
+local function buildIdSet(ids)
+	if ids == nil then return nil end
+	local set = {}
+	for _, id in ipairs(ids) do
+		set[tonumber(id)] = true
+	end
+	return set
+end
+
+for _, data in pairs(ScriptMapping) do
+	data.ids = buildIdSet(data.ids)
+end
+
+local function getSupportCheck(scriptName)
+	local entry = ScriptMapping[scriptName]
+	if not entry then
+		return false, "Script not found."
+	end
+
+	if entry.ids == nil then
+		return true
+	end
+
+	local placeId = game.PlaceId
+	if entry.ids[placeId] then
+		return true
+	end
+
+	local allowed = {}
+	for id in pairs(entry.ids) do
+		table.insert(allowed, tostring(id))
+	end
+	table.sort(allowed, function(a, b)
+		return tonumber(a) < tonumber(b)
+	end)
+
+	return false, ("This script does not support the current game.\nCurrent PlaceId: %d\nOnly runs in: %s"):format(placeId, table.concat(allowed, ", "))
+end
 
 --------------------------------------------------------
 -- UI SELECTORS
@@ -457,20 +539,23 @@ local function closeNoti(onClosed)
 	end)
 end
 
-local function openNotiFor(btn)
+local function openNotiFor(btn, entry)
 	local logoImage = nil
 	local labelName = nil
 	if (btn:IsA("ImageButton") or btn:IsA("ImageLabel")) and btn.Image then logoImage = btn.Image end
 	local nameLbl = btn:FindFirstChild("Name")
 	if nameLbl and nameLbl:IsA("TextLabel") then labelName = nameLbl.Text else labelName = btn.Name end
 
-	if Noti_Logo:IsA("ImageLabel") or Noti_Logo:IsA("ImageButton") then Noti_Logo.Image = logoImage or "" end
+	if Noti_Logo:IsA("ImageLabel") or Noti_Logo:IsA("ImageButton") then
+		Noti_Logo.Image = logoImage or ""
+	end
+
 	Noti_Name.Text = labelName or btn.Name
 
 	NOTI_CONTEXT.scriptName = btn.Name
 	NOTI_CONTEXT.image = logoImage
 	NOTI_CONTEXT.btnObject = btn
-	NOTI_CONTEXT.scriptFunc = ScriptMapping[btn.Name] or nil
+	NOTI_CONTEXT.scriptFunc = entry and entry.run or nil
 
 	updateReturnButtonsVisual(NOTI_CONTEXT.scriptName)
 	openNoti()
@@ -503,11 +588,12 @@ Noti_Done.MouseButton1Click:Connect(function()
 				if r1On then setOnceFlag(sname, true) else setOnceFlag(sname, false) end
 				if rfOn then setForeverFlag(sname, true) else setForeverFlag(sname, false) end
 
-				if scriptFunc then
+				local supported, msg = getSupportCheck(sname)
+				if not supported then
+					HappyNotify("Not supported", msg, {255, 80, 80}, 5)
+				elseif scriptFunc then
 					HappyNotify("Running Script⌛", "Running " .. sname .. "...", {255, 255, 255}, 5)
-
 					pcall(scriptFunc)
-
 					HappyNotify("Script Finished✅", sname .. " finished running!", {120, 255, 120}, 5)
 				else
 					warn("Không tìm thấy script func cho", sname)
@@ -571,9 +657,19 @@ end)
 -- SCRIPT RUN HELPERS & AUTORUN FROM FIREBASE
 --------------------------------------------------------
 local function runScriptByName(name)
-	local fn = ScriptMapping[name]
-	if not fn then return false end
-	task.spawn(function() pcall(fn) end)
+	local entry = ScriptMapping[name]
+	if not entry then return false end
+
+	local supported, msg = getSupportCheck(name)
+	if not supported then
+		HappyNotify("Not supported", msg, {255, 80, 80}, 5)
+		return false
+	end
+
+	task.spawn(function()
+		pcall(entry.run)
+	end)
+
 	return true
 end
 
@@ -631,17 +727,33 @@ local function applyButtonEffects(btn)
 
 	btn.MouseButton1Click:Connect(function()
 		if btn:GetAttribute("LoadingBusy") then return end
+	
+		local entry = ScriptMapping[btn.Name]
+		if not entry then
+			HappyNotify("Script Error", "Không tìm thấy mapping cho: " .. btn.Name, {255, 80, 80}, 4)
+			return
+		end
+	
+		local supported, msg = getSupportCheck(btn.Name)
+		if not supported then
+			HappyNotify("Không hỗ trợ", msg, {255, 80, 80}, 5)
+			return
+		end
+	
 		tween(btn, fastInfo, {Size = idleSize})
 		task.wait(0.07)
 		if hovering then tween(btn, fastInfo, {Size = hoverSize}) end
-
+	
 		startLoading(btn)
-
+	
 		task.spawn(function()
 			local ok, err = pcall(function()
-				openNotiFor(btn)
+				openNotiFor(btn, entry)
 			end)
-			if not ok then warn("[openNotiFor] error:", err) end
+			if not ok then
+				warn("[openNotiFor] error:", err)
+				stopLoading(btn)
+			end
 		end)
 	end)
 end
