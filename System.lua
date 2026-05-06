@@ -167,8 +167,8 @@ local function getSupportCheck(scriptName)
 		return true
 	end
 
-	local placeId = game.PlaceId
-	if entry.ids[placeId] then
+	local gameId = game.GameId
+	if entry.ids[gameId] then
 		return true
 	end
 
@@ -180,7 +180,7 @@ local function getSupportCheck(scriptName)
 		return tonumber(a) < tonumber(b)
 	end)
 
-	return false, ("This script does not support the current game. Current PlaceId: %d. Only runs in: %s"):format(placeId, table.concat(allowed, ", "))
+	return false, ("This script does not support the current game. Current GameId: %d. Only runs in: %s"):format(gameId, table.concat(allowed, ", "))
 end
 
 --------------------------------------------------------
