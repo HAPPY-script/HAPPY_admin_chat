@@ -27,20 +27,6 @@ print([[
 ╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝░░░░░░░░╚═╝░░░  ╚═════╝░░╚════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░░░░╚═╝░░░
 ]])
 
--- Load Notification System
-if _G.NotificationSystem == nil then
-	_G.NotificationSystem = true
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/Notification_System.lua"))()
-end
-if _G.NotificationSystem == true then
-	_G.HAPPYnotification = {
-		title = "HAPPY script",
-		text = "Cannot run Happy script twice",
-		color = {255, 255, 255},
-		time = 7
-	}
-end
-
 if _G.HAPPY_script then
     warn("Script đã chạy! Không thể chạy lại.")
     return
@@ -48,6 +34,7 @@ end
 _G.HAPPY_script = true
 
 -- System notification
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/Notification_System.lua"))()
 
 local function waitLoad(name, pct)
     if shared.HAPPY_LOADER_UPDATE then
