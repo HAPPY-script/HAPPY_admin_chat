@@ -750,7 +750,7 @@ local function applyButtonEffects(btn)
 	
 		local entry = ScriptMapping[btn.Name]
 		if not entry then
-			HappyNotify("Script Error", "Không tìm thấy mapping cho: " .. btn.Name, {255, 80, 80}, 4)
+			HappyNotify("Script Error", "No script found for: " .. btn.Name, {255, 80, 80}, 4)
 			return
 		end
 	
