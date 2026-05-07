@@ -40,107 +40,64 @@ end
 -- CONFIG / MAPPING
 --------------------------------------------------------
 local ScriptMapping = {
-
 	-- GameHud --
 	BloxFruit = {
 		ids = { 994732206 },
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/BloxFruitHub_NewUI/refs/heads/main/MainLoad.lua")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/BloxFruitHub_NewUI/refs/heads/main/MainLoad.lua",
 	},
 	ZombieStories = {
 		ids = { 653118530 },
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ZOMBIE_STORIES/refs/heads/main/ZOMBIE_STORIES")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/ZOMBIE_STORIES/refs/heads/main/ZOMBIE_STORIES",
 	},
 	MM2 = {
 		ids = { 66654135 },
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Muder-Mystery-2/refs/heads/main/Muder%20Mystery%202")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/Muder-Mystery-2/refs/heads/main/Muder%20Mystery%202",
 	},
 	DeadRails = {
 		ids = { 7018190066 },
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/DEAD_RAILS/refs/heads/main/DEAD_RAILS")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/DEAD_RAILS/refs/heads/main/DEAD_RAILS",
 	},
 	GunfightArena = {
 		ids = { 5012222382 },
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Gunfight_Arena/refs/heads/main/Gunfight_Arena.lua")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/Gunfight_Arena/refs/heads/main/Gunfight_Arena.lua",
 	},
 	TowerDefenseSimulator = {
 		ids = { 1176784616 },
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TDSHub/refs/heads/main/MainLoad.lua")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/TDSHub/refs/heads/main/MainLoad.lua",
 	},
 
 	-- Character --
 	Fly = {
 		ids = nil,
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/FLY/refs/heads/main/FLY")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/FLY/refs/heads/main/FLY",
 	},
 	IfnJump = {
 		ids = nil,
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/IFN_JUMP/refs/heads/main/IFN_JUMP")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/IFN_JUMP/refs/heads/main/IFN_JUMP",
 	},
 	Explorer = {
 		ids = nil,
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/FILE_GAME/refs/heads/main/FILE_GAME")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/FILE_GAME/refs/heads/main/FILE_GAME",
 	},
 	HitBox = {
 		ids = nil,
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HIT_BOX/refs/heads/main/HIT_BOX.lua")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/HIT_BOX/refs/heads/main/HIT_BOX.lua",
 	},
 	Speed = {
 		ids = nil,
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/SPEED/refs/heads/main/SPEED.lua")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/SPEED/refs/heads/main/SPEED.lua",
 	},
 	ESP = {
 		ids = nil,
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/ESP/refs/heads/main/ESP.lua")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/ESP/refs/heads/main/ESP.lua",
 	},
 	FreeCamera = {
 		ids = nil,
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Camera_Viewer/refs/heads/main/System.lua")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/Camera_Viewer/refs/heads/main/System.lua",
 	},
 	Aimbot = {
 		ids = nil,
-		run = function()
-			local code = game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/Aimbot/refs/heads/main/Aimbot.lua")
-			loadstring(code)()
-		end
+		url = "https://raw.githubusercontent.com/HAPPY-script/Aimbot/refs/heads/main/Aimbot.lua",
 	},
 }
 
@@ -155,6 +112,38 @@ end
 
 for _, data in pairs(ScriptMapping) do
 	data.ids = buildIdSet(data.ids)
+end
+
+local function runEntry(entry)
+	if not entry or not entry.url then
+		return false, "Missing url"
+	end
+
+	local ok, err = pcall(function()
+		loadstring(game:HttpGet(entry.url))()
+	end)
+
+	return ok, err
+end
+
+local function queueTeleportOnce(entry)
+	if type(queue_on_teleport) ~= "function" then
+		return false
+	end
+	if not entry or not entry.url then
+		return false
+	end
+
+	local payload = string.format([[
+		local ok, code = pcall(function()
+			return game:HttpGet(%q)
+		end)
+		if ok and code then
+			loadstring(code)()
+		end
+	]], entry.url)
+
+	return pcall(queue_on_teleport, payload)
 end
 
 local function getSupportCheck(scriptName)
@@ -318,6 +307,24 @@ end
 --------------------------------------------------------
 local PROJECT_URL = "https://happy-script-bada6-default-rtdb.asia-southeast1.firebasedatabase.app/users/"
 local URL = PROJECT_URL .. tostring(player.UserId) .. ".json"
+
+local function queueTeleportOnce(scriptName)
+	local entry = ScriptMapping[scriptName]
+	if not entry or not entry.url or type(queue_on_teleport) ~= "function" then
+		return false
+	end
+
+	local payload = string.format([[
+		local ok, code = pcall(function()
+			return game:HttpGet(%q)
+		end)
+		if ok and code then
+			loadstring(code)()
+		end
+	]], entry.url)
+
+	return pcall(queue_on_teleport, payload)
+end
 
 local doneBusy = false
 local function setNotiLocked(state)
@@ -485,7 +492,7 @@ local NOTI_CONTEXT = {
 	scriptName = nil,
 	image = nil,
 	btnObject = nil,
-	scriptFunc = nil,
+	entry = nil,
 }
 local blur -- BlurEffect object
 local menuWasOpen = false
@@ -555,7 +562,7 @@ local function openNotiFor(btn, entry)
 	NOTI_CONTEXT.scriptName = btn.Name
 	NOTI_CONTEXT.image = logoImage
 	NOTI_CONTEXT.btnObject = btn
-	NOTI_CONTEXT.scriptFunc = entry and entry.run or nil
+	NOTI_CONTEXT.entry = entry
 
 	updateReturnButtonsVisual(NOTI_CONTEXT.scriptName)
 	openNoti()
@@ -578,25 +585,36 @@ Noti_Done.MouseButton1Click:Connect(function()
 
 	local sourceBtn = NOTI_CONTEXT.btnObject
 	local sname = NOTI_CONTEXT.scriptName
-	local scriptFunc = NOTI_CONTEXT.scriptFunc
+	local entry = NOTI_CONTEXT.entry
 	local r1On = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
 	local rfOn = (Noti_ReturnIfn.BackgroundColor3 == Color3.fromRGB(50,255,50))
 
 	closeNoti(function()
 		task.spawn(function()
-			if sname then
-				if r1On then setOnceFlag(sname, true) else setOnceFlag(sname, false) end
-				if rfOn then setForeverFlag(sname, true) else setForeverFlag(sname, false) end
-
+			if sname and entry then
 				local supported, msg = getSupportCheck(sname)
 				if not supported then
 					HappyNotify("Not supported", msg, {255, 80, 80}, 5)
-				elseif scriptFunc then
-					HappyNotify("Running Script⌛", "Running " .. sname .. "...", {255, 255, 255}, 5)
-					pcall(scriptFunc)
-					HappyNotify("Script Finished✅", sname .. " finished running!", {120, 255, 120}, 5)
 				else
-					warn("Không tìm thấy script func cho", sname)
+					if r1On then
+						if not queueTeleportOnce(entry) then
+							setOnceFlag(sname, true)
+						else
+							clearOnceFlag(sname)
+						end
+					else
+						setOnceFlag(sname, false)
+					end
+
+					if rfOn then
+						setForeverFlag(sname, true)
+					else
+						setForeverFlag(sname, false)
+					end
+
+					HappyNotify("Running Script⌛", "Running " .. sname .. "...", {255, 255, 255}, 5)
+					pcall(runEntry, entry)
+					HappyNotify("Script Finished✅", sname .. " finished running!", {120, 255, 120}, 5)
 				end
 			end
 
@@ -667,7 +685,7 @@ local function runScriptByName(name)
 	end
 
 	task.spawn(function()
-		pcall(entry.run)
+		pcall(runEntry, entry)
 	end)
 
 	return true
