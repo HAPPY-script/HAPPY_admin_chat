@@ -462,27 +462,24 @@ local function clearOnceFlag(scriptName)
 	return ok
 end
 
+local ON_BG = Color3.fromRGB(255,255,255)
+local ON_IMG = Color3.fromRGB(0,0,0)
+local OFF_BG = Color3.fromRGB(0,0,0)
+local OFF_IMG = Color3.fromRGB(255,255,255)
+
+local function setReturnVisual(btn, on)
+	btn.BackgroundColor3 = on and ON_BG or OFF_BG
+	btn.ImageColor3 = on and ON_IMG or OFF_IMG
+end
+
 -- Update Noti Return button visuals
 local function updateReturnButtonsVisual(scriptName)
 	local data = firebaseGet()
 	local onceOn = data.returns and data.returns.once and data.returns.once[scriptName]
 	local foreverOn = data.returns and data.returns.forever and data.returns.forever[scriptName]
 
-	if onceOn then
-		Noti_Return1.BackgroundColor3 = Color3.fromRGB(50,255,50)
-		Noti_Return1.ImageColor3 = Color3.fromRGB(0,0,0)
-	else
-		Noti_Return1.BackgroundColor3 = Color3.fromRGB(0,0,0)
-		Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
-	end
-
-	if foreverOn then
-		Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(50,255,50)
-		Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(0,0,0)
-	else
-		Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(0,0,0)
-		Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
-	end
+	setReturnVisual(Noti_Return1, onceOn and true or false)
+	setReturnVisual(Noti_ReturnIfn, foreverOn and true or false)
 end
 
 --------------------------------------------------------
@@ -586,8 +583,8 @@ Noti_Done.MouseButton1Click:Connect(function()
 	local sourceBtn = NOTI_CONTEXT.btnObject
 	local sname = NOTI_CONTEXT.scriptName
 	local entry = NOTI_CONTEXT.entry
-	local r1On = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
-	local rfOn = (Noti_ReturnIfn.BackgroundColor3 == Color3.fromRGB(50,255,50))
+	local r1On = (Noti_Return1.BackgroundColor3 == ON_BG)
+	local rfOn = (Noti_ReturnIfn.BackgroundColor3 == ON_BG)
 
 	closeNoti(function()
 		task.spawn(function()
@@ -631,20 +628,25 @@ Noti_Return1.MouseButton1Click:Connect(function()
 	local sname = NOTI_CONTEXT.scriptName
 	if not sname then return end
 
+	local wasOn = (Noti_Return1.BackgroundColor3 == ON_BG)
+	local newOnce = not wasOn
+	local newForever = false
+
+	-- đổi UI ngay lập tức
+	setReturnVisual(Noti_Return1, newOnce)
+	setReturnVisual(Noti_ReturnIfn, newForever)
+
 	task.spawn(function()
-		local wasOn = (Noti_Return1.BackgroundColor3 == Color3.fromRGB(50,255,50))
-		if wasOn then
-			if setOnceFlag(sname, false) then
-				Noti_Return1.BackgroundColor3 = Color3.fromRGB(0,0,0)
-				Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
+		if newOnce then
+			-- ưu tiên queue nếu có
+			if not queueTeleportOnce(ScriptMapping[sname]) then
+				setOnceFlag(sname, true)
+			else
+				clearOnceFlag(sname)
 			end
+			setForeverFlag(sname, false)
 		else
-			if setOnceFlag(sname, true) and setForeverFlag(sname, false) then
-				Noti_Return1.BackgroundColor3 = Color3.fromRGB(50,255,50)
-				Noti_Return1.ImageColor3 = Color3.fromRGB(0,0,0)
-				Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(0,0,0)
-				Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
-			end
+			setOnceFlag(sname, false)
 		end
 	end)
 end)
@@ -653,20 +655,20 @@ Noti_ReturnIfn.MouseButton1Click:Connect(function()
 	local sname = NOTI_CONTEXT.scriptName
 	if not sname then return end
 
+	local wasOn = (Noti_ReturnIfn.BackgroundColor3 == ON_BG)
+	local newForever = not wasOn
+	local newOnce = false
+
+	-- đổi UI ngay lập tức
+	setReturnVisual(Noti_ReturnIfn, newForever)
+	setReturnVisual(Noti_Return1, newOnce)
+
 	task.spawn(function()
-		local wasOn = (Noti_ReturnIfn.BackgroundColor3 == Color3.fromRGB(50,255,50))
-		if wasOn then
-			if setForeverFlag(sname, false) then
-				Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(0,0,0)
-				Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(255,255,255)
-			end
+		if newForever then
+			setForeverFlag(sname, true)
+			setOnceFlag(sname, false)
 		else
-			if setForeverFlag(sname, true) and setOnceFlag(sname, false) then
-				Noti_ReturnIfn.BackgroundColor3 = Color3.fromRGB(50,255,50)
-				Noti_ReturnIfn.ImageColor3 = Color3.fromRGB(0,0,0)
-				Noti_Return1.BackgroundColor3 = Color3.fromRGB(0,0,0)
-				Noti_Return1.ImageColor3 = Color3.fromRGB(255,255,255)
-			end
+			setForeverFlag(sname, false)
 		end
 	end)
 end)
