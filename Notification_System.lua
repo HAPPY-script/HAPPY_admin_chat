@@ -45,7 +45,7 @@ UIGradient.Color = ColorSequence.new({
 UIGradient.Rotation = 90
 
 local Line = ensureChild(NotificationFrame, "Frame", "Line")
-Line.Position = UDim2.new(0.003, 0, 0, 0)
+Line.Position = UDim2.new(0, 0, 0, 0)
 Line.Size = UDim2.new(0.015, 0, 1, 0)
 Line.BackgroundColor3 = Color3.new(1, 0, 1)
 Line.BorderSizePixel = 0
