@@ -65,6 +65,10 @@ local ScriptMapping = {
 		ids = { 1176784616 },
 		url = "https://raw.githubusercontent.com/HAPPY-script/TDSHub/refs/heads/main/MainLoad.lua",
 	},
+	AttackOnTitan = {
+		ids = { 2232507648 },
+		url = "https://raw.githubusercontent.com/HAPPY-script/Untitled_Attack_On_Titan/refs/heads/main/Attack_on_titan.lua",
+	},
 
 	-- Character --
 	Fly = {
