@@ -7,6 +7,7 @@ GameHub.BackgroundColor3 = Color3.new(1, 1, 1)
 GameHub.BackgroundTransparency = 1
 GameHub.BorderSizePixel = 0
 GameHub.BorderColor3 = Color3.new(0, 0, 0)
+GameHub.Visible = false
 GameHub.Transparency = 1
 GameHub.Parent = sf
 
@@ -649,3 +650,116 @@ local UICorner18 = Instance.new("UICorner")
 UICorner18.Name = "UICorner"
 UICorner18.CornerRadius = UDim.new(0.1, 0)
 UICorner18.Parent = Loading6
+
+local AttackOnTitan = Instance.new("ImageButton")
+AttackOnTitan.Name = "AttackOnTitan"
+AttackOnTitan.Position = UDim2.new(0.2, 0, 0.8, 0)
+AttackOnTitan.Size = UDim2.new(0.25, 0, 0.25, 0)
+AttackOnTitan.BackgroundColor3 = Color3.new(1, 1, 1)
+AttackOnTitan.BackgroundTransparency = 1
+AttackOnTitan.BorderSizePixel = 0
+AttackOnTitan.BorderColor3 = Color3.new(0, 0, 0)
+AttackOnTitan.AnchorPoint = Vector2.new(0.5, 0.5)
+AttackOnTitan.Transparency = 1
+AttackOnTitan.Image = "rbxassetid://117463353149129"
+AttackOnTitan.Parent = GameHub
+
+local UIAspectRatioConstraint7 = Instance.new("UIAspectRatioConstraint")
+UIAspectRatioConstraint7.Name = "UIAspectRatioConstraint"
+
+UIAspectRatioConstraint7.Parent = AttackOnTitan
+
+local UICorner19 = Instance.new("UICorner")
+UICorner19.Name = "UICorner"
+UICorner19.CornerRadius = UDim.new(0.1, 0)
+UICorner19.Parent = AttackOnTitan
+
+local UIStroke7 = Instance.new("UIStroke")
+UIStroke7.Name = "UIStroke"
+UIStroke7.Color = Color3.new(1, 1, 1)
+UIStroke7.Thickness = 1.5
+UIStroke7.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke7.Parent = AttackOnTitan
+
+local UIGradient13 = Instance.new("UIGradient")
+UIGradient13.Name = "UIGradient"
+UIGradient13.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))})
+UIGradient13.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient13.Rotation = 90
+UIGradient13.Offset = Vector2.new(0, 1)
+UIGradient13.Parent = AttackOnTitan
+
+local Name7 = Instance.new("TextLabel")
+Name7.Name = "Name"
+Name7.Position = UDim2.new(0, 0, 0.7, 0)
+Name7.Size = UDim2.new(1, 0, 0.3, 0)
+Name7.BackgroundColor3 = Color3.new(1, 1, 1)
+Name7.BackgroundTransparency = 1
+Name7.BorderSizePixel = 0
+Name7.BorderColor3 = Color3.new(0, 0, 0)
+Name7.ZIndex = 2
+Name7.Transparency = 1
+Name7.Text = "Untitled Attack On Titan"
+Name7.TextColor3 = Color3.new(0.901961, 0.509804, 0.247059)
+Name7.TextSize = 14
+Name7.FontFace = Font.new("rbxasset://fonts/families/Fondamento.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+Name7.TextScaled = true
+Name7.TextWrapped = true
+Name7.Parent = AttackOnTitan
+
+local Effect7 = Instance.new("Frame")
+Effect7.Name = "Effect"
+Effect7.Size = UDim2.new(1, 0, 1, 0)
+Effect7.BackgroundColor3 = Color3.new(1, 1, 1)
+Effect7.BorderSizePixel = 0
+Effect7.BorderColor3 = Color3.new(0, 0, 0)
+Effect7.Parent = AttackOnTitan
+
+local UICorner20 = Instance.new("UICorner")
+UICorner20.Name = "UICorner"
+UICorner20.CornerRadius = UDim.new(0.1, 0)
+UICorner20.Parent = Effect7
+
+local UIGradient14 = Instance.new("UIGradient")
+UIGradient14.Name = "UIGradient"
+UIGradient14.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 1, 0), NumberSequenceKeypoint.new(0.35, 1, 0), NumberSequenceKeypoint.new(0.5, 0.25, 0), NumberSequenceKeypoint.new(0.65, 1, 0), NumberSequenceKeypoint.new(1, 1, 0)})
+UIGradient14.Rotation = -45
+UIGradient14.Offset = Vector2.new(0, -1.5)
+UIGradient14.Parent = Effect7
+
+local Loading7 = Instance.new("Frame")
+Loading7.Name = "Loading"
+Loading7.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading7.Size = UDim2.new(1, 0, 1, 0)
+Loading7.BackgroundColor3 = Color3.new(0, 0, 0)
+Loading7.BackgroundTransparency = 0.10000000149011612
+Loading7.BorderSizePixel = 0
+Loading7.BorderColor3 = Color3.new(0, 0, 0)
+Loading7.Visible = false
+Loading7.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading7.Transparency = 0.10000000149011612
+Loading7.Parent = AttackOnTitan
+
+local ImageLabel7 = Instance.new("ImageLabel")
+ImageLabel7.Name = "ImageLabel"
+ImageLabel7.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel7.Size = UDim2.new(0.75, 0, 0.75, 0)
+ImageLabel7.BackgroundColor3 = Color3.new(1, 1, 1)
+ImageLabel7.BackgroundTransparency = 1
+ImageLabel7.BorderSizePixel = 0
+ImageLabel7.BorderColor3 = Color3.new(0, 0, 0)
+ImageLabel7.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel7.Transparency = 1
+ImageLabel7.Image = "rbxassetid://17687447043"
+ImageLabel7.Parent = Loading7
+
+local UICorner21 = Instance.new("UICorner")
+UICorner21.Name = "UICorner"
+UICorner21.CornerRadius = UDim.new(0.1, 0)
+UICorner21.Parent = Loading7
+
+for _,v in ipairs(sf:GetDescendants()) do
+	if v:IsA("TextObject") then
+		v.TextStrokeTransparency = 0
+	end
+end
