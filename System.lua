@@ -103,6 +103,10 @@ local ScriptMapping = {
 		ids = nil,
 		url = "https://raw.githubusercontent.com/HAPPY-script/Aimbot/refs/heads/main/Aimbot.lua",
 	},
+	NoClip = {
+		ids = nil,
+		url = "https://raw.githubusercontent.com/HAPPY-script/NO_CLIP/refs/heads/main/NoClip.lua",
+	},
 }
 
 local function buildIdSet(ids)
