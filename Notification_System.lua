@@ -106,7 +106,7 @@ Time.BorderSizePixel = 0
 Time.BorderColor3 = Color3.new(0, 0, 0)
 Time.AnchorPoint = Vector2.new(0.5, 0.5)
 
-template = NotificationFrame
+local template = NotificationFrame
 template.Visible = false
 
 --------------------------------------------------------
@@ -327,11 +327,32 @@ local function enqueueNotification(data)
 	end)
 end
 
+local function notifier(data)
+	enqueueNotification(data)
+end
+
+rawset(_G, "HAPPYnotificationLoaded", true)
+
 local oldMeta = getmetatable(_G)
+local oldIndex = oldMeta and oldMeta.__index
 local oldNewIndex = oldMeta and oldMeta.__newindex
 
 pcall(function()
 	setmetatable(_G, {
+		__index = function(t, k)
+			if k == "HAPPYnotification" then
+				return notifier
+			end
+
+			if type(oldIndex) == "function" then
+				return oldIndex(t, k)
+			elseif type(oldIndex) == "table" then
+				return oldIndex[k]
+			end
+
+			return rawget(t, k)
+		end,
+
 		__newindex = function(t, k, v)
 			if k == "HAPPYnotification" and type(v) == "table" then
 				enqueueNotification(v)
@@ -347,13 +368,25 @@ pcall(function()
 	})
 end)
 
-local existing = rawget(_G, "HAPPYnotification")
-if type(existing) == "table" then
-	rawset(_G, "HAPPYnotification", nil)
-	enqueueNotification(existing)
+--[[ USE
+local notify = _G.HAPPYnotification
+
+if type(notify) == "function" then
+	notify({
+		title = "title",
+		text = "text",
+		color = {255, 255, 255},
+		time = 5
+	})
+else
+	game:GetService("StarterGui"):SetCore("SendNotification", {
+		Title = "title",
+		Text = "text",
+		Duration = 5
+	})
 end
 
---[[ USE
+-- kiểu cũ vẫn chạy:
 _G.HAPPYnotification = {
 	title = "title",
 	text = "text",
