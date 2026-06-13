@@ -367,6 +367,7 @@ pcall(function()
 		end
 	})
 end)
+_G.HAPPYnotificationCheck = true
 
 --[[ USE
 local notify = _G.HAPPYnotification
@@ -387,10 +388,19 @@ else
 end
 
 -- kiểu cũ vẫn chạy:
-_G.HAPPYnotification = {
-	title = "title",
-	text = "text",
-	color = {255, 255, 255},
-	time = 5
-}
+if _G.HAPPYnotificationCheck == true then
+	_G.HAPPYnotification = {
+		title = "title",
+		text = "text",
+		color = {255, 255, 255},
+		time = 5
+	}
+else
+	game:GetService("StarterGui"):SetCore("SendNotification", {
+		Title = "title",
+		Text = "text",
+		Duration = 5
+	})
+end
+
 ]]
